@@ -1,0 +1,8 @@
+[regblock]
+default_reset = "arst_n"
+
+[c-header]
+std = "gnu23"
+type_style = "hier"
+subword_size = 32
+bitfields = "ltoh"
