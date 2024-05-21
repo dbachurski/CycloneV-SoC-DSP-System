@@ -7,6 +7,18 @@ package csr_pkg;
     localparam CSR_MIN_ADDR_WIDTH = 12;
 
     typedef struct {
+        logic hwset;
+    } csr__TEST_REG__val__in_t;
+
+    typedef struct {
+        csr__TEST_REG__val__in_t val;
+    } csr__TEST_REG__in_t;
+
+    typedef struct {
+        csr__TEST_REG__in_t TEST_REG;
+    } csr__in_t;
+
+    typedef struct {
         logic [7:0] value;
     } csr__IO_CR__val__out_t;
 

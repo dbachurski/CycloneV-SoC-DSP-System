@@ -16,6 +16,7 @@ module csr (
         output logic [31:0] avalon_readdata,
         output logic [1:0] avalon_response,
 
+        input csr_pkg::csr__in_t hwif_in,
         output csr_pkg::csr__out_t hwif_out
     );
 
@@ -77,6 +78,7 @@ module csr (
     //--------------------------------------------------------------------------
     typedef struct {
         logic IO_CR;
+        logic TEST_REG;
         logic SCRATCHPAD;
     } decoded_reg_strb_t;
     decoded_reg_strb_t decoded_reg_strb;
@@ -87,6 +89,7 @@ module csr (
 
     always_comb begin
         decoded_reg_strb.IO_CR = cpuif_req_masked & (cpuif_addr == 12'h0);
+        decoded_reg_strb.TEST_REG = cpuif_req_masked & (cpuif_addr == 12'h4);
         decoded_reg_strb.SCRATCHPAD = cpuif_req_masked & (cpuif_addr == 12'h3fc);
     end
 
@@ -108,6 +111,12 @@ module csr (
         } IO_CR;
         struct {
             struct {
+                logic next;
+                logic load_next;
+            } val;
+        } TEST_REG;
+        struct {
+            struct {
                 logic [31:0] next;
                 logic load_next;
             } val;
@@ -123,6 +132,11 @@ module csr (
         } IO_CR;
         struct {
             struct {
+                logic value;
+            } val;
+        } TEST_REG;
+        struct {
+            struct {
                 logic [31:0] value;
             } val;
         } SCRATCHPAD;
@@ -131,8 +145,10 @@ module csr (
 
     // Field: csr.IO_CR.val
     always_comb begin
-        automatic logic [7:0] next_c = field_storage.IO_CR.val.value;
-        automatic logic load_next_c = '0;
+        automatic logic [7:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.IO_CR.val.value;
+        load_next_c = '0;
         if(decoded_reg_strb.IO_CR && decoded_req_is_wr) begin // SW write
             next_c = (field_storage.IO_CR.val.value & ~decoded_wr_biten[7:0]) | (decoded_wr_data[7:0] & decoded_wr_biten[7:0]);
             load_next_c = '1;
@@ -148,10 +164,35 @@ module csr (
         end
     end
     assign hwif_out.IO_CR.val.value = field_storage.IO_CR.val.value;
+    // Field: csr.TEST_REG.val
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.TEST_REG.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.TEST_REG && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.TEST_REG.val.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
+            load_next_c = '1;
+        end else if(hwif_in.TEST_REG.val.hwset) begin // HW Set
+            next_c = '1;
+            load_next_c = '1;
+        end
+        field_combo.TEST_REG.val.next = next_c;
+        field_combo.TEST_REG.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.TEST_REG.val.value <= 1'h0;
+        end else if(field_combo.TEST_REG.val.load_next) begin
+            field_storage.TEST_REG.val.value <= field_combo.TEST_REG.val.next;
+        end
+    end
     // Field: csr.SCRATCHPAD.val
     always_comb begin
-        automatic logic [31:0] next_c = field_storage.SCRATCHPAD.val.value;
-        automatic logic load_next_c = '0;
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.SCRATCHPAD.val.value;
+        load_next_c = '0;
         if(decoded_reg_strb.SCRATCHPAD && decoded_req_is_wr) begin // SW write
             next_c = (field_storage.SCRATCHPAD.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
             load_next_c = '1;
@@ -183,10 +224,12 @@ module csr (
     logic [31:0] readback_data;
 
     // Assign readback values to a flattened array
-    logic [31:0] readback_array[2];
+    logic [31:0] readback_array[3];
     assign readback_array[0][7:0] = (decoded_reg_strb.IO_CR && !decoded_req_is_wr) ? field_storage.IO_CR.val.value : '0;
     assign readback_array[0][31:8] = '0;
-    assign readback_array[1][31:0] = (decoded_reg_strb.SCRATCHPAD && !decoded_req_is_wr) ? field_storage.SCRATCHPAD.val.value : '0;
+    assign readback_array[1][0:0] = (decoded_reg_strb.TEST_REG && !decoded_req_is_wr) ? field_storage.TEST_REG.val.value : '0;
+    assign readback_array[1][31:1] = '0;
+    assign readback_array[2][31:0] = (decoded_reg_strb.SCRATCHPAD && !decoded_req_is_wr) ? field_storage.SCRATCHPAD.val.value : '0;
 
     // Reduce the array
     always_comb begin
@@ -194,7 +237,7 @@ module csr (
         readback_done = decoded_req & ~decoded_req_is_wr;
         readback_err = '0;
         readback_data_var = '0;
-        for(int i=0; i<2; i++) readback_data_var |= readback_array[i];
+        for(int i=0; i<3; i++) readback_data_var |= readback_array[i];
         readback_data = readback_data_var;
     end
 

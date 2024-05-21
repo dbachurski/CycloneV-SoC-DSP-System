@@ -8,74 +8,71 @@ module agh_socfpga
     input  logic        clk,
     input  logic        rst_n,
 
-    output logic        avs_s0_waitrequest,
-    output logic [1:0]  avs_s0_response,
-    output logic        avs_s0_readdatavalid,
-    output logic        avs_s0_writeresponsevalid,
-    output logic [31:0] avs_s0_readdata,
-    input logic [11:0]  avs_s0_address,
-    input logic         avs_s0_read,
-    input logic         avs_s0_write,
-    input logic [3:0]   avs_s0_byteenable,
-    input logic [31:0]  avs_s0_writedata,
+
+    /* Avalon MM slave interface */
+
+    output logic        avalon_mm_slave_waitrequest,
+    output logic [1:0]  avalon_mm_slave_response,
+    output logic        avalon_mm_slave_readdatavalid,
+    output logic        avalon_mm_slave_writeresponsevalid,
+    output logic [31:0] avalon_mm_slave_readdata,
+    input logic [11:0]  avalon_mm_slave_address,
+    input logic         avalon_mm_slave_read,
+    input logic         avalon_mm_slave_write,
+    input logic [3:0]   avalon_mm_slave_byteenable,
+    input logic [31:0]  avalon_mm_slave_writedata,
 
     output logic [7:0]  led
 );
 
 
-/**
- * Local variables and signals
- */
+/* Local variables and signals */
 
 csr__out_t   hwif_out;
+csr__in_t    hwif_in;
 
-logic [31:0] avs_s0_readdata_nxt;
-logic        avs_s0_readdatavalid_nxt, avs_s0_writeresponsevalid_nxt;
+logic [31:0] avalon_mm_slave_readdata_nxt;
+logic        avalon_mm_slave_readdatavalid_nxt, avalon_mm_slave_writeresponsevalid_nxt;
 
 
-/**
- * Signals assignments
- */
+/* Signals assignments */
 
 assign led = hwif_out.IO_CR.val.value;
 
 
-/**
- * Submodules placement
- */
+/* Submodules placement */
 
 csr u_csr (
     .clk,
     .arst_n(rst_n),
 
-    .avalon_waitrequest(avs_s0_waitrequest),
-    .avalon_response(avs_s0_response),
-    .avalon_readdatavalid(avs_s0_readdatavalid_nxt),
-    .avalon_writeresponsevalid(avs_s0_writeresponsevalid_nxt),
-    .avalon_readdata(avs_s0_readdata_nxt),
-    .avalon_address(avs_s0_address[11:2]),
-    .avalon_read(avs_s0_read),
-    .avalon_write(avs_s0_write),
-    .avalon_byteenable(avs_s0_byteenable),
-    .avalon_writedata(avs_s0_writedata),
+    .avalon_waitrequest(avalon_mm_slave_waitrequest),
+    .avalon_response(avalon_mm_slave_response),
+    .avalon_readdatavalid(avalon_mm_slave_readdatavalid_nxt),
+    .avalon_writeresponsevalid(avalon_mm_slave_writeresponsevalid_nxt),
+    .avalon_readdata(avalon_mm_slave_readdata_nxt),
+    .avalon_address(avalon_mm_slave_address[11:2]),
+    .avalon_read(avalon_mm_slave_read),
+    .avalon_write(avalon_mm_slave_write),
+    .avalon_byteenable(avalon_mm_slave_byteenable),
+    .avalon_writedata(avalon_mm_slave_writedata),
 
-    .hwif_out
+    .hwif_out,
+    .hwif_in
 );
 
 
-/**
- * Module internal logic
- */
-
+/* Module internal logic */
+ 
 always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
-        avs_s0_readdatavalid <= 1'b0;
-        avs_s0_writeresponsevalid <= 1'b0;
-        avs_s0_readdata <= 32'b0;
+        avalon_mm_slave_readdatavalid <= 1'b0;
+        avalon_mm_slave_writeresponsevalid <= 1'b0;
+        avalon_mm_slave_readdata <= 32'b0;
     end else begin
-        avs_s0_readdatavalid <= avs_s0_readdatavalid_nxt;
-        avs_s0_writeresponsevalid <= avs_s0_writeresponsevalid_nxt;
-        avs_s0_readdata <= avs_s0_readdata_nxt;
+        avalon_mm_slave_readdatavalid <= avalon_mm_slave_readdatavalid_nxt;
+        avalon_mm_slave_writeresponsevalid <= avalon_mm_slave_writeresponsevalid_nxt;
+        avalon_mm_slave_readdata <= avalon_mm_slave_readdata_nxt;
     end
 end
 

@@ -23,6 +23,19 @@ typedef union {
     uint32_t w;
 } csr__IO_CR_t;
 
+// Reg - csr.TEST_REG
+#define CSR__TEST_REG__VAL_bm 0x1
+#define CSR__TEST_REG__VAL_bp 0
+#define CSR__TEST_REG__VAL_bw 1
+#define CSR__TEST_REG__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :1;
+        uint32_t :31;
+    } f;
+    uint32_t w;
+} csr__TEST_REG_t;
+
 // Reg - csr.SCRATCHPAD
 #define CSR__SCRATCHPAD__VAL_bm 0xffffffff
 #define CSR__SCRATCHPAD__VAL_bp 0
@@ -38,7 +51,8 @@ typedef union {
 // Addrmap - csr
 typedef struct __attribute__ ((__packed__)) {
     csr__IO_CR_t IO_CR;
-    uint8_t RESERVED_4_3fb[0x3f8];
+    csr__TEST_REG_t TEST_REG;
+    uint8_t RESERVED_8_3fb[0x3f4];
     csr__SCRATCHPAD_t SCRATCHPAD;
 } csr_t;
 

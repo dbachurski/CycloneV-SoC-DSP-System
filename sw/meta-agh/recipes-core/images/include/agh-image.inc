@@ -7,4 +7,5 @@ IMAGE_INSTALL += " \
     python3 \
     python3-numpy \
     python3-pyserial \
+    dsp-tester \
 "

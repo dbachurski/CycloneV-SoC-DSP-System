@@ -1,4 +1,6 @@
 addrmap csr {
+    default regwidth = 32;
+
     reg {
         field {
             sw = rw;
@@ -6,6 +8,15 @@ addrmap csr {
         } val[7:0] = 0;
 
     } IO_CR @ 0x000;
+
+    reg {
+        field {
+            sw = rw;
+            hw = na;
+            hwset;
+        } val[0:0] = 0;
+
+    } TEST_REG @ 0x004;
 
     reg {
         field {
