@@ -7,6 +7,7 @@ SRC_URI:append := " \
     file://setup.py \
     file://dsp-tester/__init__.py \
     file://dsp-tester/fpga.py \
+    file://dsp-tester/dma.py \
     file://dsp-tester/main.py \
 "
  
@@ -22,6 +23,7 @@ do_install:append() {
 
     install -d ${D}${PYTHON_SITEPACKAGES_DIR}
     install -m 0755 ${S}/dsp-tester/fpga.py ${D}${PYTHON_SITEPACKAGES_DIR}/fpga.py
+    install -m 0755 ${S}/dsp-tester/dma.py ${D}${PYTHON_SITEPACKAGES_DIR}/dma.py
 }
 
 

@@ -8,19 +8,21 @@ class FPGA:
         self.ocm_offset = 0x00000000
         self.ocm2_offset = 0x00010000
         self.dev = "/dev/mem"
-        self.max_data_lenght = 65535
         self.fd = os.open(self.dev, os.O_RDWR | os.O_SYNC)
-        self.mem = mmap.mmap(self.fd, self.mem_size, mmap.MAP_SHARED, mmap.PROT_READ | mmap.PROT_WRITE, offset=lwfpgaslaves_addr)
+        self.mem = mmap.mmap(self.fd, self.mem_size, mmap.MAP_SHARED, mmap.PROT_READ | mmap.PROT_WRITE, offset=self.lwfpgaslaves_addr)
 
-    def read(self, address, size, buff):
+    def read(self, address, size):
         self.mem.seek(address)
-        return self.mem.read(size).decode()
+        return self.mem.read(size)
 
     def write(self, address, data):
-        data = data.encode()
-        self.mem.seek(address)
+        self.mem.seek(address) 
         self.mem.write(data)
+
+    def clear_memory(self):
+        self.write(0, b'\0' * self.mem_size)
 
     def close(self):
         self.mem.close()
         os.close(self.fd)
+
