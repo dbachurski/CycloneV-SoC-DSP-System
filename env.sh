@@ -15,8 +15,8 @@ case $(hostname) in
     "asusprime")
         export INTEL_FPGA_ROOTDIR=/opt/intelFPGA_lite/23.1std
         ;;
-    "ASUS-TUF-Dash-F15")
-        export INTEL_FPGA_ROOTDIR=/home/dominik/intelFPGA_lite/23.1std
+    "fedora")
+        export INTEL_FPGA_ROOTDIR=/home/domin/intelFPGA_lite/23.1std
         ;;
     *)
         echo "ERROR: unsupported host"
@@ -28,7 +28,7 @@ esac
 export QUARTUS_ROOTDIR=${INTEL_FPGA_ROOTDIR}/quartus
 export QUESTA_ROOTDIR=${INTEL_FPGA_ROOTDIR}/questa_fse
 export VERIFICATION_IP_ROOTDIR=${INTEL_FPGA_ROOTDIR}/ip/altera/sopc_builder_ip/verification
-export LM_LICENSE_FILE=${INTEL_FPGA_ROOTDIR}/licenses/LR-170605_License.dat
+export LM_LICENSE_FILE=${QUESTA_ROOTDIR}/licenses/LR-174075_License.dat
 
 export ROOTDIR=$(pwd)
 export SVUNIT_INSTALL=${ROOTDIR}/deps/svunit
