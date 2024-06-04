@@ -16,7 +16,6 @@ class TestStringMethods(unittest.TestCase):
     def tearDown(self):
         self.fpga.clear_memory()
 
-
     def test_hps_write_ocm(self):
         text = "test fpga"
 
@@ -26,19 +25,19 @@ class TestStringMethods(unittest.TestCase):
         read_buff = read_buff.decode()
 
         self.assertEqual(read_buff, text)
-    
 
     def test_dma_memory_write_memory(self):
         text = "test fpga"
         transfer_length = 10
-    
+
         self.fpga.write(self.fpga.ocm_offset, text.encode())
 
-        self.dma.send_descriptor(self.fpga.ocm2_offset, self.fpga.ocm_offset, transfer_length)
+        capacity = self.dma.send_descriptor(self.fpga.ocm2_offset, self.fpga.ocm_offset, transfer_length)
         read_buff = self.fpga.read(self.fpga.ocm2_offset, len(text))
         read_buff = read_buff.decode()
 
         self.assertEqual(read_buff, text)
+        print(f"DMA transmission speed: {capacity:.4f} Mb/s")
 
 
 unittest.main()
