@@ -3,9 +3,10 @@ import time
 import math
 
 class DMA:
-    def __init__(self, fpga_instance):
-        self.csr_offset = 0x00040000
-        self.descriptor_offset = 0x00041000
+    def __init__(self, fpga_instance, dma_indicator):
+        offset_map = {1: [0x00005000, 0x0005100], 2: [0x00005200, 0x0005300], }
+        self.csr_offset = offset_map[dma_indicator[0]]
+        self.descriptor_offset = offset_map[dma_indicator[1]]
         self.read_addr_offset = self.descriptor_offset + 0x0
         self.write_addr_offset = self.descriptor_offset + 0x4
         self.length_offset = self.descriptor_offset + 0x8

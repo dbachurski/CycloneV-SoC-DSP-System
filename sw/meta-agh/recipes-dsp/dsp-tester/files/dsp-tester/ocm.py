@@ -3,7 +3,7 @@ import time
 
 class OCM:
     def __init__(self, fpga_instance, ocm_indicator):
-        offset_map = {1: 0x00000000, 2: 0x00020000} #{1: 0x00000000, 2: 0x00010000}
+        offset_map = {1: 0x00000000, 2: 0x00020000}
         self.offset = offset_map[ocm_indicator]
         self.fpga = fpga_instance
 

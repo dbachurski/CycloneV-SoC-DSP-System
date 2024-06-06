@@ -22,6 +22,24 @@ module agh_socfpga
     input logic [3:0]   avalon_mm_slave_byteenable,
     input logic [31:0]  avalon_mm_slave_writedata,
 
+
+    /* Avalon Streaming Sink interface */
+
+    input logic [15:0]  avalon_streaming_sink_data,
+    input logic         avalon_streaming_sink_endofpacket,
+    input logic         avalon_streaming_sink_valid,
+    input logic         avalon_streaming_sink_startofpacket,
+    output logic        avalon_streaming_sink_ready,
+
+
+    /* Avalon Streaming Source interface */
+
+    input logic         avalon_streaming_source_ready,
+    output logic [15:0] avalon_streaming_source_data,
+    output logic        avalon_streaming_source_endofpacket,
+    output logic        avalon_streaming_source_valid,
+    output logic        avalon_streaming_source_startofpacket,
+
     output logic [7:0]  led
 );
 
@@ -37,7 +55,12 @@ logic        avalon_mm_slave_readdatavalid_nxt, avalon_mm_slave_writeresponseval
 
 /* Signals assignments */
 
-assign led = hwif_out.IO_CR.val.value;
+assign avalon_streaming_sink_ready = avalon_streaming_source_ready;
+
+assign avalon_streaming_source_data = avalon_streaming_sink_data;
+assign avalon_streaming_source_endofpacket = avalon_streaming_sink_endofpacket;
+assign avalon_streaming_source_valid = avalon_streaming_sink_valid;
+assign avalon_streaming_source_startofpacket = avalon_streaming_sink_startofpacket;
 
 
 /* Submodules placement */
@@ -63,7 +86,7 @@ csr u_csr (
 
 
 /* Module internal logic */
- 
+
 always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
         avalon_mm_slave_readdatavalid <= 1'b0;

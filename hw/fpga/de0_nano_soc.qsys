@@ -21,7 +21,7 @@
    {
       datum baseAddress
       {
-         value = "278528";
+         value = "65536";
          type = "String";
       }
    }
@@ -81,7 +81,7 @@
          type = "int";
       }
    }
-   element msgdma_0
+   element msgdma_1
    {
       datum _sortIndex
       {
@@ -89,19 +89,43 @@
          type = "int";
       }
    }
-   element msgdma_0.csr
+   element msgdma_1.csr
    {
       datum baseAddress
       {
-         value = "262144";
+         value = "327680";
          type = "String";
       }
    }
-   element msgdma_0.descriptor_slave
+   element msgdma_1.descriptor_slave
    {
       datum baseAddress
       {
-         value = "266240";
+         value = "331776";
+         type = "String";
+      }
+   }
+   element msgdma_2
+   {
+      datum _sortIndex
+      {
+         value = "6";
+         type = "int";
+      }
+   }
+   element msgdma_2.csr
+   {
+      datum baseAddress
+      {
+         value = "335872";
+         type = "String";
+      }
+   }
+   element msgdma_2.descriptor_slave
+   {
+      datum baseAddress
+      {
+         value = "339968";
          type = "String";
       }
    }
@@ -704,7 +728,7 @@
   <parameter name="usb_mp_clk_div" value="0" />
   <parameter name="use_default_mpu_clk" value="true" />
  </module>
- <module name="msgdma_0" kind="altera_msgdma" version="23.1" enabled="1">
+ <module name="msgdma_1" kind="altera_msgdma" version="23.1" enabled="1">
   <parameter name="AUTO_DESCRIPTOR_READ_MASTER_ADDRESS_MAP" value="" />
   <parameter
      name="AUTO_DESCRIPTOR_READ_MASTER_ADDRESS_WIDTH"
@@ -716,9 +740,52 @@
   <parameter name="AUTO_DEVICE" value="5CSEMA4U23C6" />
   <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
   <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
-  <parameter name="AUTO_MM_READ_ADDRESS_MAP"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x20000' /><slave name='onchip_memory2_1.s1' start='0x20000' end='0x40000' /></address-map>]]></parameter>
-  <parameter name="AUTO_MM_READ_ADDRESS_WIDTH" value="AddressWidth = 18" />
-  <parameter name="AUTO_MM_WRITE_ADDRESS_MAP"><![CDATA[<address-map><slave name='onchip_memory2_1.s1' start='0x20000' end='0x40000' /></address-map>]]></parameter>
+  <parameter name="AUTO_MM_READ_ADDRESS_MAP"><![CDATA[<address-map><slave name='onchip_memory2_0.s1' start='0x0' end='0x10000' /></address-map>]]></parameter>
+  <parameter name="AUTO_MM_READ_ADDRESS_WIDTH" value="AddressWidth = 16" />
+  <parameter name="AUTO_MM_WRITE_ADDRESS_MAP" value="" />
+  <parameter name="AUTO_MM_WRITE_ADDRESS_WIDTH" value="AddressWidth = -1" />
+  <parameter name="BURST_ENABLE" value="1" />
+  <parameter name="BURST_WRAPPING_SUPPORT" value="0" />
+  <parameter name="CHANNEL_ENABLE" value="0" />
+  <parameter name="CHANNEL_WIDTH" value="8" />
+  <parameter name="DATA_FIFO_DEPTH" value="2048" />
+  <parameter name="DATA_WIDTH" value="32" />
+  <parameter name="DESCRIPTOR_FIFO_DEPTH" value="128" />
+  <parameter name="ENHANCED_FEATURES" value="0" />
+  <parameter name="ERROR_ENABLE" value="0" />
+  <parameter name="ERROR_WIDTH" value="8" />
+  <parameter name="EXPOSE_ST_PORT" value="0" />
+  <parameter name="FIX_ADDRESS_WIDTH" value="32" />
+  <parameter name="MAX_BURST_COUNT" value="512" />
+  <parameter name="MAX_BYTE" value="65536" />
+  <parameter name="MAX_STRIDE" value="1" />
+  <parameter name="MODE" value="1" />
+  <parameter name="PACKET_ENABLE" value="1" />
+  <parameter name="PREFETCHER_DATA_WIDTH" value="32" />
+  <parameter name="PREFETCHER_ENABLE" value="0" />
+  <parameter name="PREFETCHER_MAX_READ_BURST_COUNT" value="2" />
+  <parameter name="PREFETCHER_READ_BURST_ENABLE" value="0" />
+  <parameter name="PROGRAMMABLE_BURST_ENABLE" value="0" />
+  <parameter name="RESPONSE_PORT" value="2" />
+  <parameter name="STRIDE_ENABLE" value="0" />
+  <parameter name="TRANSFER_TYPE" value="Aligned Accesses" />
+  <parameter name="USE_FIX_ADDRESS_WIDTH" value="0" />
+ </module>
+ <module name="msgdma_2" kind="altera_msgdma" version="23.1" enabled="1">
+  <parameter name="AUTO_DESCRIPTOR_READ_MASTER_ADDRESS_MAP" value="" />
+  <parameter
+     name="AUTO_DESCRIPTOR_READ_MASTER_ADDRESS_WIDTH"
+     value="AddressWidth = -1" />
+  <parameter name="AUTO_DESCRIPTOR_WRITE_MASTER_ADDRESS_MAP" value="" />
+  <parameter
+     name="AUTO_DESCRIPTOR_WRITE_MASTER_ADDRESS_WIDTH"
+     value="AddressWidth = -1" />
+  <parameter name="AUTO_DEVICE" value="5CSEMA4U23C6" />
+  <parameter name="AUTO_DEVICE_FAMILY" value="Cyclone V" />
+  <parameter name="AUTO_DEVICE_SPEEDGRADE" value="6" />
+  <parameter name="AUTO_MM_READ_ADDRESS_MAP" value="" />
+  <parameter name="AUTO_MM_READ_ADDRESS_WIDTH" value="AddressWidth = -1" />
+  <parameter name="AUTO_MM_WRITE_ADDRESS_MAP"><![CDATA[<address-map><slave name='onchip_memory2_1.s1' start='0x20000' end='0x30000' /></address-map>]]></parameter>
   <parameter name="AUTO_MM_WRITE_ADDRESS_WIDTH" value="AddressWidth = 18" />
   <parameter name="BURST_ENABLE" value="1" />
   <parameter name="BURST_WRAPPING_SUPPORT" value="0" />
@@ -733,9 +800,9 @@
   <parameter name="EXPOSE_ST_PORT" value="0" />
   <parameter name="FIX_ADDRESS_WIDTH" value="32" />
   <parameter name="MAX_BURST_COUNT" value="512" />
-  <parameter name="MAX_BYTE" value="131072" />
+  <parameter name="MAX_BYTE" value="65536" />
   <parameter name="MAX_STRIDE" value="1" />
-  <parameter name="MODE" value="0" />
+  <parameter name="MODE" value="2" />
   <parameter name="PACKET_ENABLE" value="1" />
   <parameter name="PREFETCHER_DATA_WIDTH" value="32" />
   <parameter name="PREFETCHER_ENABLE" value="0" />
@@ -767,7 +834,7 @@
   <parameter name="initMemContent" value="false" />
   <parameter name="initializationFileName" value="onchip_mem.hex" />
   <parameter name="instanceID" value="NONE" />
-  <parameter name="memorySize" value="131072" />
+  <parameter name="memorySize" value="65536" />
   <parameter name="readDuringWriteMode" value="DONT_CARE" />
   <parameter name="resetrequest_enabled" value="true" />
   <parameter name="simAllowMRAMContentsFile" value="false" />
@@ -799,7 +866,7 @@
   <parameter name="initMemContent" value="false" />
   <parameter name="initializationFileName" value="onchip_mem.hex" />
   <parameter name="instanceID" value="NONE" />
-  <parameter name="memorySize" value="131072" />
+  <parameter name="memorySize" value="65536" />
   <parameter name="readDuringWriteMode" value="DONT_CARE" />
   <parameter name="resetrequest_enabled" value="true" />
   <parameter name="simAllowMRAMContentsFile" value="false" />
@@ -817,25 +884,43 @@
    start="hps.h2f_lw_axi_master"
    end="agh_socfpga.avalon_mm_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00044000" />
+  <parameter name="baseAddress" value="0x00010000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="23.1"
    start="hps.h2f_lw_axi_master"
-   end="msgdma_0.csr">
+   end="msgdma_1.csr">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00040000" />
+  <parameter name="baseAddress" value="0x00050000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
    kind="avalon"
    version="23.1"
    start="hps.h2f_lw_axi_master"
-   end="msgdma_0.descriptor_slave">
+   end="msgdma_2.csr">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00041000" />
+  <parameter name="baseAddress" value="0x00052000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="23.1"
+   start="hps.h2f_lw_axi_master"
+   end="msgdma_1.descriptor_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00051000" />
+  <parameter name="defaultConnection" value="false" />
+ </connection>
+ <connection
+   kind="avalon"
+   version="23.1"
+   start="hps.h2f_lw_axi_master"
+   end="msgdma_2.descriptor_slave">
+  <parameter name="arbitrationPriority" value="1" />
+  <parameter name="baseAddress" value="0x00053000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -859,7 +944,7 @@
  <connection
    kind="avalon"
    version="23.1"
-   start="msgdma_0.mm_read"
+   start="msgdma_1.mm_read"
    end="onchip_memory2_0.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x0000" />
@@ -868,21 +953,17 @@
  <connection
    kind="avalon"
    version="23.1"
-   start="msgdma_0.mm_read"
+   start="msgdma_2.mm_write"
    end="onchip_memory2_1.s1">
   <parameter name="arbitrationPriority" value="1" />
   <parameter name="baseAddress" value="0x00020000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
-   kind="avalon"
+   kind="avalon_streaming"
    version="23.1"
-   start="msgdma_0.mm_write"
-   end="onchip_memory2_1.s1">
-  <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x00020000" />
-  <parameter name="defaultConnection" value="false" />
- </connection>
+   start="msgdma_1.st_source"
+   end="msgdma_2.st_sink" />
  <connection
    kind="clock"
    version="23.1"
@@ -894,7 +975,8 @@
    start="clk.clk"
    end="onchip_memory2_1.clk1" />
  <connection kind="clock" version="23.1" start="clk.clk" end="agh_socfpga.clock" />
- <connection kind="clock" version="23.1" start="clk.clk" end="msgdma_0.clock" />
+ <connection kind="clock" version="23.1" start="clk.clk" end="msgdma_1.clock" />
+ <connection kind="clock" version="23.1" start="clk.clk" end="msgdma_2.clock" />
  <connection kind="clock" version="23.1" start="clk.clk" end="hps.f2h_axi_clock" />
  <connection kind="clock" version="23.1" start="clk.clk" end="hps.h2f_axi_clock" />
  <connection
@@ -921,7 +1003,12 @@
    kind="reset"
    version="23.1"
    start="clk.clk_reset"
-   end="msgdma_0.reset_n" />
+   end="msgdma_1.reset_n" />
+ <connection
+   kind="reset"
+   version="23.1"
+   start="clk.clk_reset"
+   end="msgdma_2.reset_n" />
  <interconnectRequirement for="$system" name="qsys_mm.clockCrossingAdapter" value="HANDSHAKE" />
  <interconnectRequirement for="$system" name="qsys_mm.enableEccProtection" value="FALSE" />
  <interconnectRequirement for="$system" name="qsys_mm.insertDefaultSlave" value="FALSE" />
