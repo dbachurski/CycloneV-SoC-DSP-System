@@ -1,13 +1,11 @@
 import unittest
 import fpga
-import dma
 
 class TestStringMethods(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
         cls.fpga = fpga.FPGA()
-        cls.dma = dma.DMA()
 
     @classmethod
     def tearDownClass(cls):
@@ -17,27 +15,26 @@ class TestStringMethods(unittest.TestCase):
         self.fpga.clear_memory()
 
     def test_hps_write_ocm(self):
-        text = "test fpga"
+        with open('data_to_send.txt', 'rb') as fd:
+            data = fd.read()
 
-        self.fpga.write(self.fpga.ocm_offset, text.encode())
+        self.fpga.ocm1.write(data)
 
-        read_buff = self.fpga.read(self.fpga.ocm_offset, len(text))
-        read_buff = read_buff.decode()
+        read_buff = self.fpga.ocm1.read(len(data))
 
-        self.assertEqual(read_buff, text)
+        self.assertEqual(read_buff.decode(), data.decode())
 
     def test_dma_memory_write_memory(self):
-        text = "test fpga"
-        transfer_length = 10
+        with open('data_to_send.txt', 'rb') as fd:
+            data = fd.read()
+        transfer_length = len(data)
 
-        self.fpga.write(self.fpga.ocm_offset, text.encode())
+        self.fpga.ocm1.write(data)
+        self.fpga.dma.trigger(transfer_length)
 
-        capacity = self.dma.send_descriptor(self.fpga.ocm2_offset, self.fpga.ocm_offset, transfer_length)
-        read_buff = self.fpga.read(self.fpga.ocm2_offset, len(text))
-        read_buff = read_buff.decode()
+        read_buff = self.fpga.ocm2.read(len(data))
 
-        self.assertEqual(read_buff, text)
-        print(f"DMA transmission speed: {capacity:.4f} Mb/s")
+        self.assertEqual(read_buff.decode(), data.decode())
 
 
 unittest.main()
