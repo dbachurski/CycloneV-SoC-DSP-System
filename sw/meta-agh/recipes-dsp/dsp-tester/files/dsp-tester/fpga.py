@@ -5,7 +5,7 @@ import os
 
 class FPGA:
     def __init__(self):
-        self.mem_size = 0x00050000 #0x00040000
+        self.mem_size = 0x00050000
         self.lwfpgaslaves_addr = 0xff200000
         self.dev = "/dev/mem"
         self.fd = os.open(self.dev, os.O_RDWR | os.O_SYNC)

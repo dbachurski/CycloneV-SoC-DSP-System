@@ -4,8 +4,8 @@ import math
 
 class DMA:
     def __init__(self, fpga_instance):
-        self.csr_offset = 0x00040000 #0x00030000
-        self.descriptor_offset = 0x00041000 #0x00031000
+        self.csr_offset = 0x00040000
+        self.descriptor_offset = 0x00041000
         self.read_addr_offset = self.descriptor_offset + 0x0
         self.write_addr_offset = self.descriptor_offset + 0x4
         self.length_offset = self.descriptor_offset + 0x8
