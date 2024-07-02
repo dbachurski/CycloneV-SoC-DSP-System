@@ -1104,6 +1104,4 @@ set_min_delay -from [get_ports {HPS_DDR3_DQ[30]}] -to [get_keepers {{*:u0|*:hps|
 set_min_delay -from [get_ports {HPS_DDR3_DQ[31]}] -to [get_keepers {{*:u0|*:hps|*:hps_io|*:border|*:hps_sdram_inst|*:p0|*:umemphy|*:uio_pads|*:dq_ddio[*].ubidir_dq_dqs|*:altdq_dqs2_inst|*input_path_gen[*].capture_reg~DFFLO} {*:u0|*:hps|*:hps_io|*:border|*:hps_sdram_inst|*:p0|*:umemphy|*:uio_pads|*:dq_ddio[*].ubidir_dq_dqs|*:altdq_dqs2_inst|*input_path_gen[*].aligned_input[*]}}] -1.250
 
 
-#**************************************************************
-# Set Input Transition
-#**************************************************************
+derive_pll_clocks

@@ -11,6 +11,7 @@ SRC_URI:append := " \
     file://dsp-tester/ocm.py \
     file://dsp-tester/main.py \
     file://dsp-tester/data/data_to_send.txt \
+    file://dsp-tester/data/data_to_send_64kB.txt \
 "
 
 S = "${WORKDIR}"
@@ -23,6 +24,7 @@ do_install:append() {
     install -d ${D}${bindir}
     install -m 0755 ${S}/dsp-tester/main.py ${D}${bindir}/dsp-tester
     install -m 0755 ${S}/dsp-tester/data/data_to_send.txt ${D}${bindir}/data_to_send.txt
+    install -m 0755 ${S}/dsp-tester/data/data_to_send_64kB.txt ${D}${bindir}/data_to_send_64kB.txt
 
     install -d ${D}${PYTHON_SITEPACKAGES_DIR}
     install -m 0755 ${S}/dsp-tester/fpga.py ${D}${PYTHON_SITEPACKAGES_DIR}/fpga.py

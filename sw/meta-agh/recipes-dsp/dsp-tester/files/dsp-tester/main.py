@@ -15,7 +15,7 @@ class TestStringMethods(unittest.TestCase):
         self.fpga.clear_memory()
 
     def test_hps_write_ocm(self):
-        with open('data_to_send.txt', 'rb') as fd:
+        with open('data_to_send_64kB.txt', 'rb') as fd:
             data = fd.read()
 
         self.fpga.ocm1.write(data)
@@ -25,7 +25,7 @@ class TestStringMethods(unittest.TestCase):
         self.assertEqual(read_buff.decode(), data.decode())
 
     def test_dma_memory_write_memory(self):
-        with open('data_to_send.txt', 'rb') as fd:
+        with open('data_to_send_64kB.txt', 'rb') as fd:
             data = fd.read()
         transfer_length = len(data)
 
