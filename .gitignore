@@ -33,3 +33,17 @@ sw/downloads
 sw/sstate_cache
 
 *.log
+
+latex/*.aux
+latex/*.bbl
+latex/*.blg
+latex/*.fdb_latexmk
+latex/*.fls
+latex/*.out
+latex/*.synctex.gz
+latex/*.log
+latex/*.toc
+latex/*.run.xml
+latex/*.ps
+latex/*~
+
