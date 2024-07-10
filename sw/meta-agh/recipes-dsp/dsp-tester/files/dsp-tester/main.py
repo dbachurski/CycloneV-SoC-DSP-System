@@ -30,7 +30,8 @@ class TestStringMethods(unittest.TestCase):
         transfer_length = len(data)
 
         self.fpga.ocm1.write(data)
-        self.fpga.dma.trigger(transfer_length)
+        self.fpga.dma1.trigger(transfer_length)
+        self.fpga.dma2.trigger(transfer_length)
 
         read_buff = self.fpga.ocm2.read(len(data))
 

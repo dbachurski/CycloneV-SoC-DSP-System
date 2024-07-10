@@ -11,7 +11,8 @@ class FPGA:
         self.fd = os.open(self.dev, os.O_RDWR | os.O_SYNC)
         self.mem = mmap.mmap(self.fd, self.mem_size, mmap.MAP_SHARED, mmap.PROT_READ | mmap.PROT_WRITE, offset=self.lwfpgaslaves_addr)
 
-        self.dma = dma.DMA(self)
+        self.dma1 = dma.DMA(self, 1)
+        self.dma2 = dma.DMA(self, 2)
         self.ocm1 = ocm.OCM(self, 1)
         self.ocm2 = ocm.OCM(self, 2)
 

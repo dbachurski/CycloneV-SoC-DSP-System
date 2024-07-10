@@ -4,9 +4,10 @@ import math
 
 class DMA:
     def __init__(self, fpga_instance, dma_indicator):
-        offset_map = {1: [0x00005000, 0x0005100], 2: [0x00005200, 0x0005300], }
-        self.csr_offset = offset_map[dma_indicator[0]]
-        self.descriptor_offset = offset_map[dma_indicator[1]]
+        offset_map = {1: [0x00050000, 0x0051000], 2: [0x00052000, 0x0053000], }
+        self.csr_offset = offset_map[dma_indicator][0]
+        self.descriptor_offset = offset_map[dma_indicator][1]
+        self.dma_indicator = dma_indicator
         self.read_addr_offset = self.descriptor_offset + 0x0
         self.write_addr_offset = self.descriptor_offset + 0x4
         self.length_offset = self.descriptor_offset + 0x8
@@ -35,30 +36,36 @@ class DMA:
         _pack_ = 1
 
     def trigger(self, transfer_length):
-        write_address = self.fpga.ocm2.offset
         read_address = self.fpga.ocm1.offset
+        write_address = self.fpga.ocm2.offset
         control_register = DMA.ControlRegister()
 
         self.fpga.write(self.read_addr_offset, read_address.to_bytes(4, 'little'))
         self.fpga.write(self.write_addr_offset, write_address.to_bytes(4, 'little'))
         self.fpga.write(self.length_offset, transfer_length.to_bytes(4, 'little'))
 
+        if(self.dma_indicator == 1):
+            control_register.generate_sop = 1
+            control_register.generate_eop = 1
+            control_register_bytes = ctypes.string_at(ctypes.byref(control_register), self.register_size)
+            self.fpga.write(self.control_register_offset, control_register_bytes)
+
         control_register.go = 1
         control_register_bytes = ctypes.string_at(ctypes.byref(control_register), self.register_size)
-
         self.fpga.write(self.control_register_offset, control_register_bytes)
-        start_time = time.perf_counter()
 
-        dma_busy = ((self.fpga.read(self.status_register_offset, 1))[0]) & 1
-
-        while dma_busy:
+        if(self.dma_indicator == 2):
+            start_time = time.perf_counter()
             dma_busy = ((self.fpga.read(self.status_register_offset, 1))[0]) & 1
-        end_time = time.perf_counter()
 
-        transfer_length = math.ceil(transfer_length / 4) * 4
-        bandwidth = (transfer_length / (end_time - start_time)) / 2**20
+            while dma_busy:
+                dma_busy = ((self.fpga.read(self.status_register_offset, 1))[0]) & 1
+            end_time = time.perf_counter()
 
-        print(f"time: {end_time - start_time:.10f} s")
-        print(f"DMA bandwidth: {bandwidth:.4f} MB/s")
+            transfer_length = math.ceil(transfer_length / 4) * 4
+            bandwidth = (transfer_length / (end_time - start_time)) / 2**20
+
+            print(f"time: {end_time - start_time:.10f} s")
+            print(f"DMA bandwidth: {bandwidth:.4f} MB/s")
 
 
