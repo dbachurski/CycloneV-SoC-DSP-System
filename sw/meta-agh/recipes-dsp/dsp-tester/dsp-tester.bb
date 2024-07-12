@@ -8,6 +8,8 @@ SRC_URI:append := " \
     file://dsp-tester/__init__.py \
     file://dsp-tester/fpga.py \
     file://dsp-tester/dma.py \
+    file://dsp-tester/dma_mm_to_st.py \
+    file://dsp-tester/dma_st_to_mm.py \
     file://dsp-tester/ocm.py \
     file://dsp-tester/main.py \
     file://dsp-tester/data/data_to_send.txt \
@@ -29,6 +31,8 @@ do_install:append() {
     install -d ${D}${PYTHON_SITEPACKAGES_DIR}
     install -m 0755 ${S}/dsp-tester/fpga.py ${D}${PYTHON_SITEPACKAGES_DIR}/fpga.py
     install -m 0755 ${S}/dsp-tester/dma.py ${D}${PYTHON_SITEPACKAGES_DIR}/dma.py
+    install -m 0755 ${S}/dsp-tester/dma_mm_to_st.py ${D}${PYTHON_SITEPACKAGES_DIR}/dma_mm_to_st.py
+    install -m 0755 ${S}/dsp-tester/dma_st_to_mm.py ${D}${PYTHON_SITEPACKAGES_DIR}/dma_st_to_mm.py
     install -m 0755 ${S}/dsp-tester/ocm.py ${D}${PYTHON_SITEPACKAGES_DIR}/ocm.py
 }
 

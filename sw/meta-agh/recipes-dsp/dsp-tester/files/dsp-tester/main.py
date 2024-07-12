@@ -30,8 +30,14 @@ class TestStringMethods(unittest.TestCase):
         transfer_length = len(data)
 
         self.fpga.ocm1.write(data)
-        self.fpga.dma1.trigger(transfer_length)
-        self.fpga.dma2.trigger(transfer_length)
+
+        self.fpga.dma_mm_to_st.configure(transfer_length)
+        self.fpga.dma_st_to_mm.configure(transfer_length)
+
+        self.fpga.dma_st_to_mm.trigger()
+        self.fpga.dma_mm_to_st.trigger()
+
+        self.fpga.dma_st_to_mm.measure_bandwidth()
 
         read_buff = self.fpga.ocm2.read(len(data))
 

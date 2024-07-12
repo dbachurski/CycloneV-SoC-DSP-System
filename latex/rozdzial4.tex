@@ -4,7 +4,8 @@
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{|l|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{|l|p{3cm}|p{3cm}|p{3cm}|}
     \hline
      & \textbf{Szerokość transferu: 32 bity} & \textbf{Szerokość transferu: 64 bity} & \textbf{Szerokość transferu: 128 bitów} \\ \hline
     \textbf{Zegar: 50MHz} & {191.06 MB/s} & {380.63 MB/s} & {720.01 MB/s} \\ \hline
@@ -12,8 +13,9 @@
     \textbf{Zegar: 200MHz} & {724.94 MB/s} & {1480.24 MB/s}  & {2390.95 MB/s} \\ \hline
     \end{tabular}
     \caption{Przepustowość transferu DMA w zależności od częstotliwości zegara i szerokości transferu}
-    \label{tab:my_label}
+    \label{tab:mm_mm}
 \end{table}
+
 
 
 \section{Avalon MM - Avalon ST - Avalon MM}
@@ -23,10 +25,10 @@
     \begin{tabular}{|l|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
     \hline
     & \textbf{Szerokość transferu: 32 bity} & \textbf{Szerokość transferu: 64 bity} & \textbf{Szerokość transferu: 128 bitów} \\ \hline
-    \textbf{Zegar: 50MHz} & {193.50 MB/s} & {} & {} \\ \hline
+    \textbf{Zegar: 50MHz} & {187.47 MB/s} & {} & {} \\ \hline
     \textbf{Zegar: 100MHz} & {} & {} & {} \\ \hline
     \textbf{Zegar: 200MHz} & {} & {}  & {} \\ \hline
     \end{tabular}
     \caption{Przepustowość transferu DMA w zależności od częstotliwości zegara i szerokości transferu}
-    \label{tab:my_label}
+    \label{tab:mm_st}
 \end{table}
