@@ -1,4 +1,5 @@
 import ctypes
+import copy
 
 class DMA_MM_TO_ST:
     def __init__(self, fpga_instance, dma_instance):
@@ -9,7 +10,7 @@ class DMA_MM_TO_ST:
         self.read_addr_offset = self.descriptor_offset + self.dma.read_addr_offset
         self.length_offset = self.descriptor_offset + self.dma.length_offset
         self.control_register_offset = self.descriptor_offset + self.dma.control_register_offset
-        self.control_register = self.dma.control_register
+        self.control_register = copy.deepcopy(self.dma.control_register)
         self.read_address = self.fpga.ocm1.offset
 
     def configure(self, transfer_length):
@@ -21,5 +22,10 @@ class DMA_MM_TO_ST:
         self.control_register.generate_eop = 1
         self.control_register_bytes = ctypes.string_at(ctypes.byref(self.control_register), self.dma.register_size)
         self.fpga.write(self.control_register_offset, self.control_register_bytes)
+
+        self.control_register.go = 1
+        self.control_register_bytes = ctypes.string_at(ctypes.byref(self.control_register), self.dma.register_size)
+        self.fpga.write(self.control_register_offset, self.control_register_bytes)
+
 
 

@@ -1,4 +1,5 @@
 import ctypes
+import copy
 import time
 import math
 
@@ -11,7 +12,7 @@ class DMA_ST_TO_MM:
         self.write_addr_offset = self.descriptor_offset + self.dma.write_addr_offset
         self.length_offset = self.descriptor_offset + self.dma.length_offset
         self.control_register_offset = self.descriptor_offset + self.dma.control_register_offset
-        self.control_register = self.dma.control_register
+        self.control_register = copy.deepcopy(self.dma.control_register)
         self.status_register_offset = self.csr_offset
         self.write_address = self.fpga.ocm2.offset
 
