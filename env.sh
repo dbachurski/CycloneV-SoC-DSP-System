@@ -101,6 +101,8 @@ EOF
     fi
 fi
 
+cd ${ROOTDIR}
+
 bash --init-file <(echo " \
     complete -F _sim_runner_completions sim_runner.sh; \
 ")
