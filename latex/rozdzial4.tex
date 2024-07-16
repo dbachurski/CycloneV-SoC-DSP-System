@@ -16,19 +16,33 @@
     \label{tab:mm_mm}
 \end{table}
 
-
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mm_mm.eps}
+    \caption{Zależność prędkości transferu od częstotliwości zegara}
+    \label{fig:mm_mm}
+\end{figure}
 
 \section{Avalon MM - Avalon ST - Avalon MM}
 
 \begin{table}[h]
     \centering
-    \begin{tabular}{|l|p{3.5cm}|p{3.5cm}|p{3.5cm}|}
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{|l|p{3cm}|p{3cm}|p{3cm}|}
     \hline
-    & \textbf{Szerokość transferu: 32 bity} & \textbf{Szerokość transferu: 64 bity} & \textbf{Szerokość transferu: 128 bitów} \\ \hline
-    \textbf{Zegar: 50MHz} & {187.47 MB/s} & {} & {} \\ \hline
-    \textbf{Zegar: 100MHz} & {} & {} & {} \\ \hline
-    \textbf{Zegar: 200MHz} & {} & {}  & {} \\ \hline
+    \diagbox[height=1.7cm, width=4.8cm]{\bfseries{\small Częstotliwość zegara}}{\bfseries{\small Szerokość transferu}}
+    & \textbf{32 bity} & \textbf{64 bity} & \textbf{128 bitów} \\ \hline
+    \textbf{\hspace{1.6cm}50 MHz} & {188.12 MB/s} & {375.75 MB/s} & {696.90 MB/s} \\ \hline
+    \textbf{\hspace{1.6cm}100 MHz} & {379.88 MB/s} & {698.40 MB/s} & {1424.82 MB/s} \\ \hline
+    \textbf{\hspace{1.6cm}200MHz} & {707.35 MB/s} & {1442.78 MB/s} & {2350.05 MB/s} \\ \hline
     \end{tabular}
     \caption{Przepustowość transferu DMA w zależności od częstotliwości zegara i szerokości transferu}
-    \label{tab:mm_st}
+    \label{tab:mm_st_mm}
 \end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.7\textwidth]{mm_st.eps}
+    \caption{Zależność prędkości transferu od częstotliwości zegara}
+    \label{fig:mm_st}
+\end{figure}
