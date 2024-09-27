@@ -4,25 +4,135 @@ addrmap csr {
     reg {
         field {
             sw = rw;
+            hw = na;
+        } res[31:8] = 0;
+        field {
+            sw = rw;
             hw = r;
         } val[7:0] = 0;
-
     } IO_CR @ 0x000;
 
     reg {
         field {
             sw = rw;
             hw = na;
-            hwset;
-        } val[0:0] = 0;
-
-    } TEST_REG @ 0x004;
+        } res[31:1] = 0;
+        field {
+            sw = rw;
+            hw = r;
+        } enable[0:0] = 0;
+    } FIR_CR @ 0x004;
 
     reg {
         field {
             sw = rw;
-            hw = na;
+            hw = r;
         } val[31:0] = 0;
+    } fir_coeff_0 @ 0x100;
 
-    } SCRATCHPAD @ 0x3fc;
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_1;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_2;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_3;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_4;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_5;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_6;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_7;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_8;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_9;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_10;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_11;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_12;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_13;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_14;
+
+    reg {
+        field {
+            sw = rw;
+            hw = r;
+        } val[31:0] = 0;
+    } fir_coeff_15;
+
 };

@@ -7,18 +7,6 @@ package csr_pkg;
     localparam CSR_MIN_ADDR_WIDTH = 12;
 
     typedef struct {
-        logic hwset;
-    } csr__TEST_REG__val__in_t;
-
-    typedef struct {
-        csr__TEST_REG__val__in_t val;
-    } csr__TEST_REG__in_t;
-
-    typedef struct {
-        csr__TEST_REG__in_t TEST_REG;
-    } csr__in_t;
-
-    typedef struct {
         logic [7:0] value;
     } csr__IO_CR__val__out_t;
 
@@ -27,6 +15,159 @@ package csr_pkg;
     } csr__IO_CR__out_t;
 
     typedef struct {
+        logic value;
+    } csr__FIR_CR__enable__out_t;
+
+    typedef struct {
+        csr__FIR_CR__enable__out_t enable;
+    } csr__FIR_CR__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_0__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_0__val__out_t val;
+    } csr__fir_coeff_0__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_1__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_1__val__out_t val;
+    } csr__fir_coeff_1__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_2__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_2__val__out_t val;
+    } csr__fir_coeff_2__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_3__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_3__val__out_t val;
+    } csr__fir_coeff_3__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_4__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_4__val__out_t val;
+    } csr__fir_coeff_4__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_5__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_5__val__out_t val;
+    } csr__fir_coeff_5__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_6__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_6__val__out_t val;
+    } csr__fir_coeff_6__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_7__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_7__val__out_t val;
+    } csr__fir_coeff_7__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_8__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_8__val__out_t val;
+    } csr__fir_coeff_8__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_9__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_9__val__out_t val;
+    } csr__fir_coeff_9__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_10__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_10__val__out_t val;
+    } csr__fir_coeff_10__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_11__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_11__val__out_t val;
+    } csr__fir_coeff_11__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_12__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_12__val__out_t val;
+    } csr__fir_coeff_12__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_13__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_13__val__out_t val;
+    } csr__fir_coeff_13__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_14__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_14__val__out_t val;
+    } csr__fir_coeff_14__out_t;
+
+    typedef struct {
+        logic [31:0] value;
+    } csr__fir_coeff_15__val__out_t;
+
+    typedef struct {
+        csr__fir_coeff_15__val__out_t val;
+    } csr__fir_coeff_15__out_t;
+
+    typedef struct {
         csr__IO_CR__out_t IO_CR;
+        csr__FIR_CR__out_t FIR_CR;
+        csr__fir_coeff_0__out_t fir_coeff_0;
+        csr__fir_coeff_1__out_t fir_coeff_1;
+        csr__fir_coeff_2__out_t fir_coeff_2;
+        csr__fir_coeff_3__out_t fir_coeff_3;
+        csr__fir_coeff_4__out_t fir_coeff_4;
+        csr__fir_coeff_5__out_t fir_coeff_5;
+        csr__fir_coeff_6__out_t fir_coeff_6;
+        csr__fir_coeff_7__out_t fir_coeff_7;
+        csr__fir_coeff_8__out_t fir_coeff_8;
+        csr__fir_coeff_9__out_t fir_coeff_9;
+        csr__fir_coeff_10__out_t fir_coeff_10;
+        csr__fir_coeff_11__out_t fir_coeff_11;
+        csr__fir_coeff_12__out_t fir_coeff_12;
+        csr__fir_coeff_13__out_t fir_coeff_13;
+        csr__fir_coeff_14__out_t fir_coeff_14;
+        csr__fir_coeff_15__out_t fir_coeff_15;
     } csr__out_t;
 endpackage
