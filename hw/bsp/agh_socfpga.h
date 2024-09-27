@@ -15,49 +15,252 @@ extern "C" {
 #define CSR__IO_CR__VAL_bp 0
 #define CSR__IO_CR__VAL_bw 8
 #define CSR__IO_CR__VAL_reset 0x0
+#define CSR__IO_CR__RES_bm 0xffffff00
+#define CSR__IO_CR__RES_bp 8
+#define CSR__IO_CR__RES_bw 24
+#define CSR__IO_CR__RES_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t val :8;
-        uint32_t :24;
+        uint32_t res :24;
     } f;
     uint32_t w;
 } csr__IO_CR_t;
 
-// Reg - csr.TEST_REG
-#define CSR__TEST_REG__VAL_bm 0x1
-#define CSR__TEST_REG__VAL_bp 0
-#define CSR__TEST_REG__VAL_bw 1
-#define CSR__TEST_REG__VAL_reset 0x0
+// Reg - csr.FIR_CR
+#define CSR__FIR_CR__ENABLE_bm 0x1
+#define CSR__FIR_CR__ENABLE_bp 0
+#define CSR__FIR_CR__ENABLE_bw 1
+#define CSR__FIR_CR__ENABLE_reset 0x0
+#define CSR__FIR_CR__RES_bm 0xfffffffe
+#define CSR__FIR_CR__RES_bp 1
+#define CSR__FIR_CR__RES_bw 31
+#define CSR__FIR_CR__RES_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
-        uint32_t val :1;
-        uint32_t :31;
+        uint32_t enable :1;
+        uint32_t res :31;
     } f;
     uint32_t w;
-} csr__TEST_REG_t;
+} csr__FIR_CR_t;
 
-// Reg - csr.SCRATCHPAD
-#define CSR__SCRATCHPAD__VAL_bm 0xffffffff
-#define CSR__SCRATCHPAD__VAL_bp 0
-#define CSR__SCRATCHPAD__VAL_bw 32
-#define CSR__SCRATCHPAD__VAL_reset 0x0
+// Reg - csr.fir_coeff_0
+#define CSR__FIR_COEFF_0__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_0__VAL_bp 0
+#define CSR__FIR_COEFF_0__VAL_bw 32
+#define CSR__FIR_COEFF_0__VAL_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t val :32;
     } f;
     uint32_t w;
-} csr__SCRATCHPAD_t;
+} csr__fir_coeff_0_t;
+
+// Reg - csr.fir_coeff_1
+#define CSR__FIR_COEFF_1__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_1__VAL_bp 0
+#define CSR__FIR_COEFF_1__VAL_bw 32
+#define CSR__FIR_COEFF_1__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_1_t;
+
+// Reg - csr.fir_coeff_2
+#define CSR__FIR_COEFF_2__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_2__VAL_bp 0
+#define CSR__FIR_COEFF_2__VAL_bw 32
+#define CSR__FIR_COEFF_2__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_2_t;
+
+// Reg - csr.fir_coeff_3
+#define CSR__FIR_COEFF_3__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_3__VAL_bp 0
+#define CSR__FIR_COEFF_3__VAL_bw 32
+#define CSR__FIR_COEFF_3__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_3_t;
+
+// Reg - csr.fir_coeff_4
+#define CSR__FIR_COEFF_4__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_4__VAL_bp 0
+#define CSR__FIR_COEFF_4__VAL_bw 32
+#define CSR__FIR_COEFF_4__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_4_t;
+
+// Reg - csr.fir_coeff_5
+#define CSR__FIR_COEFF_5__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_5__VAL_bp 0
+#define CSR__FIR_COEFF_5__VAL_bw 32
+#define CSR__FIR_COEFF_5__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_5_t;
+
+// Reg - csr.fir_coeff_6
+#define CSR__FIR_COEFF_6__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_6__VAL_bp 0
+#define CSR__FIR_COEFF_6__VAL_bw 32
+#define CSR__FIR_COEFF_6__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_6_t;
+
+// Reg - csr.fir_coeff_7
+#define CSR__FIR_COEFF_7__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_7__VAL_bp 0
+#define CSR__FIR_COEFF_7__VAL_bw 32
+#define CSR__FIR_COEFF_7__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_7_t;
+
+// Reg - csr.fir_coeff_8
+#define CSR__FIR_COEFF_8__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_8__VAL_bp 0
+#define CSR__FIR_COEFF_8__VAL_bw 32
+#define CSR__FIR_COEFF_8__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_8_t;
+
+// Reg - csr.fir_coeff_9
+#define CSR__FIR_COEFF_9__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_9__VAL_bp 0
+#define CSR__FIR_COEFF_9__VAL_bw 32
+#define CSR__FIR_COEFF_9__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_9_t;
+
+// Reg - csr.fir_coeff_10
+#define CSR__FIR_COEFF_10__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_10__VAL_bp 0
+#define CSR__FIR_COEFF_10__VAL_bw 32
+#define CSR__FIR_COEFF_10__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_10_t;
+
+// Reg - csr.fir_coeff_11
+#define CSR__FIR_COEFF_11__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_11__VAL_bp 0
+#define CSR__FIR_COEFF_11__VAL_bw 32
+#define CSR__FIR_COEFF_11__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_11_t;
+
+// Reg - csr.fir_coeff_12
+#define CSR__FIR_COEFF_12__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_12__VAL_bp 0
+#define CSR__FIR_COEFF_12__VAL_bw 32
+#define CSR__FIR_COEFF_12__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_12_t;
+
+// Reg - csr.fir_coeff_13
+#define CSR__FIR_COEFF_13__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_13__VAL_bp 0
+#define CSR__FIR_COEFF_13__VAL_bw 32
+#define CSR__FIR_COEFF_13__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_13_t;
+
+// Reg - csr.fir_coeff_14
+#define CSR__FIR_COEFF_14__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_14__VAL_bp 0
+#define CSR__FIR_COEFF_14__VAL_bw 32
+#define CSR__FIR_COEFF_14__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_14_t;
+
+// Reg - csr.fir_coeff_15
+#define CSR__FIR_COEFF_15__VAL_bm 0xffffffff
+#define CSR__FIR_COEFF_15__VAL_bp 0
+#define CSR__FIR_COEFF_15__VAL_bw 32
+#define CSR__FIR_COEFF_15__VAL_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t val :32;
+    } f;
+    uint32_t w;
+} csr__fir_coeff_15_t;
 
 // Addrmap - csr
 typedef struct __attribute__ ((__packed__)) {
     csr__IO_CR_t IO_CR;
-    csr__TEST_REG_t TEST_REG;
-    uint8_t RESERVED_8_3fb[0x3f4];
-    csr__SCRATCHPAD_t SCRATCHPAD;
+    csr__FIR_CR_t FIR_CR;
+    uint8_t RESERVED_8_ff[0xf8];
+    csr__fir_coeff_0_t fir_coeff_0;
+    csr__fir_coeff_1_t fir_coeff_1;
+    csr__fir_coeff_2_t fir_coeff_2;
+    csr__fir_coeff_3_t fir_coeff_3;
+    csr__fir_coeff_4_t fir_coeff_4;
+    csr__fir_coeff_5_t fir_coeff_5;
+    csr__fir_coeff_6_t fir_coeff_6;
+    csr__fir_coeff_7_t fir_coeff_7;
+    csr__fir_coeff_8_t fir_coeff_8;
+    csr__fir_coeff_9_t fir_coeff_9;
+    csr__fir_coeff_10_t fir_coeff_10;
+    csr__fir_coeff_11_t fir_coeff_11;
+    csr__fir_coeff_12_t fir_coeff_12;
+    csr__fir_coeff_13_t fir_coeff_13;
+    csr__fir_coeff_14_t fir_coeff_14;
+    csr__fir_coeff_15_t fir_coeff_15;
 } csr_t;
 
 
-static_assert(sizeof(csr_t) == 0x400, "Packing error");
+static_assert(sizeof(csr_t) == 0x140, "Packing error");
 
 #ifdef __cplusplus
 }

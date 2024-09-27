@@ -16,7 +16,6 @@ module csr (
         output logic [31:0] avalon_readdata,
         output logic [1:0] avalon_response,
 
-        input csr_pkg::csr__in_t hwif_in,
         output csr_pkg::csr__out_t hwif_out
     );
 
@@ -78,8 +77,23 @@ module csr (
     //--------------------------------------------------------------------------
     typedef struct {
         logic IO_CR;
-        logic TEST_REG;
-        logic SCRATCHPAD;
+        logic FIR_CR;
+        logic fir_coeff_0;
+        logic fir_coeff_1;
+        logic fir_coeff_2;
+        logic fir_coeff_3;
+        logic fir_coeff_4;
+        logic fir_coeff_5;
+        logic fir_coeff_6;
+        logic fir_coeff_7;
+        logic fir_coeff_8;
+        logic fir_coeff_9;
+        logic fir_coeff_10;
+        logic fir_coeff_11;
+        logic fir_coeff_12;
+        logic fir_coeff_13;
+        logic fir_coeff_14;
+        logic fir_coeff_15;
     } decoded_reg_strb_t;
     decoded_reg_strb_t decoded_reg_strb;
     logic decoded_req;
@@ -89,8 +103,23 @@ module csr (
 
     always_comb begin
         decoded_reg_strb.IO_CR = cpuif_req_masked & (cpuif_addr == 12'h0);
-        decoded_reg_strb.TEST_REG = cpuif_req_masked & (cpuif_addr == 12'h4);
-        decoded_reg_strb.SCRATCHPAD = cpuif_req_masked & (cpuif_addr == 12'h3fc);
+        decoded_reg_strb.FIR_CR = cpuif_req_masked & (cpuif_addr == 12'h4);
+        decoded_reg_strb.fir_coeff_0 = cpuif_req_masked & (cpuif_addr == 12'h100);
+        decoded_reg_strb.fir_coeff_1 = cpuif_req_masked & (cpuif_addr == 12'h104);
+        decoded_reg_strb.fir_coeff_2 = cpuif_req_masked & (cpuif_addr == 12'h108);
+        decoded_reg_strb.fir_coeff_3 = cpuif_req_masked & (cpuif_addr == 12'h10c);
+        decoded_reg_strb.fir_coeff_4 = cpuif_req_masked & (cpuif_addr == 12'h110);
+        decoded_reg_strb.fir_coeff_5 = cpuif_req_masked & (cpuif_addr == 12'h114);
+        decoded_reg_strb.fir_coeff_6 = cpuif_req_masked & (cpuif_addr == 12'h118);
+        decoded_reg_strb.fir_coeff_7 = cpuif_req_masked & (cpuif_addr == 12'h11c);
+        decoded_reg_strb.fir_coeff_8 = cpuif_req_masked & (cpuif_addr == 12'h120);
+        decoded_reg_strb.fir_coeff_9 = cpuif_req_masked & (cpuif_addr == 12'h124);
+        decoded_reg_strb.fir_coeff_10 = cpuif_req_masked & (cpuif_addr == 12'h128);
+        decoded_reg_strb.fir_coeff_11 = cpuif_req_masked & (cpuif_addr == 12'h12c);
+        decoded_reg_strb.fir_coeff_12 = cpuif_req_masked & (cpuif_addr == 12'h130);
+        decoded_reg_strb.fir_coeff_13 = cpuif_req_masked & (cpuif_addr == 12'h134);
+        decoded_reg_strb.fir_coeff_14 = cpuif_req_masked & (cpuif_addr == 12'h138);
+        decoded_reg_strb.fir_coeff_15 = cpuif_req_masked & (cpuif_addr == 12'h13c);
     end
 
     // Pass down signals to next stage
@@ -108,19 +137,117 @@ module csr (
                 logic [7:0] next;
                 logic load_next;
             } val;
+            struct {
+                logic [23:0] next;
+                logic load_next;
+            } res;
         } IO_CR;
         struct {
             struct {
                 logic next;
                 logic load_next;
-            } val;
-        } TEST_REG;
+            } enable;
+            struct {
+                logic [30:0] next;
+                logic load_next;
+            } res;
+        } FIR_CR;
         struct {
             struct {
                 logic [31:0] next;
                 logic load_next;
             } val;
-        } SCRATCHPAD;
+        } fir_coeff_0;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_1;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_2;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_3;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_4;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_5;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_6;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_7;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_8;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_9;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_10;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_11;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_12;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_13;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_14;
+        struct {
+            struct {
+                logic [31:0] next;
+                logic load_next;
+            } val;
+        } fir_coeff_15;
     } field_combo_t;
     field_combo_t field_combo;
 
@@ -129,17 +256,98 @@ module csr (
             struct {
                 logic [7:0] value;
             } val;
+            struct {
+                logic [23:0] value;
+            } res;
         } IO_CR;
         struct {
             struct {
                 logic value;
-            } val;
-        } TEST_REG;
+            } enable;
+            struct {
+                logic [30:0] value;
+            } res;
+        } FIR_CR;
         struct {
             struct {
                 logic [31:0] value;
             } val;
-        } SCRATCHPAD;
+        } fir_coeff_0;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_1;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_2;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_3;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_4;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_5;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_6;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_7;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_8;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_9;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_10;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_11;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_12;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_13;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_14;
+        struct {
+            struct {
+                logic [31:0] value;
+            } val;
+        } fir_coeff_15;
     } field_storage_t;
     field_storage_t field_storage;
 
@@ -164,49 +372,403 @@ module csr (
         end
     end
     assign hwif_out.IO_CR.val.value = field_storage.IO_CR.val.value;
-    // Field: csr.TEST_REG.val
+    // Field: csr.IO_CR.res
+    always_comb begin
+        automatic logic [23:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.IO_CR.res.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.IO_CR && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.IO_CR.res.value & ~decoded_wr_biten[31:8]) | (decoded_wr_data[31:8] & decoded_wr_biten[31:8]);
+            load_next_c = '1;
+        end
+        field_combo.IO_CR.res.next = next_c;
+        field_combo.IO_CR.res.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.IO_CR.res.value <= 24'h0;
+        end else if(field_combo.IO_CR.res.load_next) begin
+            field_storage.IO_CR.res.value <= field_combo.IO_CR.res.next;
+        end
+    end
+    // Field: csr.FIR_CR.enable
     always_comb begin
         automatic logic [0:0] next_c;
         automatic logic load_next_c;
-        next_c = field_storage.TEST_REG.val.value;
+        next_c = field_storage.FIR_CR.enable.value;
         load_next_c = '0;
-        if(decoded_reg_strb.TEST_REG && decoded_req_is_wr) begin // SW write
-            next_c = (field_storage.TEST_REG.val.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
-            load_next_c = '1;
-        end else if(hwif_in.TEST_REG.val.hwset) begin // HW Set
-            next_c = '1;
+        if(decoded_reg_strb.FIR_CR && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.FIR_CR.enable.value & ~decoded_wr_biten[0:0]) | (decoded_wr_data[0:0] & decoded_wr_biten[0:0]);
             load_next_c = '1;
         end
-        field_combo.TEST_REG.val.next = next_c;
-        field_combo.TEST_REG.val.load_next = load_next_c;
+        field_combo.FIR_CR.enable.next = next_c;
+        field_combo.FIR_CR.enable.load_next = load_next_c;
     end
     always_ff @(posedge clk or negedge arst_n) begin
         if(~arst_n) begin
-            field_storage.TEST_REG.val.value <= 1'h0;
-        end else if(field_combo.TEST_REG.val.load_next) begin
-            field_storage.TEST_REG.val.value <= field_combo.TEST_REG.val.next;
+            field_storage.FIR_CR.enable.value <= 1'h0;
+        end else if(field_combo.FIR_CR.enable.load_next) begin
+            field_storage.FIR_CR.enable.value <= field_combo.FIR_CR.enable.next;
         end
     end
-    // Field: csr.SCRATCHPAD.val
+    assign hwif_out.FIR_CR.enable.value = field_storage.FIR_CR.enable.value;
+    // Field: csr.FIR_CR.res
+    always_comb begin
+        automatic logic [30:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.FIR_CR.res.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.FIR_CR && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.FIR_CR.res.value & ~decoded_wr_biten[31:1]) | (decoded_wr_data[31:1] & decoded_wr_biten[31:1]);
+            load_next_c = '1;
+        end
+        field_combo.FIR_CR.res.next = next_c;
+        field_combo.FIR_CR.res.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.FIR_CR.res.value <= 31'h0;
+        end else if(field_combo.FIR_CR.res.load_next) begin
+            field_storage.FIR_CR.res.value <= field_combo.FIR_CR.res.next;
+        end
+    end
+    // Field: csr.fir_coeff_0.val
     always_comb begin
         automatic logic [31:0] next_c;
         automatic logic load_next_c;
-        next_c = field_storage.SCRATCHPAD.val.value;
+        next_c = field_storage.fir_coeff_0.val.value;
         load_next_c = '0;
-        if(decoded_reg_strb.SCRATCHPAD && decoded_req_is_wr) begin // SW write
-            next_c = (field_storage.SCRATCHPAD.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+        if(decoded_reg_strb.fir_coeff_0 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_0.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
             load_next_c = '1;
         end
-        field_combo.SCRATCHPAD.val.next = next_c;
-        field_combo.SCRATCHPAD.val.load_next = load_next_c;
+        field_combo.fir_coeff_0.val.next = next_c;
+        field_combo.fir_coeff_0.val.load_next = load_next_c;
     end
     always_ff @(posedge clk or negedge arst_n) begin
         if(~arst_n) begin
-            field_storage.SCRATCHPAD.val.value <= 32'h0;
-        end else if(field_combo.SCRATCHPAD.val.load_next) begin
-            field_storage.SCRATCHPAD.val.value <= field_combo.SCRATCHPAD.val.next;
+            field_storage.fir_coeff_0.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_0.val.load_next) begin
+            field_storage.fir_coeff_0.val.value <= field_combo.fir_coeff_0.val.next;
         end
     end
+    assign hwif_out.fir_coeff_0.val.value = field_storage.fir_coeff_0.val.value;
+    // Field: csr.fir_coeff_1.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_1.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_1 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_1.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_1.val.next = next_c;
+        field_combo.fir_coeff_1.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_1.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_1.val.load_next) begin
+            field_storage.fir_coeff_1.val.value <= field_combo.fir_coeff_1.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_1.val.value = field_storage.fir_coeff_1.val.value;
+    // Field: csr.fir_coeff_2.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_2.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_2 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_2.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_2.val.next = next_c;
+        field_combo.fir_coeff_2.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_2.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_2.val.load_next) begin
+            field_storage.fir_coeff_2.val.value <= field_combo.fir_coeff_2.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_2.val.value = field_storage.fir_coeff_2.val.value;
+    // Field: csr.fir_coeff_3.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_3.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_3 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_3.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_3.val.next = next_c;
+        field_combo.fir_coeff_3.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_3.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_3.val.load_next) begin
+            field_storage.fir_coeff_3.val.value <= field_combo.fir_coeff_3.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_3.val.value = field_storage.fir_coeff_3.val.value;
+    // Field: csr.fir_coeff_4.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_4.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_4 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_4.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_4.val.next = next_c;
+        field_combo.fir_coeff_4.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_4.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_4.val.load_next) begin
+            field_storage.fir_coeff_4.val.value <= field_combo.fir_coeff_4.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_4.val.value = field_storage.fir_coeff_4.val.value;
+    // Field: csr.fir_coeff_5.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_5.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_5 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_5.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_5.val.next = next_c;
+        field_combo.fir_coeff_5.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_5.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_5.val.load_next) begin
+            field_storage.fir_coeff_5.val.value <= field_combo.fir_coeff_5.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_5.val.value = field_storage.fir_coeff_5.val.value;
+    // Field: csr.fir_coeff_6.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_6.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_6 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_6.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_6.val.next = next_c;
+        field_combo.fir_coeff_6.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_6.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_6.val.load_next) begin
+            field_storage.fir_coeff_6.val.value <= field_combo.fir_coeff_6.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_6.val.value = field_storage.fir_coeff_6.val.value;
+    // Field: csr.fir_coeff_7.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_7.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_7 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_7.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_7.val.next = next_c;
+        field_combo.fir_coeff_7.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_7.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_7.val.load_next) begin
+            field_storage.fir_coeff_7.val.value <= field_combo.fir_coeff_7.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_7.val.value = field_storage.fir_coeff_7.val.value;
+    // Field: csr.fir_coeff_8.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_8.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_8 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_8.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_8.val.next = next_c;
+        field_combo.fir_coeff_8.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_8.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_8.val.load_next) begin
+            field_storage.fir_coeff_8.val.value <= field_combo.fir_coeff_8.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_8.val.value = field_storage.fir_coeff_8.val.value;
+    // Field: csr.fir_coeff_9.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_9.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_9 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_9.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_9.val.next = next_c;
+        field_combo.fir_coeff_9.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_9.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_9.val.load_next) begin
+            field_storage.fir_coeff_9.val.value <= field_combo.fir_coeff_9.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_9.val.value = field_storage.fir_coeff_9.val.value;
+    // Field: csr.fir_coeff_10.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_10.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_10 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_10.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_10.val.next = next_c;
+        field_combo.fir_coeff_10.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_10.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_10.val.load_next) begin
+            field_storage.fir_coeff_10.val.value <= field_combo.fir_coeff_10.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_10.val.value = field_storage.fir_coeff_10.val.value;
+    // Field: csr.fir_coeff_11.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_11.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_11 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_11.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_11.val.next = next_c;
+        field_combo.fir_coeff_11.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_11.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_11.val.load_next) begin
+            field_storage.fir_coeff_11.val.value <= field_combo.fir_coeff_11.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_11.val.value = field_storage.fir_coeff_11.val.value;
+    // Field: csr.fir_coeff_12.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_12.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_12 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_12.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_12.val.next = next_c;
+        field_combo.fir_coeff_12.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_12.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_12.val.load_next) begin
+            field_storage.fir_coeff_12.val.value <= field_combo.fir_coeff_12.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_12.val.value = field_storage.fir_coeff_12.val.value;
+    // Field: csr.fir_coeff_13.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_13.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_13 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_13.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_13.val.next = next_c;
+        field_combo.fir_coeff_13.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_13.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_13.val.load_next) begin
+            field_storage.fir_coeff_13.val.value <= field_combo.fir_coeff_13.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_13.val.value = field_storage.fir_coeff_13.val.value;
+    // Field: csr.fir_coeff_14.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_14.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_14 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_14.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_14.val.next = next_c;
+        field_combo.fir_coeff_14.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_14.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_14.val.load_next) begin
+            field_storage.fir_coeff_14.val.value <= field_combo.fir_coeff_14.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_14.val.value = field_storage.fir_coeff_14.val.value;
+    // Field: csr.fir_coeff_15.val
+    always_comb begin
+        automatic logic [31:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.fir_coeff_15.val.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.fir_coeff_15 && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.fir_coeff_15.val.value & ~decoded_wr_biten[31:0]) | (decoded_wr_data[31:0] & decoded_wr_biten[31:0]);
+            load_next_c = '1;
+        end
+        field_combo.fir_coeff_15.val.next = next_c;
+        field_combo.fir_coeff_15.val.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.fir_coeff_15.val.value <= 32'h0;
+        end else if(field_combo.fir_coeff_15.val.load_next) begin
+            field_storage.fir_coeff_15.val.value <= field_combo.fir_coeff_15.val.next;
+        end
+    end
+    assign hwif_out.fir_coeff_15.val.value = field_storage.fir_coeff_15.val.value;
 
     //--------------------------------------------------------------------------
     // Write response
@@ -224,12 +786,27 @@ module csr (
     logic [31:0] readback_data;
 
     // Assign readback values to a flattened array
-    logic [31:0] readback_array[3];
+    logic [31:0] readback_array[18];
     assign readback_array[0][7:0] = (decoded_reg_strb.IO_CR && !decoded_req_is_wr) ? field_storage.IO_CR.val.value : '0;
-    assign readback_array[0][31:8] = '0;
-    assign readback_array[1][0:0] = (decoded_reg_strb.TEST_REG && !decoded_req_is_wr) ? field_storage.TEST_REG.val.value : '0;
-    assign readback_array[1][31:1] = '0;
-    assign readback_array[2][31:0] = (decoded_reg_strb.SCRATCHPAD && !decoded_req_is_wr) ? field_storage.SCRATCHPAD.val.value : '0;
+    assign readback_array[0][31:8] = (decoded_reg_strb.IO_CR && !decoded_req_is_wr) ? field_storage.IO_CR.res.value : '0;
+    assign readback_array[1][0:0] = (decoded_reg_strb.FIR_CR && !decoded_req_is_wr) ? field_storage.FIR_CR.enable.value : '0;
+    assign readback_array[1][31:1] = (decoded_reg_strb.FIR_CR && !decoded_req_is_wr) ? field_storage.FIR_CR.res.value : '0;
+    assign readback_array[2][31:0] = (decoded_reg_strb.fir_coeff_0 && !decoded_req_is_wr) ? field_storage.fir_coeff_0.val.value : '0;
+    assign readback_array[3][31:0] = (decoded_reg_strb.fir_coeff_1 && !decoded_req_is_wr) ? field_storage.fir_coeff_1.val.value : '0;
+    assign readback_array[4][31:0] = (decoded_reg_strb.fir_coeff_2 && !decoded_req_is_wr) ? field_storage.fir_coeff_2.val.value : '0;
+    assign readback_array[5][31:0] = (decoded_reg_strb.fir_coeff_3 && !decoded_req_is_wr) ? field_storage.fir_coeff_3.val.value : '0;
+    assign readback_array[6][31:0] = (decoded_reg_strb.fir_coeff_4 && !decoded_req_is_wr) ? field_storage.fir_coeff_4.val.value : '0;
+    assign readback_array[7][31:0] = (decoded_reg_strb.fir_coeff_5 && !decoded_req_is_wr) ? field_storage.fir_coeff_5.val.value : '0;
+    assign readback_array[8][31:0] = (decoded_reg_strb.fir_coeff_6 && !decoded_req_is_wr) ? field_storage.fir_coeff_6.val.value : '0;
+    assign readback_array[9][31:0] = (decoded_reg_strb.fir_coeff_7 && !decoded_req_is_wr) ? field_storage.fir_coeff_7.val.value : '0;
+    assign readback_array[10][31:0] = (decoded_reg_strb.fir_coeff_8 && !decoded_req_is_wr) ? field_storage.fir_coeff_8.val.value : '0;
+    assign readback_array[11][31:0] = (decoded_reg_strb.fir_coeff_9 && !decoded_req_is_wr) ? field_storage.fir_coeff_9.val.value : '0;
+    assign readback_array[12][31:0] = (decoded_reg_strb.fir_coeff_10 && !decoded_req_is_wr) ? field_storage.fir_coeff_10.val.value : '0;
+    assign readback_array[13][31:0] = (decoded_reg_strb.fir_coeff_11 && !decoded_req_is_wr) ? field_storage.fir_coeff_11.val.value : '0;
+    assign readback_array[14][31:0] = (decoded_reg_strb.fir_coeff_12 && !decoded_req_is_wr) ? field_storage.fir_coeff_12.val.value : '0;
+    assign readback_array[15][31:0] = (decoded_reg_strb.fir_coeff_13 && !decoded_req_is_wr) ? field_storage.fir_coeff_13.val.value : '0;
+    assign readback_array[16][31:0] = (decoded_reg_strb.fir_coeff_14 && !decoded_req_is_wr) ? field_storage.fir_coeff_14.val.value : '0;
+    assign readback_array[17][31:0] = (decoded_reg_strb.fir_coeff_15 && !decoded_req_is_wr) ? field_storage.fir_coeff_15.val.value : '0;
 
     // Reduce the array
     always_comb begin
@@ -237,7 +814,7 @@ module csr (
         readback_done = decoded_req & ~decoded_req_is_wr;
         readback_err = '0;
         readback_data_var = '0;
-        for(int i=0; i<3; i++) readback_data_var |= readback_array[i];
+        for(int i=0; i<18; i++) readback_data_var |= readback_array[i];
         readback_data = readback_data_var;
     end
 

@@ -3,21 +3,21 @@
 # DO NOT MODIFY
 
 
-# 
+#
 # agh_socfpga "agh_socfpga" v1.0
 #  2024.06.05.11:47:20
-# 
-# 
+#
+#
 
-# 
+#
 # request TCL package from ACDS 16.1
-# 
+#
 package require -exact qsys 16.1
 
 
-# 
+#
 # module agh_socfpga
-# 
+#
 set_module_property DESCRIPTION ""
 set_module_property NAME agh_socfpga
 set_module_property VERSION 1.0
@@ -32,31 +32,34 @@ set_module_property ALLOW_GREYBOX_GENERATION false
 set_module_property REPORT_HIERARCHY false
 
 
-# 
+#
 # file sets
-# 
+#
 add_fileset QUARTUS_SYNTH QUARTUS_SYNTH "" ""
 set_fileset_property QUARTUS_SYNTH TOP_LEVEL agh_socfpga
 set_fileset_property QUARTUS_SYNTH ENABLE_RELATIVE_INCLUDE_PATHS false
 set_fileset_property QUARTUS_SYNTH ENABLE_FILE_OVERWRITE_MODE false
 add_fileset_file csr.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/csr.sv
 add_fileset_file csr_pkg.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/csr_pkg.sv
+add_fileset_file fir_filter.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/fir_filter.sv
+add_fileset_file source_synchronizer.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/source_synchronizer.sv
+add_fileset_file byte_swapper.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/byte_swapper.sv
 add_fileset_file agh_socfpga.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/agh_socfpga.sv TOP_LEVEL_FILE
 
 
-# 
+#
 # parameters
-# 
+#
 
 
-# 
+#
 # display items
-# 
+#
 
 
-# 
+#
 # connection point clock
-# 
+#
 add_interface clock clock end
 set_interface_property clock clockRate 0
 set_interface_property clock ENABLED true
@@ -68,9 +71,9 @@ set_interface_property clock SVD_ADDRESS_GROUP ""
 add_interface_port clock clk clk Input 1
 
 
-# 
+#
 # connection point reset
-# 
+#
 add_interface reset reset end
 set_interface_property reset associatedClock clock
 set_interface_property reset synchronousEdges DEASSERT
@@ -83,9 +86,9 @@ set_interface_property reset SVD_ADDRESS_GROUP ""
 add_interface_port reset rst_n reset_n Input 1
 
 
-# 
+#
 # connection point io
-# 
+#
 add_interface io conduit end
 set_interface_property io associatedClock clock
 set_interface_property io associatedReset ""
@@ -98,9 +101,9 @@ set_interface_property io SVD_ADDRESS_GROUP ""
 add_interface_port io led led Output 8
 
 
-# 
+#
 # connection point avalon_mm_slave
-# 
+#
 add_interface avalon_mm_slave avalon end
 set_interface_property avalon_mm_slave addressUnits WORDS
 set_interface_property avalon_mm_slave associatedClock clock
@@ -140,9 +143,9 @@ set_interface_assignment avalon_mm_slave embeddedsw.configuration.isNonVolatileS
 set_interface_assignment avalon_mm_slave embeddedsw.configuration.isPrintableDevice 0
 
 
-# 
+#
 # connection point avalon_streaming_source
-# 
+#
 add_interface avalon_streaming_source avalon_streaming start
 set_interface_property avalon_streaming_source associatedClock clock
 set_interface_property avalon_streaming_source associatedReset reset
@@ -164,9 +167,9 @@ add_interface_port avalon_streaming_source avalon_streaming_source_startofpacket
 add_interface_port avalon_streaming_source avalon_streaming_source_valid valid Output 1
 
 
-# 
+#
 # connection point avalon_streaming_sink
-# 
+#
 add_interface avalon_streaming_sink avalon_streaming end
 set_interface_property avalon_streaming_sink associatedClock clock
 set_interface_property avalon_streaming_sink associatedReset reset

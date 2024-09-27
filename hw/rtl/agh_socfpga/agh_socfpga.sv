@@ -8,7 +8,6 @@ module agh_socfpga
     input  logic        clk,
     input  logic        rst_n,
 
-
     /* Avalon MM slave interface */
 
     output logic        avalon_mm_slave_waitrequest,
@@ -47,20 +46,18 @@ module agh_socfpga
 /* Local variables and signals */
 
 csr__out_t   hwif_out;
-csr__in_t    hwif_in;
 
 logic [31:0] avalon_mm_slave_readdata_nxt;
 logic        avalon_mm_slave_readdatavalid_nxt, avalon_mm_slave_writeresponsevalid_nxt;
 
+logic [15:0] byte_swapper_output_signal, fir_filter_input_signal, fir_filter_output_signal;
+logic        source_synchronizer_ready, source_synchronizer_endofpacket,
+             source_synchronizer_startofpacket, fir_filter_output_signal_valid;
+
 
 /* Signals assignments */
 
-assign avalon_streaming_sink_ready = avalon_streaming_source_ready;
-
-assign avalon_streaming_source_data = avalon_streaming_sink_data;
-assign avalon_streaming_source_endofpacket = avalon_streaming_sink_endofpacket;
-assign avalon_streaming_source_valid = avalon_streaming_sink_valid;
-assign avalon_streaming_source_startofpacket = avalon_streaming_sink_startofpacket;
+assign led = hwif_out.IO_CR.val.value;
 
 
 /* Submodules placement */
@@ -69,23 +66,60 @@ csr u_csr (
     .clk,
     .arst_n(rst_n),
 
+    .hwif_out,
+
     .avalon_waitrequest(avalon_mm_slave_waitrequest),
     .avalon_response(avalon_mm_slave_response),
     .avalon_readdatavalid(avalon_mm_slave_readdatavalid_nxt),
     .avalon_writeresponsevalid(avalon_mm_slave_writeresponsevalid_nxt),
     .avalon_readdata(avalon_mm_slave_readdata_nxt),
-    .avalon_address(avalon_mm_slave_address[11:2]),
+    .avalon_address(avalon_mm_slave_address),
     .avalon_read(avalon_mm_slave_read),
     .avalon_write(avalon_mm_slave_write),
     .avalon_byteenable(avalon_mm_slave_byteenable),
-    .avalon_writedata(avalon_mm_slave_writedata),
+    .avalon_writedata(avalon_mm_slave_writedata)
+);
 
-    .hwif_out,
-    .hwif_in
+fir_filter u_fir_filter (
+    .clk,
+    .rst_n,
+
+    .hwif_in(hwif_out),
+
+    .filtered_signal_valid(fir_filter_output_signal_valid),
+    .filtered_signal(fir_filter_output_signal),
+
+    .signal_valid(avalon_streaming_sink_valid),
+    .signal(fir_filter_input_signal)
+);
+
+source_synchronizer u_source_synchronizer (
+    .clk,
+    .rst_n,
+
+    .source_synchronizer_ready,
+    .source_synchronizer_endofpacket,
+    // .source_synchronizer_valid,
+    .source_synchronizer_startofpacket,
+
+    .avalon_streaming_source_ready,
+    .avalon_streaming_sink_endofpacket,
+    // .avalon_streaming_sink_valid,
+    .avalon_streaming_sink_startofpacket
+);
+
+byte_swapper u_byte_swapper_0 (
+    .data_out(fir_filter_input_signal),
+    .data_in(avalon_streaming_sink_data)
+);
+
+byte_swapper u_byte_swapper_1 (
+    .data_out(byte_swapper_output_signal),
+    .data_in(fir_filter_output_signal)
 );
 
 
-/* Module internal logic */
+/* Internal logic */
 
 always_ff @(posedge clk or negedge rst_n) begin
     if (!rst_n) begin
@@ -98,5 +132,22 @@ always_ff @(posedge clk or negedge rst_n) begin
         avalon_mm_slave_readdata <= avalon_mm_slave_readdata_nxt;
     end
 end
+
+always_comb begin
+    if(hwif_out.FIR_CR.enable.value) begin
+        avalon_streaming_sink_ready = source_synchronizer_ready;
+        avalon_streaming_source_valid = fir_filter_output_signal_valid;
+        avalon_streaming_source_data = byte_swapper_output_signal;
+        avalon_streaming_source_startofpacket = source_synchronizer_startofpacket;
+        avalon_streaming_source_endofpacket = source_synchronizer_endofpacket;
+    end else begin
+        avalon_streaming_sink_ready = avalon_streaming_source_ready;
+        avalon_streaming_source_valid = avalon_streaming_sink_valid;
+        avalon_streaming_source_data = avalon_streaming_sink_data;
+        avalon_streaming_source_startofpacket = avalon_streaming_sink_startofpacket;
+        avalon_streaming_source_endofpacket = avalon_streaming_sink_endofpacket;
+    end
+end
+
 
 endmodule
