@@ -5,8 +5,9 @@ import os
 
 class FPGA:
     def __init__(self):
-        self.mem_size = 0x00060000
         self.lwfpgaslaves_addr = 0xff200000
+        self.mem_size = 0x00060000
+        self.csr_addr = 0x10000
         self.dev = "/dev/mem"
         self.fd = os.open(self.dev, os.O_RDWR | os.O_SYNC)
         self.mem = mmap.mmap(self.fd, self.mem_size, mmap.MAP_SHARED, mmap.PROT_READ | mmap.PROT_WRITE, offset=self.lwfpgaslaves_addr)

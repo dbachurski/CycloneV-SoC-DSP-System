@@ -89,6 +89,7 @@ fir_filter u_fir_filter (
     .filtered_signal_valid(fir_filter_output_signal_valid),
     .filtered_signal(fir_filter_output_signal),
 
+    .enable(hwif_out.FIR_CR.enable.value),
     .signal_valid(avalon_streaming_sink_valid),
     .signal(fir_filter_input_signal)
 );

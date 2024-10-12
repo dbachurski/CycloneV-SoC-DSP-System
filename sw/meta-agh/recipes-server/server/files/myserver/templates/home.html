@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <script src="{% static 'manage_actions.js' %}" defer></script>
+    <script src="{% static 'drag_apps.js' %}"></script>
+    <script src="{% static 'switch_leds_color.js' %}"></script>
+    <script src="{% static 'icons_on_click.js' %}"></script>
+    <script src="{% static 'close_apps.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="icons-container">
+        {% include 'icons.html' %}
+    </div>
+    <div class="terminal-container">
+        <div class="terminal">
+            <div class="title-bar terminal-title-bar">
+                <div class="title-buttons-container">
+                    <div class="title-btn btn-red"></div>
+                    <div class="title-btn btn-yellow"></div>
+                    <div class="title-btn btn-green"></div>
+                </div>
+                <div class="title-text terminal-title-text">Terminal</div>
+            </div>
+            <div class="terminal-content-container">
+                <pre id="terminal-content" class="terminal-content-text"></pre>
+            </div>
+        </div>
+    </div>
+    <div class="control-panel-container">
+        <div class="control-panel">
+            <div class="title-bar control-panel-title-bar">
+                <div class="title-buttons-container">
+                    <div class="title-btn btn-red"></div>
+                    <div class="title-btn btn-yellow"></div>
+                    <div class="title-btn btn-green"></div>
+                </div>
+                <div class="title-text control-panel-title-text">Control Panel</div>
+            </div>
+            <div class="control-panel-buttons-container">
+                <div class="control-panel-buttons-group-container">
+                    <form id="runTesterForm" method="post">
+                        {% csrf_token %}
+                        <button class="control-panel-btn btn-trigger" type="submit">Run Tester</button>
+                    </form>
+                    <form id="runDspControllerForm" method="post">
+                        {% csrf_token %}
+                        <button class="control-panel-btn btn-trigger" type="submit">Run Dsp Controller</button>
+                    </form>
+                    <form id="uploadForm" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <button class="control-panel-btn btn-upload" type="submit">Upload Data</button>
+                    </form>
+                </div>
+                <label class="btn-choose-file">
+                    <input type="file" id=fileInput class="choose-file" accept=".txt, .wav" required>
+                    Choose File
+                </label>
+                <div class="led-container">
+                    {% include 'led.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dsp-controller-container">
+        <div class="dsp-controller">
+            <div class="title-bar dsp-controller-title-bar">
+                <div class="title-buttons-container">
+                    <div class="title-btn btn-red"></div>
+                    <div class="title-btn btn-yellow"></div>
+                    <div class="title-btn btn-green"></div>
+                </div>
+                <div class="title-text dsp-controller-title-text">DSP Controller</div>
+            </div>
+            <div class="dsp-controller-graph-container">
+                <div class="dsp-graph input-signal-graph" id="inputSignalGraph"></div>
+                <div class="dsp-graph filtered-signal-graph" id="filteredSignalGraph"></div>
+            </div>
+            <div class="dsp-controller-buttons-container">
+                <form id="filterTypeForm" method="post">
+                    {% csrf_token %}
+                    <div class="dsp-controller-choose-filter-buttons-container">
+                        <button class="dsp-controller-btn btn-low-pass" type="button"
+                            onclick="selectFilter('low_pass')">Low Pass</button>
+                        <button class="dsp-controller-btn btn-moving-average" type="button"
+                            onclick="selectFilter('moving_average')">Moving Average</button>
+                        <button class="dsp-controller-btn btn-unit-impulse" type="button"
+                            onclick="selectFilter('unit_impulse')">Unit Impulse</button>
+                    </div>
+                </form>
+                <div class="dsp-controller-buttons-group-container">
+                    <form id="loadSignalForm" method="post">
+                        {% csrf_token %}
+                        <button class="dsp-controller-btn btn-load-input-signal" type="submit">Load Input Signal</button>
+                    </form>
+                    <form id="startProcessingForm" method="post">
+                        {% csrf_token %}
+                        <button class="dsp-controller-btn btn-start-processing" type="submit">Start Processing</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
