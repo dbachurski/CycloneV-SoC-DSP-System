@@ -22,7 +22,6 @@ do_install:append() {
     install -m 0755 ${S}/dsp/data/data_to_send_64kB.txt ${D}${bindir}/dsp/data/data_to_send_64kB.txt
     install -m 0755 ${S}/dsp/data/moving_average.txt ${D}${bindir}/dsp/data/moving_average.txt
     install -m 0755 ${S}/dsp/data/unit_impulse.txt ${D}${bindir}/dsp/data/unit_impulse.txt
-    install -m 0755 ${S}/dsp/data/low_pass.txt ${D}${bindir}/dsp/data/low_pass.txt
 
     install -d ${D}${PYTHON_SITEPACKAGES_DIR}
     install -m 0755 ${S}/dsp/fpga.py ${D}${PYTHON_SITEPACKAGES_DIR}/fpga.py

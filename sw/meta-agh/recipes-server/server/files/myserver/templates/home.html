@@ -44,21 +44,12 @@
             </div>
             <div class="control-panel-buttons-container">
                 <div class="control-panel-buttons-group-container">
-                    <form id="runTesterForm" method="post">
-                        {% csrf_token %}
-                        <button class="control-panel-btn btn-trigger" type="submit">Run Tester</button>
-                    </form>
-                    <form id="runDspControllerForm" method="post">
-                        {% csrf_token %}
-                        <button class="control-panel-btn btn-trigger" type="submit">Run Dsp Controller</button>
-                    </form>
-                    <form id="uploadForm" method="post" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <button class="control-panel-btn btn-upload" type="submit">Upload Data</button>
-                    </form>
+                    <button class="control-panel-btn btn-trigger" id="runTesterBtn">Run Tester</button>
+                    <button class="control-panel-btn btn-trigger" id="runDspControllerBtn">Run DSP Controller</button>
+                    <button class="control-panel-btn btn-upload" id="uploadDataBtn">Upload Data</button>
                 </div>
                 <label class="btn-choose-file">
-                    <input type="file" id=fileInput class="choose-file" accept=".txt, .wav" required>
+                    <input type="file" id="fileInput" class="choose-file" accept=".txt, .wav" required>
                     Choose File
                 </label>
                 <div class="led-container">
@@ -82,29 +73,37 @@
                 <div class="dsp-graph filtered-signal-graph" id="filteredSignalGraph"></div>
             </div>
             <div class="dsp-controller-buttons-container">
-                <form id="filterTypeForm" method="post">
-                    {% csrf_token %}
-                    <div class="dsp-controller-choose-filter-buttons-container">
-                        <button class="dsp-controller-btn btn-low-pass" type="button"
-                            onclick="selectFilter('low_pass')">Low Pass</button>
-                        <button class="dsp-controller-btn btn-moving-average" type="button"
-                            onclick="selectFilter('moving_average')">Moving Average</button>
-                        <button class="dsp-controller-btn btn-unit-impulse" type="button"
-                            onclick="selectFilter('unit_impulse')">Unit Impulse</button>
-                    </div>
-                </form>
+                <div class="dsp-controller-choose-filter-buttons-container">
+                    <button class="dsp-controller-btn btn-low-pass" type="button" onclick="selectFilter('low_pass')">Low Pass</button>
+                    <button class="dsp-controller-btn btn-moving-average" type="button" onclick="selectFilter('moving_average')">Moving Average</button>
+                    <button class="dsp-controller-btn btn-unit-impulse" type="button" onclick="selectFilter('unit_impulse')">Unit Impulse</button>
+                </div>
                 <div class="dsp-controller-buttons-group-container">
-                    <form id="loadSignalForm" method="post">
-                        {% csrf_token %}
-                        <button class="dsp-controller-btn btn-load-input-signal" type="submit">Load Input Signal</button>
-                    </form>
-                    <form id="startProcessingForm" method="post">
-                        {% csrf_token %}
-                        <button class="dsp-controller-btn btn-start-processing" type="submit">Start Processing</button>
-                    </form>
+                    <button class="dsp-controller-btn btn-load-input-signal" id="loadSignalBtn">Load Input Signal</button>
+                    <button class="dsp-controller-btn btn-start-processing" id="startProcessingBtn">Start Processing</button>
+                </div>
+            </div>
+        </div>
+        <div class="dsp-controller-settings">
+            <div class="low-pass-settings">
+                <div class="title-bar low-pass-settings-title-bar">
+                    <div class="title-buttons-container">
+                        <div class="title-btn btn-red"></div>
+                        <div class="title-btn btn-yellow"></div>
+                        <div class="title-btn btn-green"></div>
+                    </div>
+                    <div class="title-text low-pass-settings-title-text">Settings</div>
+                </div>
+                <div class="low-pass-settings-content">
+                    <div class="settings-group">
+                        <div class="cutoff-label">Cutoff Frequency (Hz):</div>
+                        <input type="number" id="cutoffFrequency" class="settings-input">
+                    </div>
+                    <button id="saveLowPassSettingsBtn" class="dsp-controller-btn settings-btn">Save Settings</button>
                 </div>
             </div>
         </div>
     </div>
+    <div id="overlay" class="overlay"></div>
 </body>
 </html>

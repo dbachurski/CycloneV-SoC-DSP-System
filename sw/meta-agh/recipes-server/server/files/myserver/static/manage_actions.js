@@ -1,15 +1,56 @@
 let selectedFile = null;
 let selectedFilter = null;
+let cutoffFrequency = null;
 let inputSignalLoaded = false;
 
+function getCsrfToken() {
+    return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+}
+
 function selectFilter(filter) {
-    selectedFilter = filter;
-    appendToTerminal('Selected filter: ' + selectedFilter);
+    if (filter === 'low_pass') {
+        const maxZIndex = Math.max(
+            ...$('.dsp-controller, .terminal, .control-panel, .low-pass-settings')
+                .map(function() {
+                    return parseInt($(this).css('z-index')) || 0;
+                })
+                .get()
+        );
+
+        $('#overlay').css('z-index', maxZIndex + 1).show();
+
+        $('.low-pass-settings').css('z-index', maxZIndex + 2).show();
+    } else {
+        selectedFilter = filter;
+        appendToTerminal('Selected filter: ' + selectedFilter);
+    }
 }
 
 function appendToTerminal(message) {
     $('.terminal').show();
     $('#terminal-content').append(message + '\n');
+}
+
+function runDspController() {
+    $('.dsp-controller').show();
+    loadSVG('inputSignalGraph', 'data/empty_plot.svg');
+    loadSVG('filteredSignalGraph', 'data/empty_plot.svg');
+}
+
+function runDspTester() {
+    $.ajax({
+        type: 'POST',
+        url: '/start_dsp_tester',
+        headers: {
+            'X-CSRFToken': getCsrfToken()
+        },
+        success: function(response) {
+            appendToTerminal(response.message);
+        },
+        error: function(xhr) {
+            appendToTerminal('Error occurred: ' + xhr.responseText);
+        }
+    });
 }
 
 function loadSVG(containerId, filename) {
@@ -24,7 +65,6 @@ function loadSVG(containerId, filename) {
             }
 
             const svg = new DOMParser().parseFromString(data, 'image/svg+xml').documentElement;
-
             svg.setAttribute('viewBox', '0 0 864 432');
             container.appendChild(svg);
 
@@ -44,109 +84,124 @@ function loadSVG(containerId, filename) {
     });
 }
 
-$('#runTesterForm').on('submit', function(event) {
-    event.preventDefault();
-    $.ajax({
-        type: 'POST',
-        url: '/start_dsp_tester',
-        data: $(this).serialize(),
-        success: function(response) {
-            appendToTerminal(response.message);
-        },
-        error: function(xhr) {
-            appendToTerminal('Error occurred: ' + xhr.responseText);
-        }
+$(document).ready(function() {
+    $('#runTesterBtn').on('click', function() {
+        runDspTester();
     });
-});
 
-$('#runDspControllerForm').on('submit', function(event) {
-    event.preventDefault();
-    $('.dsp-controller').show();
-
-    loadSVG('inputSignalGraph', 'data/empty_plot.svg');
-    loadSVG('filteredSignalGraph', 'data/empty_plot.svg');
-
-    $(this).trigger('reset');
-});
-
-$('#fileInput').on('change', function() {
-    selectedFile = $(this)[0].files[0];
-    appendToTerminal('Selected file: ' + selectedFile.name);
-});
-
-$('#uploadForm').on('submit', function(event) {
-    event.preventDefault();
-
-    const formData = new FormData(this);
-
-    if (selectedFile) {
-        formData.append('file', selectedFile);
-    }
-
-    $.ajax({
-        type: 'POST',
-        url: '/upload_data',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            alert(response.message);
-        },
-        error: function(xhr) {
-            alert('Error: ' + xhr.responseJSON.message);
-        }
+    $('#runDspControllerBtn').on('click', function() {
+        runDspController();
     });
-});
 
-$('#loadSignalForm').on('submit', function(event) {
-    event.preventDefault();
+    $('#saveLowPassSettingsBtn').on('click', function() {
+        cutoffFrequency = $('#cutoffFrequency').val();
 
-    $.ajax({
-        type: 'POST',
-        url: '/load_input_signal',
-        data: $(this).serialize(),
-        success: function(response) {
-            appendToTerminal(response.message);
-            loadSVG('inputSignalGraph', 'data/input_signal.svg');
-        },
-        error: function(xhr) {
-            appendToTerminal('Error occurred: ' + xhr.responseJSON.message);
-        }
-    });
-    inputSignalLoaded = true;
+        $('.overlay').hide();
+        $('.low-pass-settings').hide();
 
-    $(this).trigger('reset');
-});
+        selectedFilter = 'low_pass';
+        appendToTerminal('Selected filter: ' + selectedFilter);
+        appendToTerminal('Cutoff Frequency: ' + cutoffFrequency);
 
-$('#startProcessingForm').on('submit', function(event) {
-    event.preventDefault();
-
-    if (inputSignalLoaded) {
-        const formData = new FormData(this);
-
-        if (selectedFilter) {
-            formData.append('selected_filter', selectedFilter);
-        } else {
-            appendToTerminal('No filter type selected');
-        }
+        const formData = new FormData();
+        formData.append('selected_filter', selectedFilter);
+        formData.append('cutoff_frequency', cutoffFrequency);
 
         $.ajax({
             type: 'POST',
-            url: '/start_dsp_controller',
+            url: '/get_fir_coefficients',
             data: formData,
+            headers: {
+                'X-CSRFToken': getCsrfToken()
+            },
             processData: false,
             contentType: false,
             success: function(response) {
                 appendToTerminal(response.message);
-                loadSVG('filteredSignalGraph', 'output/filtered_signal.svg');
+            },
+            error: function(xhr) {
+                console.log(xhr.responseText);
+                appendToTerminal('Error occurred: ' + xhr.responseJSON.message);
+            }
+        });
+    });
+
+    $('#uploadDataBtn').on('click', function() {
+        const formData = new FormData();
+        const selectedFile = $('#fileInput')[0].files[0];
+
+        if (selectedFile) {
+            formData.append('file', selectedFile);
+
+            $.ajax({
+                type: 'POST',
+                url: '/upload_data',
+                data: formData,
+                headers: {
+                    'X-CSRFToken': getCsrfToken()
+                },
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    alert(response.message);
+                },
+                error: function(xhr) {
+                    alert('Error: ' + xhr.responseJSON.message);
+                }
+            });
+        } else {
+            alert('No file selected.');
+        }
+    });
+
+    $('#loadSignalBtn').on('click', function() {
+        $.ajax({
+            type: 'POST',
+            url: '/load_input_signal',
+            headers: {
+                'X-CSRFToken': getCsrfToken()
+            },
+            success: function(response) {
+                appendToTerminal(response.message);
+                loadSVG('inputSignalGraph', 'data/input_signal.svg');
             },
             error: function(xhr) {
                 appendToTerminal('Error occurred: ' + xhr.responseJSON.message);
             }
         });
-    } else {
-        alert('Load input signal');
-    }
+        inputSignalLoaded = true;
+    });
 
-    $(this).trigger('reset');
+    $('#startProcessingBtn').on('click', function() {
+        if (inputSignalLoaded) {
+            const formData = new FormData();
+
+            if (selectedFilter) {
+                formData.append('selected_filter', selectedFilter);
+            } else {
+                appendToTerminal('No filter type selected');
+                return;
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/start_dsp_controller',
+                data: formData,
+                headers: {
+                    'X-CSRFToken': getCsrfToken()
+                },
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    appendToTerminal(response.message);
+                    loadSVG('filteredSignalGraph', 'output/filtered_signal.svg');
+                },
+                error: function(xhr) {
+                    appendToTerminal('Error occurred: ' + xhr.responseJSON.message);
+                }
+            });
+        } else {
+            alert('Load input signal');
+        }
+    });
 });

@@ -1,9 +1,11 @@
 from django.shortcuts import render
 from django.http import JsonResponse, Http404, FileResponse
 from .read_wav import save_wav_data_as_plot
+from .generate_fir_coefficients import save_fir_coefficients, generate_lowpass_coefficients
 import subprocess
 import os
 import json
+import logging
 
 BASE_PATH = '/usr/bin/dsp'
 DSP_TESTER_LOG = '/tmp/dsp-tester.log'
@@ -14,6 +16,8 @@ OUTPUT_WAV_FILE_PATH = BASE_PATH + '/output/filtered_signal.wav'
 DSP_CONTROLLER_SCRIPT_PATH = BASE_PATH + '/apps/dsp-controller'
 DSP_TESTER_SCRIPT_PATH = BASE_PATH + '/apps/dsp-tester'
 LED_CONTROL_SCRIPT_PATH = BASE_PATH + '/apps/led-control'
+
+sampling_rate = None
 
 def run_subprocess(script_path, args, log_path):
     with open(log_path, 'w') as log_file:
@@ -77,11 +81,30 @@ def get_svg(request, filename):
     raise Http404(f"File does not exist: {filename}")
 
 def load_input_signal(request):
+    global sampling_rate
     if not os.path.exists(INPUT_WAV_FILE_PATH):
         return JsonResponse({'message': 'WAV file does not exist, upload input signal'}, status=404)
 
-    save_wav_data_as_plot(INPUT_WAV_FILE_PATH)
+    sampling_rate = save_wav_data_as_plot(INPUT_WAV_FILE_PATH)
     return JsonResponse({'message': 'Input signal loaded successfully'})
+
+def get_fir_coefficients(request):
+    global sampling_rate
+    if sampling_rate is None:
+        return JsonResponse({'message': 'Please load an input signal to set the sampling rate.'}, status=400)
+
+    cutoff_frequency = float(request.POST.get('cutoff_frequency'));
+
+    if cutoff_frequency < 0 or cutoff_frequency > (sampling_rate / 2):
+        return JsonResponse({'message': 'Cutoff frequency must be in the range [0, Nyquist Frequency].'}, status=400)
+
+    fir_coefficients = generate_lowpass_coefficients(cutoff_frequency, sampling_rate)
+
+    if save_fir_coefficients(fir_coefficients):
+        return JsonResponse({'message': 'FIR coefficients successfully generated and saved.'})
+    else:
+        return JsonResponse({'message': 'Error occurred while saving FIR coefficients.'}, status=500)
+
 
 def start_dsp_controller(request):
     if request.method == 'POST' and 'selected_filter' in request.POST:

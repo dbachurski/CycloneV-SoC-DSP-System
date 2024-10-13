@@ -12,4 +12,5 @@ IMAGE_INSTALL += " \
     dsp \
     server \
     network \
+    sshd \
 "

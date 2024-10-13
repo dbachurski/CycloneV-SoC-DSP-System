@@ -7,7 +7,7 @@ SRC_URI:append := "file://end0_config"
 
 do_install:append() {
     install -d ${D}${libdir}/systemd/network
-    install -m 0755 ${WORKDIR}/end0_config ${D}${libdir}/systemd/network/10-end0.network
+    install -m 0644 ${WORKDIR}/end0_config ${D}${libdir}/systemd/network/10-end0.network
 }
 
 FILES:${PN} += "${libdir}/systemd/network/*"

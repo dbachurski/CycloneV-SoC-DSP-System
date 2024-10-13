@@ -4,11 +4,16 @@ import matplotlib.pyplot as plt
 import argparse
 import os
 
+MAX_BYTES = 64 * 1024
+
 def save_wav_data_as_plot(file_path):
     with wave.open(file_path, 'rb') as wav_file:
         sampling_rate = wav_file.getframerate()
         num_channels = wav_file.getnchannels()
-        num_frames = wav_file.getnframes()
+
+        max_samples = MAX_BYTES // 2
+        num_frames = min(wav_file.getnframes(), max_samples)
+
         data = wav_file.readframes(num_frames)
         signal = np.frombuffer(data, dtype=np.int16)
 
@@ -39,8 +44,11 @@ def save_wav_data_as_plot(file_path):
 
     plt.savefig(svg_file, format='svg')
     plt.close()
+
     print(f'Sampling Rate: {sampling_rate} Hz')
     print(f'Plot saved as: {svg_file}')
+
+    return sampling_rate
 
 
 if __name__ == "__main__":
