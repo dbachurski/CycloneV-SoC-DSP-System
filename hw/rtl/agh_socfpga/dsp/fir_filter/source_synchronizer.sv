@@ -116,28 +116,28 @@ always_comb begin
     sop_0_nxt = avalon_streaming_sink_startofpacket;
 
     /* Pipeline 2 stage */
-    ready_1_nxt = ready_0_nxt;
-    eop_1_nxt = eop_0_nxt;
-    valid_1_nxt = valid_0_nxt;
-    sop_1_nxt = sop_0_nxt;
+    ready_1_nxt = ready_0;
+    eop_1_nxt = eop_0;
+    valid_1_nxt = valid_0;
+    sop_1_nxt = sop_0;
 
     /* Pipeline 3 stage */
-    ready_2_nxt = ready_1_nxt;
-    eop_2_nxt = eop_1_nxt;
-    valid_2_nxt = valid_1_nxt;
-    sop_2_nxt = sop_1_nxt;
+    ready_2_nxt = ready_1;
+    eop_2_nxt = eop_1;
+    valid_2_nxt = valid_1;
+    sop_2_nxt = sop_1;
 
     /* Pipeline 4 stage */
-    ready_3_nxt = ready_2_nxt;
-    eop_3_nxt = eop_2_nxt;
-    valid_3_nxt = valid_2_nxt;
-    sop_3_nxt = sop_2_nxt;
+    ready_3_nxt = ready_2;
+    eop_3_nxt = eop_2;
+    valid_3_nxt = valid_2;
+    sop_3_nxt = sop_2;
 
     /* Pipeline 5 stage */
-    ready_4_nxt = ready_3_nxt;
-    eop_4_nxt = eop_3_nxt;
-    valid_4_nxt = valid_3_nxt;
-    sop_4_nxt = sop_3_nxt;
+    ready_4_nxt = ready_3;
+    eop_4_nxt = eop_3;
+    valid_4_nxt = valid_3;
+    sop_4_nxt = sop_3;
 end
 
 endmodule

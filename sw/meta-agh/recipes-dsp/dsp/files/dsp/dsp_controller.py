@@ -25,30 +25,8 @@ class Controller:
                 self.num_frames = wav_file.getnframes()
                 self.data = wav_file.readframes(self.num_frames)
 
-            self.transfer_lenght = self.num_frames * self.num_channels * self.sample_width
-            self.data = np.frombuffer(self.data, dtype=np.int16)
-            self.data_bytes = self.data.tobytes()
-            print(f"Successfully read WAV file '{file_path}'.")
-            return True
-        except Exception as e:
-            print(f"Error reading WAV file '{file_path}': {e}")
-            sys.exit(1)
-
-    def read_wav_file(self, file_path):
-        try:
-            if not os.path.exists(file_path):
-                print(f"Error: File '{file_path}' does not exist.")
-                sys.exit(1)
-
-            with wave.open(file_path, 'rb') as wav_file:
-                self.sampling_rate = wav_file.getframerate()
-                self.num_channels = wav_file.getnchannels()
-                self.sample_width = wav_file.getsampwidth()
-                self.num_frames = wav_file.getnframes()
-                self.data = wav_file.readframes(self.num_frames)
-
-            self.transfer_lenght = self.num_frames * self.num_channels * self.sample_width
-            self.data = np.frombuffer(self.data, dtype=np.int16)
+            self.transfer_lenght = (self.num_frames * self.num_channels * self.sample_width) * 2
+            self.data = (np.frombuffer(self.data, dtype=np.int16)).astype(np.int32)
             self.data_bytes = self.data.tobytes()
             print(f"Successfully read WAV file '{file_path}'.")
             return True
@@ -80,7 +58,9 @@ class Controller:
 
     def read_data(self):
         read_buff = self.fpga.ocm2.read(len(self.data_bytes))
-        filtered_signal = np.frombuffer(read_buff, dtype=np.int16)
+        raw_data = np.frombuffer(read_buff, dtype=np.int32)
+        filtered_signal = (raw_data & 0xFFFF).astype(np.int16)
+
         return filtered_signal
 
     def start_data_processing(self):

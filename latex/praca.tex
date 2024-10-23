@@ -39,7 +39,7 @@ url=false,
 % Ustawienia związane z polskimi normami dla bibliografii.
 maxbibnames=3,
 % Jeżeli używamy BibTeXa:
-backend=bibtex
+% backend=bibtex
 ]{biblatex}
 
 \usepackage{csquotes}
@@ -99,24 +99,27 @@ backend=bibtex
 \usepackage{booktabs}
 \usepackage{makecell}
 \usepackage[flushleft]{threeparttable}
+\usepackage[hidelinks]{hyperref}
+\usepackage{acronym}
+
+
 
 % defines the X column to use m (\parbox[c]) instead of p (`parbox[t]`)
 \newcolumntype{C}[1]{>{\hsize=#1\hsize\centering\arraybackslash}X}
 
-
-%---------------------------------------------------------------------------
+% ------------------------
 
 \author{Dominik Bachurski}
 \shortauthor{D. Bachurski}
 
-\titlePL{Implementacja algorytmów cyfrowego przetwarzania sygnalow w układzie heterogenicznym Intel Cyclone V SoC}
+\titlePL{Implementacja algorytmów cyfrowego przetwarzania sygnałów w układzie heterogenicznym Intel Cyclone V SoC}
 \titleEN{Implementation of digital signal processing algorithms in the heterogeneous Intel Cyclone V SoC system}
 
 \shorttitlePL{Implementacja algorytmów cyfrowego przetwarzania sygnalow} % skrócona wersja tytułu jeśli jest bardzo długi
 
 \thesistype{Praca dyplomowa}
 
-\supervisor{dr Paweł Skrzypiec}
+\supervisor{dr inż. Paweł Skrzypiec}
 
 \degreeprogramme{Mikroelektronika w Technice i Medycynie}
 
@@ -154,11 +157,12 @@ backend=bibtex
 \tableofcontents
 \clearpage
 
+\include{akronimy}
+\include{wstep}
 \include{rozdzial1}
 \include{rozdzial2}
 \include{rozdzial3}
 \include{rozdzial4}
-\include{rozdzial5}
 
 % itd.
 % \appendix

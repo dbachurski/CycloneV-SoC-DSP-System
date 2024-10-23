@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import argparse
 import os
 
-MAX_BYTES = 64 * 1024
+MAX_BYTES = 32 * 1024
 
 def save_wav_data_as_plot(file_path):
     with wave.open(file_path, 'rb') as wav_file:
@@ -22,6 +22,11 @@ def save_wav_data_as_plot(file_path):
 
         signal = signal.astype(np.float32) / 16384
         time = np.arange(len(signal)) / sampling_rate
+
+    if len(time) > sampling_rate:
+        time = time[:sampling_rate]
+        signal = signal[:sampling_rate]
+
     base_name = os.path.splitext(file_path)[0]
     svg_file = f'{base_name}.svg'
 

@@ -19,7 +19,7 @@ do_install:append() {
     install -m 0755 ${S}/dsp/dsp_tester.py ${D}${bindir}/dsp/apps/dsp-tester
     install -m 0755 ${S}/dsp/dsp_controller.py ${D}${bindir}/dsp/apps/dsp-controller
     install -m 0755 ${S}/dsp/led_control.py ${D}${bindir}/dsp/apps/led-control
-    install -m 0755 ${S}/dsp/data/data_to_send_64kB.txt ${D}${bindir}/dsp/data/data_to_send_64kB.txt
+    install -m 0755 ${S}/dsp/data/data_to_send_32kB.txt ${D}${bindir}/dsp/data/data_to_send_32kB.txt
     install -m 0755 ${S}/dsp/data/moving_average.txt ${D}${bindir}/dsp/data/moving_average.txt
     install -m 0755 ${S}/dsp/data/unit_impulse.txt ${D}${bindir}/dsp/data/unit_impulse.txt
 

@@ -16,12 +16,35 @@ addrmap csr {
         field {
             sw = rw;
             hw = na;
-        } res[31:1] = 0;
+        } res [31:18] = 0;
         field {
             sw = rw;
             hw = r;
-        } enable[0:0] = 0;
-    } FIR_CR @ 0x004;
+        } dft_number_of_points[17:3] = 0;
+        field {
+            sw = rw;
+            hw = r;
+        } dft_reset[2:2] = 0;
+        field {
+            sw = rw;
+            hw = r;
+        } dft_enable[1:1] = 0;
+        field {
+            sw = rw;
+            hw = r;
+        } fir_enable[0:0] = 0;
+    } DSP_CR @ 0x004;
+
+    reg {
+        field {
+            sw = rw;
+            hw = na;
+        } res [31:3] = 0;
+        field {
+            sw = r;
+            hw = rw;
+        } dft_status[2:0] = 0;
+    } DSP_SR @ 0x008;
 
     reg {
         field {
@@ -134,5 +157,4 @@ addrmap csr {
             hw = r;
         } val[31:0] = 0;
     } fir_coeff_15;
-
 };

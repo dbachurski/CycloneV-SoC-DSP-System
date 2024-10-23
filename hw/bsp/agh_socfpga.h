@@ -27,22 +27,54 @@ typedef union {
     uint32_t w;
 } csr__IO_CR_t;
 
-// Reg - csr.FIR_CR
-#define CSR__FIR_CR__ENABLE_bm 0x1
-#define CSR__FIR_CR__ENABLE_bp 0
-#define CSR__FIR_CR__ENABLE_bw 1
-#define CSR__FIR_CR__ENABLE_reset 0x0
-#define CSR__FIR_CR__RES_bm 0xfffffffe
-#define CSR__FIR_CR__RES_bp 1
-#define CSR__FIR_CR__RES_bw 31
-#define CSR__FIR_CR__RES_reset 0x0
+// Reg - csr.DSP_CR
+#define CSR__DSP_CR__FIR_ENABLE_bm 0x1
+#define CSR__DSP_CR__FIR_ENABLE_bp 0
+#define CSR__DSP_CR__FIR_ENABLE_bw 1
+#define CSR__DSP_CR__FIR_ENABLE_reset 0x0
+#define CSR__DSP_CR__DFT_ENABLE_bm 0x2
+#define CSR__DSP_CR__DFT_ENABLE_bp 1
+#define CSR__DSP_CR__DFT_ENABLE_bw 1
+#define CSR__DSP_CR__DFT_ENABLE_reset 0x0
+#define CSR__DSP_CR__DFT_RESET_bm 0x4
+#define CSR__DSP_CR__DFT_RESET_bp 2
+#define CSR__DSP_CR__DFT_RESET_bw 1
+#define CSR__DSP_CR__DFT_RESET_reset 0x0
+#define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_bm 0x3fff8
+#define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_bp 3
+#define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_bw 15
+#define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_reset 0x0
+#define CSR__DSP_CR__RES_bm 0xfffc0000
+#define CSR__DSP_CR__RES_bp 18
+#define CSR__DSP_CR__RES_bw 14
+#define CSR__DSP_CR__RES_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
-        uint32_t enable :1;
-        uint32_t res :31;
+        uint32_t fir_enable :1;
+        uint32_t dft_enable :1;
+        uint32_t dft_reset :1;
+        uint32_t dft_number_of_points :15;
+        uint32_t res :14;
     } f;
     uint32_t w;
-} csr__FIR_CR_t;
+} csr__DSP_CR_t;
+
+// Reg - csr.DSP_SR
+#define CSR__DSP_SR__DFT_STATUS_bm 0x7
+#define CSR__DSP_SR__DFT_STATUS_bp 0
+#define CSR__DSP_SR__DFT_STATUS_bw 3
+#define CSR__DSP_SR__DFT_STATUS_reset 0x0
+#define CSR__DSP_SR__RES_bm 0xfffffff8
+#define CSR__DSP_SR__RES_bp 3
+#define CSR__DSP_SR__RES_bw 29
+#define CSR__DSP_SR__RES_reset 0x0
+typedef union {
+    struct __attribute__ ((__packed__)) {
+        uint32_t dft_status :3;
+        uint32_t res :29;
+    } f;
+    uint32_t w;
+} csr__DSP_SR_t;
 
 // Reg - csr.fir_coeff_0
 #define CSR__FIR_COEFF_0__VAL_bm 0xffffffff
@@ -239,8 +271,9 @@ typedef union {
 // Addrmap - csr
 typedef struct __attribute__ ((__packed__)) {
     csr__IO_CR_t IO_CR;
-    csr__FIR_CR_t FIR_CR;
-    uint8_t RESERVED_8_ff[0xf8];
+    csr__DSP_CR_t DSP_CR;
+    csr__DSP_SR_t DSP_SR;
+    uint8_t RESERVED_c_ff[0xf4];
     csr__fir_coeff_0_t fir_coeff_0;
     csr__fir_coeff_1_t fir_coeff_1;
     csr__fir_coeff_2_t fir_coeff_2;

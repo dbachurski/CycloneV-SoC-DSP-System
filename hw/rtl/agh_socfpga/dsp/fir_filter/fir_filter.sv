@@ -7,7 +7,6 @@ module fir_filter (
     output logic               filtered_signal_valid,
     output logic signed [15:0] filtered_signal,
 
-    input logic                enable,
     input logic                signal_valid,
     input logic signed [15:0]  signal
 );
@@ -36,6 +35,7 @@ logic signed [36:0] sum_4_nxt;
 
 /* Local assigments */
 
+assign enable = hwif_in.DSP_CR.fir_enable.value;
 assign fir_coefficients[0] = hwif_in.fir_coeff_0.val.value[15:0];
 assign fir_coefficients[1] = hwif_in.fir_coeff_0.val.value[31:16];
 assign fir_coefficients[2] = hwif_in.fir_coeff_1.val.value[15:0];

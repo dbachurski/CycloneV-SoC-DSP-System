@@ -45,5 +45,11 @@ latex/*.log
 latex/*.toc
 latex/*.run.xml
 latex/*.ps
+latex/*.acn
+latex/*.bbl*
+latex/*.bcf
+latex/*.glo
+latex/*.glsdefs
+latex/*.ist
 latex/*~
 
