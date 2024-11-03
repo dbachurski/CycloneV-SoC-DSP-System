@@ -28,21 +28,26 @@ module dft_wrapper
 
 logic [31:0] memory_reader_readdata;
 logic [12:0] memory_reader_readaddress;
-logic        memory_reader_trigger, memory_reader_read;
+logic        memory_reader_trigger, memory_reader_read, dft_done, dft_done_prev;
+
+
+/* Signal assigments */
+
+assign dft_wrapper_sink_ready = 1'b1;
 
 
 /* Submodules placement */
 
 r2fft_impl u_r2fft_impl (
     .clk(clk),
-    .rst_i(rst_i),
+    .rst_i(~rst_n),
 
     .autorun_i(1'b1),
     .run_i(1'b0),
     .fin_i(hwif_in.DSP_CR.dft_reset.value),
     .ifft_i(1'b0),
 
-    .done_o(memory_reader_trigger),
+    .done_o(dft_done),
     .status_o(hwif_out.DSP_SR.dft_status.next),
     .bfpexp_o(8'b0),
 
@@ -66,12 +71,31 @@ memory_reader u_memory_reader (
     .memory_reader_read,
     .memory_reader_readdata,
 
+    .memory_reader_status(hwif_out.DSP_SR.memory_reader_status.next),
+
     .memory_reader_source_data(dft_wrapper_source_data),
     .memory_reader_source_valid(dft_wrapper_source_valid),
     .memory_reader_source_sop(dft_wrapper_source_sop),
     .memory_reader_source_eop(dft_wrapper_source_eop),
     .memory_reader_source_ready(dft_wrapper_source_ready)
 );
+
+
+/* Internal logic */
+
+always_ff @(posedge clk or negedge rst_n) begin
+    if (!rst_n) begin
+        dft_done_prev <= 0;
+    end else begin
+        dft_done_prev <= dft_done;
+    end
+end
+
+always_comb begin
+    memory_reader_trigger = 1'b0;
+    if (dft_done && !dft_done_prev)
+        memory_reader_trigger = 1'b1;
+end
 
 endmodule
 

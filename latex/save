@@ -10,11 +10,7 @@ Ogólna architektura zaimplementowanego rozwiązania została zaprezentowana na 
 
 \section{Platforma}
 \label{sec:platforma}
-Platformą wybraną do realizacji pracy jest system heterogeniczny DE0-Nano-SoC, którego glównym elementem był układ Intel Cyclone V SoC.Zawiera on \ac{fpga} oraz \ac{hps} oparty na procesorze \acs{arm}, co umożliwia podział zadań między hardware i software.
-
-Układ \ac{fpga} w Cyclone V SoC oferuje programowalne zasoby, takie jak \ac{lut}, bloki \ac{dsp} oraz pamięci RAM, które umożliwiają implementację szerokiego zakresu funkcji, od prostych operacji po bardziej zaawansowane algorytmy. Zintegrowany z \ac{fpga} system \ac{hps}, oparty na dwurdzeniowym procesorze ARM Cortex-A9 z zegarem 925 MHz, komunikuje się z \ac{fpga} za pomocą mostków AXI i AXI Lightweight.
-
-Decyzja o wyborze tej konkretnej platformy była podyktowana kilkoma istotnymi aspektami. Przede wszystkim heterogeniczna architektura systemu, dobrze sprawdza się w zastosowaniach \ac{dsp}, co opisano dokładniej w sekcji \ref{sec:system-heterogeniczny}.
+Platformą wybraną do realizacji pracy jest system heterogeniczny DE0-Nano-SoC, którego glównym elementem był układ Intel Cyclone V SoC.Zawiera on \ac{fpga} oraz \ac{hps} oparty na procesorze \acs{arm}, co umożliwia podział zadań między hardware i software. Decyzja o wyborze tej konkretnej platformy była podyktowana kilkoma istotnymi aspektami. Przede wszystkim heterogeniczna architektura systemu, dobrze sprawdza się w zastosowaniach \ac{dsp}, co opisano dokładniej w sekcji \ref{sec:system-heterogeniczny}.
 
 Ponadto układ posiada gniazdo na kartę micro SD, na którą można wgrać obraz całego systemu. Karta SD pełni funkcję głównego nośnika, z którego ładowany jest system przy starcie. Dzięki wykorzystaniu wbudowanego slotu możemy uruchomić procesor wykorzytując niemal każdy system operacyjny wspierający architekturę ARM, a korzystając z narzędzi takich jak \hyperref[sec:linux-embedded]{Yocto} jesteśmy w stanie skonfigurować system zgodnie z naszymi wymaganiami.
 
@@ -50,32 +46,31 @@ Avalon MM jest interfejsem pamięciowym, który sprawdza się w sytuacjach, gdy 
 
 Avalon Streaming pozwala na przesył danch w sposób ciągły bez konieczności adresacji każdej paczki. Interfejs sprawdza się aplikacjach bazuących na przetwarzaniu w czasie rzeczywistym, wymagających szybkiego transferu dużych ilości danych.
 
-Wybór pomiędzy tymi interfejsami zależy od specyficznych potrzeb aplikacji -- Avalon MM jest odpowiedni do operacji bazujących na transakcjach do pamięci, podczas gdy Avalon Streaming lepiej sprawdza się w przypadku transmisji danych pomiędzy modułami, które mają je przetworzyć.
+Wybór pomiędzy tymi interfejsami zależy od specyficznych potrzeb aplikacji - Avalon MM jest odpowiedni do operacji bazujących na transakcjach do pamięci, podczas gdy Avalon Streaming lepiej sprawdza się w przypadku transmisji danych pomiędzy modułami, które mają je przetworzyć.
 
-\subsection{Zaprojektowane moduły \ac{dsp}}
-System został wyposażony w dwa moduły \ac{dsp} -- filtr FIR o zmiennych współczynnikach oraz moduł szyfrowania danych oparty na algorytmie \ac{tea}.
+\subsection{Zaprojektowane moduły DSP}
+System został wyposażony w dwa moduły DSP: filtr FIR o zmiennych współczynnikach oraz moduł szyfrowania danych oparty na algorytmie TEA (Tiny Encryption Algorithm).
 
-Moduł filtru FIR umożliwia dynamiczną zmianę współczynników z poziomu oprogramowania, co pozwala na realizację różnych typów filtracji sygnałów w czasie rzeczywistym. Dzięki tej funckjonalności, filtr może pełnić różne typy filtracji, takie jak:
+Filtr FIR o Zmiennych Współczynnikach
+Moduł filtra FIR umożliwia dynamiczną zmianę współczynników filtra za pomocą oprogramowania, co pozwala na realizację różnych typów filtracji sygnałów w czasie rzeczywistym. Dzięki tej elastyczności, filtr może pełnić różne funkcje, takie jak:
 
-\begin{itemize}
-    \item Low Pass (dolnoprzepustowy): Wygładzanie sygnału przez eliminację wysokich częstotliwości.
-    \item Bandpass (pasmowoprzepustowy): Przepuszczanie sygnałów z określonego zakresu częstotliwości.
-    \item Moving Average (średnia krocząca): Wygładzanie danych poprzez uśrednianie kolejnych wartości sygnału.
-\end{itemize}
+Low Pass (dolnoprzepustowy): Wygładzanie sygnału przez eliminację wysokich częstotliwości.
+Bandpass (pasmowoprzepustowy): Przepuszczanie sygnałów z określonego zakresu częstotliwości.
+Moving Average (średnia krocząca): Wygładzanie danych poprzez uśrednianie kolejnych wartości sygnału.
+Zmienność współczynników filtra umożliwia dostosowanie parametrów filtracji w zależności od aktualnych wymagań aplikacji, co znacząco zwiększa wszechstronność i przydatność modułu w różnych zadaniach DSP.
 
-Modularność współczynników filtru umożliwia dostosowanie parametrów filtracji w zależności od aktualnych wymagań aplikacji, co znacząco zwiększa przydatność modułu w różnych zastosowaniach.
-
-Moduł enkrypcji oparty na algorytmie \ac{tea} zapewnia bezpieczne szyfrowanie danych w systemie. \ac{tea} jest lekkim algorytmem szyfrowania blokowego, którego najważniejszymi cechami są prostota implementacji oraz wysoka prędkość przetwarzania. Algoytm operuje na danych wejściowych o szerokości 32 bitów (w zaimplementowanym systemie szerokość wejść została ograniczona do 32 bitów) i 128-bitowym kluczu. Ze względu na swoją prostotę i niskie zapotrzebowanie na zasoby, TEA jest idealnym wyborem do zastosowań, w których wymagana jest efektywność przy zachowaniu podstawowego poziomu bezpieczeństwa.
-
+Moduł Szyfrowania Danych oparty na TEA
+Moduł enkrypcji oparty na algorytmie Tiny Encryption Algorithm (TEA) zapewnia bezpieczne szyfrowanie danych w systemie. TEA jest lekkim algorytmem szyfrowania blokowego, który wykorzystuje 128-bitowy klucz do ochrony informacji. Ze względu na swoją prostotę i niskie zapotrzebowanie na zasoby, TEA jest idealnym wyborem do zastosowań, w których wymagana jest efektywność przy zachowaniu podstawowego poziomu bezpieczeństwa danych. Moduł ten jest odpowiedni do szybkiego przetwarzania danych i może być stosowany w aplikacjach wymagających ochrony transmisji informacji.
 
 
 
-% Układ \ac{fpga} w Cyclone V SoC zawiera programowalne zasoby, takie jak \ac{lut}, bloki \ac{dsp}
-% oraz wewnętrzne pamięci RAM. Te zasoby pozwalają na realizację szerokiego zakresu funkcji, od prostych operacji po złożone algorytmy przetwarzania sygnałów.
-% \ac{fpga} może być dynamicznie rekonfigurowany, co zapewnia elastyczność w projektowaniu systemów sprzętowych.
 
-% HPS w Cyclone V SoC to zintegrowany system oparty na dwurdzeniowym procesorze ARM Cortex-A9 oferującym zegar 925MHz. Procesor może funkcjonować niezależnie,
-% jednak w praktyce jest on wykorzystywany do zarządzania zadaniami w \ac{fpga}, z którą komunikacja odbywa się pomocą mostków AXI/AXI Lightweight.
+Układ \ac{fpga} w Cyclone V SoC zawiera programowalne zasoby, takie jak \ac{lut}, bloki \ac{dsp}
+oraz wewnętrzne pamięci RAM. Te zasoby pozwalają na realizację szerokiego zakresu funkcji, od prostych operacji po złożone algorytmy przetwarzania sygnałów.
+\ac{fpga} może być dynamicznie rekonfigurowany, co zapewnia elastyczność w projektowaniu systemów sprzętowych.
+
+HPS w Cyclone V SoC to zintegrowany system oparty na dwurdzeniowym procesorze ARM Cortex-A9 oferującym zegar 925MHz. Procesor może funkcjonować niezależnie,
+jednak w praktyce jest on wykorzystywany do zarządzania zadaniami w \ac{fpga}, z którą komunikacja odbywa się pomocą mostków AXI/AXI Lightweight.
 
 
 

@@ -36,25 +36,35 @@ typedef union {
 #define CSR__DSP_CR__DFT_ENABLE_bp 1
 #define CSR__DSP_CR__DFT_ENABLE_bw 1
 #define CSR__DSP_CR__DFT_ENABLE_reset 0x0
-#define CSR__DSP_CR__DFT_RESET_bm 0x4
-#define CSR__DSP_CR__DFT_RESET_bp 2
+#define CSR__DSP_CR__TEA_ENABLE_bm 0x4
+#define CSR__DSP_CR__TEA_ENABLE_bp 2
+#define CSR__DSP_CR__TEA_ENABLE_bw 1
+#define CSR__DSP_CR__TEA_ENABLE_reset 0x0
+#define CSR__DSP_CR__TEA_MODE_bm 0x8
+#define CSR__DSP_CR__TEA_MODE_bp 3
+#define CSR__DSP_CR__TEA_MODE_bw 1
+#define CSR__DSP_CR__TEA_MODE_reset 0x0
+#define CSR__DSP_CR__DFT_RESET_bm 0x10
+#define CSR__DSP_CR__DFT_RESET_bp 4
 #define CSR__DSP_CR__DFT_RESET_bw 1
 #define CSR__DSP_CR__DFT_RESET_reset 0x0
-#define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_bm 0x3fff8
-#define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_bp 3
+#define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_bm 0xfffe0
+#define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_bp 5
 #define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_bw 15
 #define CSR__DSP_CR__DFT_NUMBER_OF_POINTS_reset 0x0
-#define CSR__DSP_CR__RES_bm 0xfffc0000
-#define CSR__DSP_CR__RES_bp 18
-#define CSR__DSP_CR__RES_bw 14
+#define CSR__DSP_CR__RES_bm 0xfff00000
+#define CSR__DSP_CR__RES_bp 20
+#define CSR__DSP_CR__RES_bw 12
 #define CSR__DSP_CR__RES_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t fir_enable :1;
         uint32_t dft_enable :1;
+        uint32_t tea_enable :1;
+        uint32_t tea_mode :1;
         uint32_t dft_reset :1;
         uint32_t dft_number_of_points :15;
-        uint32_t res :14;
+        uint32_t res :12;
     } f;
     uint32_t w;
 } csr__DSP_CR_t;
@@ -64,14 +74,19 @@ typedef union {
 #define CSR__DSP_SR__DFT_STATUS_bp 0
 #define CSR__DSP_SR__DFT_STATUS_bw 3
 #define CSR__DSP_SR__DFT_STATUS_reset 0x0
-#define CSR__DSP_SR__RES_bm 0xfffffff8
-#define CSR__DSP_SR__RES_bp 3
-#define CSR__DSP_SR__RES_bw 29
+#define CSR__DSP_SR__MEMORY_READER_STATUS_bm 0x18
+#define CSR__DSP_SR__MEMORY_READER_STATUS_bp 3
+#define CSR__DSP_SR__MEMORY_READER_STATUS_bw 2
+#define CSR__DSP_SR__MEMORY_READER_STATUS_reset 0x0
+#define CSR__DSP_SR__RES_bm 0xffffffe0
+#define CSR__DSP_SR__RES_bp 5
+#define CSR__DSP_SR__RES_bw 27
 #define CSR__DSP_SR__RES_reset 0x0
 typedef union {
     struct __attribute__ ((__packed__)) {
         uint32_t dft_status :3;
-        uint32_t res :29;
+        uint32_t memory_reader_status :2;
+        uint32_t res :27;
     } f;
     uint32_t w;
 } csr__DSP_SR_t;

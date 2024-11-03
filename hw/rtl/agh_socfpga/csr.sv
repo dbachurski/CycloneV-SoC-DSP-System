@@ -157,13 +157,21 @@ module csr (
             struct {
                 logic next;
                 logic load_next;
+            } tea_enable;
+            struct {
+                logic next;
+                logic load_next;
+            } tea_mode;
+            struct {
+                logic next;
+                logic load_next;
             } dft_reset;
             struct {
                 logic [14:0] next;
                 logic load_next;
             } dft_number_of_points;
             struct {
-                logic [13:0] next;
+                logic [11:0] next;
                 logic load_next;
             } res;
         } DSP_CR;
@@ -173,7 +181,11 @@ module csr (
                 logic load_next;
             } dft_status;
             struct {
-                logic [28:0] next;
+                logic [1:0] next;
+                logic load_next;
+            } memory_reader_status;
+            struct {
+                logic [26:0] next;
                 logic load_next;
             } res;
         } DSP_SR;
@@ -294,12 +306,18 @@ module csr (
             } dft_enable;
             struct {
                 logic value;
+            } tea_enable;
+            struct {
+                logic value;
+            } tea_mode;
+            struct {
+                logic value;
             } dft_reset;
             struct {
                 logic [14:0] value;
             } dft_number_of_points;
             struct {
-                logic [13:0] value;
+                logic [11:0] value;
             } res;
         } DSP_CR;
         struct {
@@ -307,7 +325,10 @@ module csr (
                 logic [2:0] value;
             } dft_status;
             struct {
-                logic [28:0] value;
+                logic [1:0] value;
+            } memory_reader_status;
+            struct {
+                logic [26:0] value;
             } res;
         } DSP_SR;
         struct {
@@ -476,6 +497,48 @@ module csr (
         end
     end
     assign hwif_out.DSP_CR.dft_enable.value = field_storage.DSP_CR.dft_enable.value;
+    // Field: csr.DSP_CR.tea_enable
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.DSP_CR.tea_enable.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.DSP_CR && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.DSP_CR.tea_enable.value & ~decoded_wr_biten[2:2]) | (decoded_wr_data[2:2] & decoded_wr_biten[2:2]);
+            load_next_c = '1;
+        end
+        field_combo.DSP_CR.tea_enable.next = next_c;
+        field_combo.DSP_CR.tea_enable.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.DSP_CR.tea_enable.value <= 1'h0;
+        end else if(field_combo.DSP_CR.tea_enable.load_next) begin
+            field_storage.DSP_CR.tea_enable.value <= field_combo.DSP_CR.tea_enable.next;
+        end
+    end
+    assign hwif_out.DSP_CR.tea_enable.value = field_storage.DSP_CR.tea_enable.value;
+    // Field: csr.DSP_CR.tea_mode
+    always_comb begin
+        automatic logic [0:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.DSP_CR.tea_mode.value;
+        load_next_c = '0;
+        if(decoded_reg_strb.DSP_CR && decoded_req_is_wr) begin // SW write
+            next_c = (field_storage.DSP_CR.tea_mode.value & ~decoded_wr_biten[3:3]) | (decoded_wr_data[3:3] & decoded_wr_biten[3:3]);
+            load_next_c = '1;
+        end
+        field_combo.DSP_CR.tea_mode.next = next_c;
+        field_combo.DSP_CR.tea_mode.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.DSP_CR.tea_mode.value <= 1'h0;
+        end else if(field_combo.DSP_CR.tea_mode.load_next) begin
+            field_storage.DSP_CR.tea_mode.value <= field_combo.DSP_CR.tea_mode.next;
+        end
+    end
+    assign hwif_out.DSP_CR.tea_mode.value = field_storage.DSP_CR.tea_mode.value;
     // Field: csr.DSP_CR.dft_reset
     always_comb begin
         automatic logic [0:0] next_c;
@@ -483,7 +546,10 @@ module csr (
         next_c = field_storage.DSP_CR.dft_reset.value;
         load_next_c = '0;
         if(decoded_reg_strb.DSP_CR && decoded_req_is_wr) begin // SW write
-            next_c = (field_storage.DSP_CR.dft_reset.value & ~decoded_wr_biten[2:2]) | (decoded_wr_data[2:2] & decoded_wr_biten[2:2]);
+            next_c = (field_storage.DSP_CR.dft_reset.value & ~decoded_wr_biten[4:4]) | (decoded_wr_data[4:4] & decoded_wr_biten[4:4]);
+            load_next_c = '1;
+        end else begin // singlepulse clears back to 0
+            next_c = '0;
             load_next_c = '1;
         end
         field_combo.DSP_CR.dft_reset.next = next_c;
@@ -504,7 +570,7 @@ module csr (
         next_c = field_storage.DSP_CR.dft_number_of_points.value;
         load_next_c = '0;
         if(decoded_reg_strb.DSP_CR && decoded_req_is_wr) begin // SW write
-            next_c = (field_storage.DSP_CR.dft_number_of_points.value & ~decoded_wr_biten[17:3]) | (decoded_wr_data[17:3] & decoded_wr_biten[17:3]);
+            next_c = (field_storage.DSP_CR.dft_number_of_points.value & ~decoded_wr_biten[19:5]) | (decoded_wr_data[19:5] & decoded_wr_biten[19:5]);
             load_next_c = '1;
         end
         field_combo.DSP_CR.dft_number_of_points.next = next_c;
@@ -520,12 +586,12 @@ module csr (
     assign hwif_out.DSP_CR.dft_number_of_points.value = field_storage.DSP_CR.dft_number_of_points.value;
     // Field: csr.DSP_CR.res
     always_comb begin
-        automatic logic [13:0] next_c;
+        automatic logic [11:0] next_c;
         automatic logic load_next_c;
         next_c = field_storage.DSP_CR.res.value;
         load_next_c = '0;
         if(decoded_reg_strb.DSP_CR && decoded_req_is_wr) begin // SW write
-            next_c = (field_storage.DSP_CR.res.value & ~decoded_wr_biten[31:18]) | (decoded_wr_data[31:18] & decoded_wr_biten[31:18]);
+            next_c = (field_storage.DSP_CR.res.value & ~decoded_wr_biten[31:20]) | (decoded_wr_data[31:20] & decoded_wr_biten[31:20]);
             load_next_c = '1;
         end
         field_combo.DSP_CR.res.next = next_c;
@@ -533,7 +599,7 @@ module csr (
     end
     always_ff @(posedge clk or negedge arst_n) begin
         if(~arst_n) begin
-            field_storage.DSP_CR.res.value <= 14'h0;
+            field_storage.DSP_CR.res.value <= 12'h0;
         end else if(field_combo.DSP_CR.res.load_next) begin
             field_storage.DSP_CR.res.value <= field_combo.DSP_CR.res.next;
         end
@@ -559,14 +625,35 @@ module csr (
         end
     end
     assign hwif_out.DSP_SR.dft_status.value = field_storage.DSP_SR.dft_status.value;
+    // Field: csr.DSP_SR.memory_reader_status
+    always_comb begin
+        automatic logic [1:0] next_c;
+        automatic logic load_next_c;
+        next_c = field_storage.DSP_SR.memory_reader_status.value;
+        load_next_c = '0;
+        
+        // HW Write
+        next_c = hwif_in.DSP_SR.memory_reader_status.next;
+        load_next_c = '1;
+        field_combo.DSP_SR.memory_reader_status.next = next_c;
+        field_combo.DSP_SR.memory_reader_status.load_next = load_next_c;
+    end
+    always_ff @(posedge clk or negedge arst_n) begin
+        if(~arst_n) begin
+            field_storage.DSP_SR.memory_reader_status.value <= 2'h0;
+        end else if(field_combo.DSP_SR.memory_reader_status.load_next) begin
+            field_storage.DSP_SR.memory_reader_status.value <= field_combo.DSP_SR.memory_reader_status.next;
+        end
+    end
+    assign hwif_out.DSP_SR.memory_reader_status.value = field_storage.DSP_SR.memory_reader_status.value;
     // Field: csr.DSP_SR.res
     always_comb begin
-        automatic logic [28:0] next_c;
+        automatic logic [26:0] next_c;
         automatic logic load_next_c;
         next_c = field_storage.DSP_SR.res.value;
         load_next_c = '0;
         if(decoded_reg_strb.DSP_SR && decoded_req_is_wr) begin // SW write
-            next_c = (field_storage.DSP_SR.res.value & ~decoded_wr_biten[31:3]) | (decoded_wr_data[31:3] & decoded_wr_biten[31:3]);
+            next_c = (field_storage.DSP_SR.res.value & ~decoded_wr_biten[31:5]) | (decoded_wr_data[31:5] & decoded_wr_biten[31:5]);
             load_next_c = '1;
         end
         field_combo.DSP_SR.res.next = next_c;
@@ -574,7 +661,7 @@ module csr (
     end
     always_ff @(posedge clk or negedge arst_n) begin
         if(~arst_n) begin
-            field_storage.DSP_SR.res.value <= 29'h0;
+            field_storage.DSP_SR.res.value <= 27'h0;
         end else if(field_combo.DSP_SR.res.load_next) begin
             field_storage.DSP_SR.res.value <= field_combo.DSP_SR.res.next;
         end
@@ -937,11 +1024,14 @@ module csr (
     assign readback_array[0][31:8] = (decoded_reg_strb.IO_CR && !decoded_req_is_wr) ? field_storage.IO_CR.res.value : '0;
     assign readback_array[1][0:0] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.fir_enable.value : '0;
     assign readback_array[1][1:1] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.dft_enable.value : '0;
-    assign readback_array[1][2:2] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.dft_reset.value : '0;
-    assign readback_array[1][17:3] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.dft_number_of_points.value : '0;
-    assign readback_array[1][31:18] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.res.value : '0;
+    assign readback_array[1][2:2] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.tea_enable.value : '0;
+    assign readback_array[1][3:3] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.tea_mode.value : '0;
+    assign readback_array[1][4:4] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.dft_reset.value : '0;
+    assign readback_array[1][19:5] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.dft_number_of_points.value : '0;
+    assign readback_array[1][31:20] = (decoded_reg_strb.DSP_CR && !decoded_req_is_wr) ? field_storage.DSP_CR.res.value : '0;
     assign readback_array[2][2:0] = (decoded_reg_strb.DSP_SR && !decoded_req_is_wr) ? field_storage.DSP_SR.dft_status.value : '0;
-    assign readback_array[2][31:3] = (decoded_reg_strb.DSP_SR && !decoded_req_is_wr) ? field_storage.DSP_SR.res.value : '0;
+    assign readback_array[2][4:3] = (decoded_reg_strb.DSP_SR && !decoded_req_is_wr) ? field_storage.DSP_SR.memory_reader_status.value : '0;
+    assign readback_array[2][31:5] = (decoded_reg_strb.DSP_SR && !decoded_req_is_wr) ? field_storage.DSP_SR.res.value : '0;
     assign readback_array[3][31:0] = (decoded_reg_strb.fir_coeff_0 && !decoded_req_is_wr) ? field_storage.fir_coeff_0.val.value : '0;
     assign readback_array[4][31:0] = (decoded_reg_strb.fir_coeff_1 && !decoded_req_is_wr) ? field_storage.fir_coeff_1.val.value : '0;
     assign readback_array[5][31:0] = (decoded_reg_strb.fir_coeff_2 && !decoded_req_is_wr) ? field_storage.fir_coeff_2.val.value : '0;

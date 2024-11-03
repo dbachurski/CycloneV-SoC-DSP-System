@@ -1,39 +1,49 @@
-\chapter{Architektura}
-\label{cha:architektura}
+\chapter{Wprowadzenie}
+\label{cha:wprowadzenie}
 
-\section{Platforma}
-\label{sec:platforma}
-Platformą, którą wybrałem do mojej pracy, jest heterogeniczny układ Intel Cyclone V SoC.
-Zawiera on FPGA oraz HPS (Hard Processor System) oparty na procesorze ARM, co umożliwia
-podział zadań między hardware i software. Ze względu na przystępną cenę i elastyczność konfiguracji,
-układ ten znajduje szerokie zastosowanie w projektach wymagających kompromisu między wydajnością a kosztami,
-szczególnie w środowiskach akademickich. W pracy przedstawię, jak efektywnie wykorzystać ten układ do implementacji zaawansowanych algorytmów przetwarzania sygnałów.
+\section{Systemy heterogeniczny}
+\label{sec:system-heterogeniczny}
 
-\begin{figure}[!htb]
-    \centerline{\includegraphics[scale=0.2]{de0-nano-soc.png}}
-    \caption{Układ DE0-Nano-SoC (Cyclone V)}
-    \label{fig:de0-nano-soc}
-\end{figure}
+Historia systemów heterogenicznych sięga końca XX wieku, gdy projektanci zaczęli dostrzegać potencjał połączenia różnych typów jednostek obliczeniowych w jednym systemie, aby uzyskać wyższą efektywność i wydajność. Początkowo były to systemy zawierające różne procesory, takie jak procesory ogólnego przeznaczenia (\acsu{cpu}) i procesory sygnałowe (\ac{dsp}), które współpracowały, by przyspieszyć intensywne obliczenia związane z przetwarzaniem sygnałów. W kolejnych dekadach nastąpił rozwój \ac{fpga} oraz akceleratorów \acsu{gpu}, co pozwoliło na dalszą poprawę wydajności systemów obliczeniowych i wykorzystywanie ich w coraz bardziej zaawansowanych zastosowaniach. Taka integracja pozwala na maksymalizację efektywności wykonywania specyficznych zadań obliczeniowych, wykorzystując moc poszczególnych jednostek w optymalny sposób.
 
-\newpage
-\section{Architektura Hardware'u}
-\label{sec:architektura-hw}
+Architektura heterogeniczna powstała z potrzeby radzenia sobie z ograniczeniami wydajnościowymi i energetycznymi, które napotykają klasyczne systemy jednorodne. Jednoukładowe systemy mikroprocesorowe często okazują się niewystarczające w kontekście intensywnych obliczeń, wymagających zarówno dużej szybkości, jak i minimalnego zużycia energii. Systemy heterogeniczne, poprzez elastyczne przydzielanie zasobów, pozwalają uzyskać optymalne efekty energetyczne i wydajnościowe. Kluczowym aspektem ich projektowania jest efektywna współpraca pomiędzy różnymi komponentami, co wymaga odpowiedniego zarządzania pamięcią, synchronizacji oraz skutecznej komunikacji między jednostkami obliczeniowymi.
 
-\begin{figure}[!htb]
-    \centerline{\includegraphics[scale=0.5]{hardwareSystemDiagram.png}}
-    \caption{Diagram przedstawiający architekturę systemu}
-    \label{fig:architektura}
-\end{figure}
+Wykorzystanie systemów heterogenicznych przynosi liczne korzyści, ale również wyzwania związane z programowaniem i optymalizacją. Tworzenie oprogramowania dla różnych typów architektur wymaga zrozumienia specyfiki działania każdego komponentu oraz wiedzy o tym, jak je obsłużyć, co może skomplikować proces. Rozwój systemów heterogenicznych wpływa również na architekturę nowych urządzeń i sposób ich projektowania. Integracja wielu typów układów w jednym chipie, jak w przypadku \ac{soc}, pozwala na miniaturyzację oraz bardziej efektywne zarządzanie zasobami, co sprawia, że technologia heterogeniczna ma potencjał, by stać się standardem w przyszłości, zwłaszcza w sektorach wymagających wysokiej wydajności i niskiego zużycia energii.
 
-\newpage
-\section{Architektura Software'u}
-\label{sec:architektura-sw}
+\subsection{System on Chip (\ac{soc})}
+System on Chip (SoC) to zintegrowany układ scalony, który łączy wszystkie elementy kompletnego systemu na jednym chipie. \ac{soc} obejmuje procesor oraz inne jednostki obliczeniowe, takie jak \ac{fpga},
+\ac{dsp_proc}, \ac{gpu} które umożliwiają heterogeniczne przetwarzanie danych, czyli współpracę różnych typów komponentów obliczeniowych w jednym systemie. Dodatkowo SoC często zawiera wbudowane moduły komunikacyjne, które zapewniają wymianę danych z innymi urżadzeniami np. poprzez interfejsy UART, USB, SPI czy I2C.  Ponadto \ac{soc} posiadają wiele układów pomocniczych, które zwiększają funkcjonalność systemu. Są to między innymi:
+\begin{itemize}
+    \item Układy zarządzania energią, które zapewniają efektywne zasilanie i minimalizują zużycie energii.
+    \item Przetworniki analogowo-cyfrowe (A/D) oraz cyfrowo-analogowe (D/A), które umożliwiają interakcję z komponentami analogowymi.
+    \item Pamięci takie jak RAM i pamięci nieulotne (np. flash).
+\end{itemize}
 
-\begin{figure}[!htb]
-    \includegraphics[scale=0.53]{classDiagram.eps}
-    \caption{Diagram klas}
-    \label{fig:diagram-klas}
-\end{figure}
+\subsection{\ac{fpga}}
+\ac{fpga} to programowalny układ scalony, który można dynamicznie rekonfigurować, co czyni go idealnym do szybkiego prototypowania, emulacji oraz eksploracji nowych architektur. Oferuje wyższą elastyczność w porównaniu do ASIC, a także charakteryzuje się lepszą oszczędnością energetyczną w porównaniu do \ac{gpu} przy zachowaniu zadowalającej wydajności obliczeniowej.
+
+%ANALYZING THE LATENCY OVERHEADS OF ACCELERATION IN HETEROGENEOUS SYSTEMS p3
+Układy \ac{fpga} w odróżnieniu od procesorów, oferują możliwość jednoczesnego przetwarzania wielu strumieni danych, co pozwala na znaczne przyspieszenie złożonych operacji, zniwelowanie opóźnień oraz wyższą przepustowość systemu. Równoległe przetwarzanie sprawia, że \ac{fpga} przodują w zastosowaniach, gdzie przetwarzanie wymaga jednoczesnej analizy wielu strumieni danych, np. w \ac{dsp}.
+
+Ważnym atutem FPGA jest precyzyjna kontrola zegara i deterministyczne przetwarzanie. Języki opisu sprzętu, takie jak VHDL czy SystemVerilog, umożliwiają projektantom dokładne określenie momentów wykonywania operacji, co zapewnia przewidywalność. Dzięki temu FPGA gwarantują deterministyczność w aplikacjach wymagających precyzyjnego zarządzania czasem, co jest kluczowe w przypadku np. filtrów FIR, gdzie dane są przetwarzane i transmitowane w równych odstępach czasowych.
+
+\subsection{\ac{hps}}
+Systemy heterogeniczne często łączą \ac{fpga} z wbudowanymi procesorami \ac{hps}, które pozwalają na elastyczne zarządzanie zadaniami w czasie rzeczywistym. Procesor wbudowany w HPS odpowiada za zarządzanie i konfigurację układów FPGA oraz synchronizację operacji między jednostkami obliczeniowymi. Dzięki temu możliwe jest wykorzystanie procesora do kontroli całego systemu i zarządzania interfejsami zewnętrznymi przy zachowaniu korzyści z możliwości obliczeniowych i równoległego przetwarzania \ac{fpga}, co przydaje się np. w przetwarzaniu sygnałów czy analizie dużych zbiorów danych.
 
 
+\section{Algorytmy DSP}
+\label{sec:algorytmy-dsp}
 
+\section{Linux dla systemów wbudowanych}
+\label{sec:linux-embedded}
+
+W dobie dynamicznego rozwoju systemów wbudowanych, inżynierowie potrzebują narzędzi które umożliwią im dostosowanie systemów operacyjnych do specyficznych potrzeb. Yocto Project to platforma open source, która zdobywa coraz większą popularność wśród inżynierów, oferując zestaw narzędzi do tworzenia indywidualnych dystrybucji systemu Linux. Takie rozwiązanie umożliwia tworzenie systemów dostosowanych do specyficznych wymagań aplikacji.
+
+Yocto Project wyróżnia się także zdolnością do pracy z różnymi architekturami sprzętowymi, co czyni go uniwersalnym rozwiązaniem w wielu zastosowaniach. Modularność projektu pozwala na dodawanie i usuwanie pakietów, co zwiększa kontrolę nad funkcjonalnością systemu. W rezultacie inżynierowie mogą dostarczać wydajne i zoptymalizowane rozwiązania, które odpowiadają na potrzeby zmieniającego się rynku technologii wbudowanych.
+
+W kontekście współczesnych wyzwań technologicznych, Yocto Project oferuje szereg narzędzi do zarządzania wersjami i aktualizacjami, co zapewnia długoterminowe wsparcie i stabilność, co jest istotne dla bezpieczeństwa aplikacji wbudowanych. Dzięki tym zaletom inżynierowie mogą skupić się na innowacjach i rozwijaniu swoich projektów, zamiast na rozwiązywaniu problemów związanych z wydajnością.
+
+
+
+
+% Pierwsze komercyjne systemy heterogeniczne pojawiły się w latach 80. i 90., w miarę jak przemysł mikroelektroniki rozwijał technologię układów FPGA. Ich wprowadzenie miało rewolucyjny wpływ na sektor telekomunikacyjny i przemysłowy, ponieważ umożliwiało elastyczne podejście do projektowania sprzętu, który można było programować zgodnie z wymaganiami aplikacji. W latach 2000. oraz w następnym dziesięcioleciu zintegrowane układy FPGA zyskały na popularności w przemyśle, a technologia ta była wykorzystywana w szerokim zakresie zastosowań, od systemów wbudowanych po przyspieszanie obliczeń w centrach danych.

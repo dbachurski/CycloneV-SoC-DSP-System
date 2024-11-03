@@ -1,7 +1,7 @@
 
 module r2fft_impl
   #(
-    parameter FFT_LENGTH = 8192, // FFT Frame Length, 2^N
+    parameter FFT_LENGTH = 1024, // FFT Frame Length, 2^N
     parameter FFT_DW = 16,       // Data Bitwidth
     parameter PL_DEPTH = 3,      // Pipeline Stage Depth Configuration (0 - 3)
     parameter FFT_N = $clog2( FFT_LENGTH ) // Don't override this
@@ -187,4 +187,3 @@ module r2fft_impl
       );
 
 endmodule // r2fft_impl
-

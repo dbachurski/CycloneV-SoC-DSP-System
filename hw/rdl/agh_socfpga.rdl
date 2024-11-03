@@ -16,15 +16,24 @@ addrmap csr {
         field {
             sw = rw;
             hw = na;
-        } res [31:18] = 0;
+        } res [31:20] = 0;
         field {
             sw = rw;
             hw = r;
-        } dft_number_of_points[17:3] = 0;
+        } dft_number_of_points[19:5] = 0;
         field {
             sw = rw;
             hw = r;
-        } dft_reset[2:2] = 0;
+            singlepulse;
+        } dft_reset[4:4] = 0;
+        field {
+            sw = rw;
+            hw = r;
+        } tea_mode[3:3] = 0;
+        field {
+            sw = rw;
+            hw = r;
+        } tea_enable[2:2] = 0;
         field {
             sw = rw;
             hw = r;
@@ -39,7 +48,11 @@ addrmap csr {
         field {
             sw = rw;
             hw = na;
-        } res [31:3] = 0;
+        } res [31:5] = 0;
+        field {
+            sw = r;
+            hw = rw;
+        } memory_reader_status[4:3] = 0;
         field {
             sw = r;
             hw = rw;

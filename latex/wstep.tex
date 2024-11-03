@@ -4,18 +4,11 @@
 \section*{Wprowadzenie}
 \label{sec:wprowadzenie}
 
-Cyfrowe przetwarzanie sygnałów \ac{dsp} to dziedzina inżynierii, zajmująca się analizą, modyfikacją oraz optymalizacją sygnałów cyfrowych. Sygnały te mogą być wygenerowane cyfrowo lub przechodzić konwersję z postaci analogowej.
-Przejście do cyfrowej formy sygnału miejsce, kiedy system wymaga operowania na sygnale dyskretnym reprezentowanym jako wartości liczbowe będące próbkami sygnału w czasie.
+Cyfrowe przetwarzanie sygnałów, \ac{dsp} jest dziedziną inżynierii zajmującą się metodami przetwarzania oraz analizy sygnałów cyfrowych. Źródłem sygnałów cyfrowych mogą być między innymi przetworniki analogowo-cyfrowe (A/C) oraz generatory sygnałów. Najpopularniejszymi przykładami sygnałów analogowych konwertowanych do domeny cyfrowej są sygnały odbierane ze źródeł audio oraz sygnały wideo.
 
-Przetwarzanie sygnałów znajduje szerokie zastosowanie w różnych dziedzinach technologii, w tym telekomunikacji (np. w systemach komunikacji mobilnej), audio (np. w korektorach dźwięku), bezpieczeństwa danych (np. w enkrypcji), medycynie (np. w diagnostyce) oraz w zastosowaniach militarncyh (np. w radarach i sonarch).
-W kontekście telekomunikacji, \ac{dsp} daje nam możliwość przeprowadzania operacji modulacji i demodulacji, które odgrywają kluczową rolę w przesyle danych, umożliwiając efektywne kodowanie informacji oraz ich odczytanie po stronie odbiorczej. Ponadto, techniki takie jak redukcja szumów i zakłóceń są niezbędne do poprawy jakości sygnału.
+Algorytmy przetwarzania sygnałów znajdują szerokie zastosowanie w wielu dziedzinach techniki, takich jak telekomunikacja (np. w systemach komunikacji mobilnej), obróbka dźwięku (np. w equalizerach) oraz bezpieczeństwo danych (np. szyfrowanie). Przykładowe algorytmy wykorzystywane we wspomnianych zastosowaniach obejmują transformacje takie jak \ac{fft}, umożliwiające analizę sygnałów w dziedzinie częstotliwości; filtry \ac{dsp}, zarówno liniowe, jak i nieliniowe, stosowane do eliminacji zakłóceń oraz optymalizacji jakości sygnału; oraz algorytmy szyfrowania, które zabezpieczają dane podczas transmisji.
 
-Przetwarzanie sygnałów może odbywać się w różnych dziedzinach, takich jak czas, częstotliwość czy przestrzeń, co pozwala na szczegółową analizę i modyfikację sygnałów w zależności od zastosowania.
-Transformacje takie jak \ac{fft} umożliwiają analizę sygnałów w dziedzinie częstotliwości, co jest kluczowe w przypadku systemów audio i wideo. Filtry \ac{dsp}, zarówno liniowe, jak i nieliniowe,
-są używane do eliminacji zakłóceń, poprawy jakości dźwięku i obrazu oraz optymalizacji systemów transmisji danych.
-
-\ac{dsp} daje nam możliwość tworzenie bardziej wydajnych systemów, które mogą przetwarzać coraz większe ilości danych w czasie. Zastosowania \ac{dsp} rozwijają się dynamicznie, obejmując coraz nowsze obszary,
-od rozwoju sztucznej inteligencji po diagnostykę medyczną, co czyni tę dziedzinę niezbędną w rozwoju współczesnej technologii.
+Algorytmy przetwarzania sygnałów, mimo upływu lat (prace nad cyfrowym przetwarzaniem sygnałów rozpoczęły się w latach 50. XX wieku), pozostają tematem bardzo aktualnym, budzącym ciekawość wśród naukowców i inżynierów. Zastosowania \ac{dsp} rozwijają się dynamicznie, obejmując coraz nowsze obszary, co czyni tę dziedzinę niezbędną w rozwoju współczesnej technologii.
 
 % \subsection*{Równoległe przetwarzanie danych}
 % Algorytmy cyfrowego przetwarzania sygnałów (\ac{dsp}) stawiają wysokie wymagania wobec wydajności systemów obliczeniowych.
@@ -36,15 +29,13 @@ od rozwoju sztucznej inteligencji po diagnostykę medyczną, co czyni tę dziedz
 % Część \ac{fpga} systemu jest odpowiedzialna za implementację
 % algorytmów \ac{dsp}, zaś wbudowany procesor (HPS) pełni funkcję jednostki sterującej, uruchamiając serwer, który umożliwi użytkownikowi zdalną interakcję z systemem poprzez interfejs graficzny.
 
-Celem niniejszej pracy była konstrukcja systemu do przetwarzania sygnałów cyfrowych opartego na układzie heterogenicznym (system łączący różne typy komponentów obliczeniowych). Kontrolę nad częścią systemu odpowiedzialną za \ac{dsp} według założeń miała pełnić aplikacja internetowa
-umożliwiająca użytkownikowi zdalną interakcję z układem.
+Celem niniejszej pracy była konstrukcja systemu do przetwarzania sygnałów cyfrowych w opraciu o system heterogeniczny, łączący w jednym układzie scalonym mikroprocesor \acsu{arm} oraz układ \ac{fpga}. Wykorzystanie takiego rozwiązania umożliwiło dystrybucję zadań pomiędzy aplikacje zarządzane przez system operacyjny Linux oraz układ cyfrowy zaimplementowany w FPGA.
+% Kontrolę nad częścią systemu odpowiedzialną za \ac{dsp} według założeń miała pełnić aplikacja internetowa
+% umożliwiająca użytkownikowi zdalną interakcję z układem.
 
-Motywacją do realizacji takiego projektu była chęć stworzenia w przyszłości platformy zdolnej do wydajnego przetwarzania sygnałów pochodzących z np. przetworników analogowo-cyfrowych (A/C) w czasie rzeczywistym. W wielu zastosowaniach przetwarzanie sygnałów
-wymaga możliwości dostosowania architektury systemu do specyficznych potrzeb aplikacji, czego mogą nie oferować inne rozwiązania oparte np. o mikrokontrolery lub procesory \ac{dsp}. Ponadto dzięki integracji  układu \ac{fpga} z \ac{hps}, użytkownik ma możliwość zdalnego zarządzania
-systemem oraz monitorowania przetwarzanych sygnałów, co zwiększa elastyczność i wygodę pracy. Umożliwia to szybkie dostosowywanie parametrów przetwarzania do konkretnych potrzeb, co jest istotne w wielu aplikacjach.
+Motywacją do realizacji projektu była potrzeba weryfikacji możliwości wykorzystania systemu heterogenicznego do przetwarzania sygnałów pochodzących z np. przetworników analogowo-cyfrowych (A/C) w czasie rzeczywistym. W wielu zastosowaniach przetwarzanie sygnałów wymaga możliwości dostosowania architektury systemu do specyficznych potrzeb aplikacji, czego mogą nie oferować inne rozwiązania oparte np. o mikrokontrolery lub procesory sygnałowe, \ac{dsp_proc}. Ponadto dzięki integracji  układu \ac{fpga} z \ac{hps}, użytkownik ma możliwość zdalnego zarządzania systemem oraz monitorowania przetwarzanych sygnałów, co zwiększa elastyczność i wygodę pracy. Umożliwia to szybkie dostosowywanie parametrów przetwarzania do konkretnych potrzeb, co jest istotne w wielu aplikacjach.
 
-System ten ma na celu nie tylko zaprezentowanie w praktyce możliwości przetwarzania sygnałów, ale również stworzenie podstawy do dalszego rozwoju o kolejne funkcjonalności, takie jak implementacja nowych algorytmów \ac{dsp}, rozszerzenie interfejsu użytkownika,
-czy integracja z innymi systemami przetwarzania danych.
+System ten ma na celu nie tylko zaprezentowanie w praktyce możliwości przetwarzania sygnałów, ale również stworzenie podstawy do dalszego rozwoju o kolejne funkcjonalności, takie jak implementacja nowych algorytmów \ac{dsp}, rozszerzenie interfejsu użytkownika, czy integracja z innymi systemami przetwarzania danych.
 % Część \ac{fpga} systemu będzie odpowiedzialna za implementację algorytmów \ac{dsp}, w tym filtru \ac{fir} oraz modułu
 % realizującego dyskretną transformatę Fouriera (DFT). System ten będzie wyposażony w dwie pamięci, pomiędzy którymi dane będą transmitowane, przetwarzane, a następnie zapisywane.
 % Równocześnie wbudowany procesor będzie pełnił funkcję jednostki sterującej, uruchamiając serwer, który umożliwi użytkownikowi zdalną interakcję z systemem poprzez stronę internetową.
@@ -53,23 +44,23 @@ czy integracja z innymi systemami przetwarzania danych.
 
 \section*{Zakres pracy}
 \label{sec:zakresPracy}
-Zakres pracy obejmował opracowanie systemu umożliwiającego przesył i odczyt danych pomiędzy \ac{hps} a pamięciami w \ac{fpga}, a także transmisję tych danych z wkorzystaniem \ac{dma} między obiema pamięciami.
+Zakres pracy obejmował:
+\begin{itemize}
+    \item opracowanie systemu do transmisji danych zaimplementowanego w FPGA;
+    \item implementację w systemie algorytmów \ac{dsp};
+    \item przygotowanie środowiska uruchomieniowego w Yocto;
+    \item stworzenie oprogramowania w języku Python;
+    \item zaprojektowanie aplikacji internetowej.
+\end{itemize}
 
-Oprócz tego, praca skupi się na opracowaniu i implementacji w systmie filtru \ac{fir} umożliwiającego modyfikację współczynników w trakcie pracy, co zapewni większą elastyczność przetwarzania danych. System będzie również wykorzystywał moduł \ac{fft} będący IP Quartusa,
-który umożliwi podgląd przetworzonych sygnałów w dziedzinie częstotliwości.
+W projekcie opracowano wydajny system transmisji danych oparty na \ac{fpga}, który umożliwia przesył i odczyt danych pomiędzy \ac{hps} a pamięciami w \ac{fpga}, z wykorzystaniem bezpośredniego dostępu do pamięci, \ac{dma}. Implementacja obejmowała algorytmy \ac{dsp}, w tym filtr \ac{fir} z możliwością dynamicznej zmiany współczynników, moduł \ac{fft} oraz algorytm enkrypcji danych. Stworzone oprogramowanie w języku Python, oparte na bibliotece unittest, umożliwiało testowanie i weryfikację funkcjonalności systemu, a także obsługę zadań po stronie FPGA. Ponadto zaprojektowano aplikację internetową, która umożliwia użytkownikowi zdalną interakcję z systemem.
 
-W ramach pracy powstanie również strona internetowa, która pozwoli użytkownikowi na przesył danych, komunikację z systemem oraz wizualizację wyników. Interfejs strony zostanie zaprojektowany z myślą o intuicyjnej obsłudze,
-a także w sposób umożliwiający łatwą implementację kolejnych funkcjonalności w przyszłości.
+% W ramach pracy powstała również strona internetowa, która pozwola użytkownikowi na przesył danych, komunikację z systemem oraz wizualizację wyników. Interfejs strony został zaprojektowany z myślą o intuicyjnej obsłudze,
+% a także w sposób umożliwiający łatwą implementację kolejnych funkcjonalności w przyszłości.
 
 \section*{Struktura pracy}
 \label{sec:strukturaPracy}
 
-
-% \subsection{Platforma Cyclone V SoC}
-% W mojej pracy skupię się na układzie heterogenicznym \ac{fir}my Intel -- Cyclone V SoC. Jest to budżetowy układ zawierający w swojej architekturze zarówno FPGA, jak i
-% HPS (Hard Processor System) oparty na procesorze ARM, co pozwala na rozdzielenie zadań pomiędzy obie architektury. Mimo że Cyclone V SoC nie jest układem najwyższej klasy,
-% jego cena oraz możliwości konfiguracyjne sprawiają, że znajduje zastosowanie w projektach wymagających kompromisu między wydajnością a kosztami. W mojej pracy pokażę, jak można
-% efektywnie wykorzystać ten układ do implementacji zaawansowanych algorytmów przetwarzania sygnałów.
 
 % \begin{figure}[!htb]
 %     \centerline{\includegraphics[scale=0.2]{de0-nano-soc.png}}

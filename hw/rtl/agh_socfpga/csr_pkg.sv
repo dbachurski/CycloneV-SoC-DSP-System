@@ -11,7 +11,12 @@ package csr_pkg;
     } csr__DSP_SR__dft_status__in_t;
 
     typedef struct {
+        logic [1:0] next;
+    } csr__DSP_SR__memory_reader_status__in_t;
+
+    typedef struct {
         csr__DSP_SR__dft_status__in_t dft_status;
+        csr__DSP_SR__memory_reader_status__in_t memory_reader_status;
     } csr__DSP_SR__in_t;
 
     typedef struct {
@@ -36,6 +41,14 @@ package csr_pkg;
 
     typedef struct {
         logic value;
+    } csr__DSP_CR__tea_enable__out_t;
+
+    typedef struct {
+        logic value;
+    } csr__DSP_CR__tea_mode__out_t;
+
+    typedef struct {
+        logic value;
     } csr__DSP_CR__dft_reset__out_t;
 
     typedef struct {
@@ -45,6 +58,8 @@ package csr_pkg;
     typedef struct {
         csr__DSP_CR__fir_enable__out_t fir_enable;
         csr__DSP_CR__dft_enable__out_t dft_enable;
+        csr__DSP_CR__tea_enable__out_t tea_enable;
+        csr__DSP_CR__tea_mode__out_t tea_mode;
         csr__DSP_CR__dft_reset__out_t dft_reset;
         csr__DSP_CR__dft_number_of_points__out_t dft_number_of_points;
     } csr__DSP_CR__out_t;
@@ -54,7 +69,12 @@ package csr_pkg;
     } csr__DSP_SR__dft_status__out_t;
 
     typedef struct {
+        logic [1:0] value;
+    } csr__DSP_SR__memory_reader_status__out_t;
+
+    typedef struct {
         csr__DSP_SR__dft_status__out_t dft_status;
+        csr__DSP_SR__memory_reader_status__out_t memory_reader_status;
     } csr__DSP_SR__out_t;
 
     typedef struct {
