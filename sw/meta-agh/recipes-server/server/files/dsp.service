@@ -1,0 +1,13 @@
+[Unit]
+Description=DSP Service
+
+[Service]
+ExecStart=/usr/bin/python3 /usr/bin/django-server/manage.py runserver 0.0.0.0:5000
+WorkingDirectory=/usr/bin/django-server
+Restart=on-failure
+RestartSec=5s
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

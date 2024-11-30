@@ -1,116 +1,97 @@
-\chapter{Pierwszy dokument}
-\label{cha:pierwszyDokument}
+\chapter{Architektura}
+\label{cha:architektura}
 
-W rozdziale tym przedstawiono podstawowe informacje dotyczące struktury prostych plików \LaTeX a. Omówiono również metody kompilacji plików z zastosowaniem programów \emph{latex} oraz \emph{pdflatex}.
+Ogólna architektura zaimplementowanego rozwiązania została zaprezentowana na rysunku \ref{fig:ogolna-architektura}.
+\begin{figure}[!htb]
+    \centerline{\includegraphics[scale=0.9]{system.pdf}}
+    \caption{Diagram przedstawiający uproszczoną architekturę systemu}
+    \label{fig:ogolna-architektura}
+\end{figure}
 
-%---------------------------------------------------------------------------
+\section{Platforma}
+\label{sec:platforma}
+Platformą wybraną do realizacji pracy jest system heterogeniczny DE0-Nano-SoC, którego glównym elementem był układ Intel Cyclone V SoC.Zawiera on \ac{fpga} oraz \ac{hps} oparty na procesorze \acs{arm}, co umożliwia podział zadań między hardware i software.
 
-\section{Struktura dokumentu}
-\label{sec:strukturaDokumentu}
+Układ \ac{fpga} w Cyclone V SoC oferuje programowalne zasoby, takie jak \ac{lut}, bloki \ac{dsp} oraz pamięci RAM, które umożliwiają implementację szerokiego zakresu funkcji, od prostych operacji po bardziej zaawansowane algorytmy. Zintegrowany z \ac{fpga} system \ac{hps}, oparty na dwurdzeniowym procesorze ARM Cortex-A9 z zegarem 925 MHz, komunikuje się z \ac{fpga} za pomocą mostków AXI i AXI Lightweight.
 
-Plik \LaTeX owy jest plikiem tekstowym, który oprócz tekstu zawiera polecenia formatujące ten tekst (analogicznie do języka HTML). Plik składa się z dwóch części:
-\begin{enumerate}%[1)]
-\item Preambuły -- określającej klasę dokumentu oraz zawierającej m.in. polecenia dołączającej dodatkowe pakiety;
+Decyzja o wyborze tej konkretnej platformy była podyktowana kilkoma istotnymi aspektami. Przede wszystkim heterogeniczna architektura systemu, dobrze sprawdza się w zastosowaniach \ac{dsp}, co opisano dokładniej w sekcji \ref{sec:system-heterogeniczny}.
 
-\item Części głównej -- zawierającej zasadniczą treść dokumentu.
-\end{enumerate}
+Ponadto układ posiada gniazdo na kartę micro SD, na którą można wgrać obraz całego systemu. Karta SD pełni funkcję głównego nośnika, z którego ładowany jest system przy starcie. Dzięki wykorzystaniu wbudowanego slotu możemy uruchomić procesor wykorzytując niemal każdy system operacyjny wspierający architekturę ARM, a korzystając z narzędzi takich jak \hyperref[sec:linux-embedded]{Yocto} jesteśmy w stanie skonfigurować system zgodnie z naszymi wymaganiami.
 
+% Innym istotnym elementem, który umożliwił połączenie sieciowe, a co za tym idzie implementację zdalnego interfejsu użytkownika było wbudowane złącze Ethernet.
+Złącze Ethernet w układzie zapewnia dostep do połaczenia sieciowego, co umożliwia zdalne zarządzanie oraz wymianę danych między systemem a zewnętrznymi urządzeniami. W kontekście opisywanej architektury, interfejs został wykorzystany, aby umożliwić połączenie sieciowe niezbędne do komunikacji z zaprojektowaną aplikacją internetową.
 
-\begin{lstlisting}
-\documentclass[a4paper,12pt]{article}      % preambuła
-\usepackage[polish]{babel}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{times}
+\begin{figure}[!htb]
+    \centerline{\includegraphics[scale=0.2]{de0-nano-soc.png}}
+    \caption{Układ DE0-Nano-SoC (Cyclone V)}
+    \label{fig:de0-nano-soc}
+\end{figure}
 
-\begin{document}                           % część główna
+Ze względu na przystępną cenę i elastyczność konfiguracji,
+układ ten znajduje szerokie zastosowanie w projektach wymagających kompromisu między wydajnością a kosztami, szczególnie w środowiskach akademickich. Niniejsza praca zawiera przykłady tego, jak efektywnie wykorzystać ten układ w implementacji algorytmów przetwarzania sygnałów.
 
-\section{Sztuczne życie}
+\section{Architektura Sprzętowa}
+\label{sec:architektura-hw}
 
-% treść
-% ąśężźćńłóĘŚĄŻŹĆŃÓŁ
+Architektura sprzętowa systemu została zaimplementowana z wykorzystaniem układu \ac{fpga}, który pełni rolę centralnego komponentu przetwarzającego dane. Rysunek \ref{fig:uproszczony-schemat-hw} przedstawia uproszczoną architekturę systemu, ukazującą główne jego elementy. System składa się z dwóch pamięci \ac{ocm}, z których jedna jest odpowiedzialna za przechowywanie danych wejściowych przekazywanych z \ac{hps}, natomiast druga - danych wyjściowych po przetworzeniu.
 
-\end{document}
-\end{lstlisting}
+Dane wejściowe są przesyłane do modułu \ac{dsp} za pomocą kontrolera DMA i interfejsu ST-MM. Cała transmisja przez moduł \ac{dsp} odbywa się w sposób strumieniowy, co oznacza, że zarówno dane wejściowe, jak i wyjściowe są przesyłane w czasie rzeczywistym. W module \ac{dsp} realizowane są operacje przetwarzania sygnałów, w tym filtracja przy użyciu filtru \ac{fir} oraz szyfrowanie danych. Przetworzone dane są przesyłane do drugiej pamięci \ac{ocm} poprzez interfejs MM-ST, skąd mogą zostać odczytane przez hosta.
 
-Nie ma żadnych przeciwskazań do tworzenia dokumentów w~\LaTeX u w~języku polskim. Plik źródłowy jest zwykłym plikiem tekstowym i~do jego przygotowania można użyć dowolnego edytora tekstów, a~polskie znaki wprowadzać używając prawego klawisza \texttt{Alt}. Jeżeli po kompilacji dokumentu polskie znaki nie są wyświetlane poprawnie, to na 95\% źle określono sposób kodowania znaków (należy zmienić opcje wykorzystywanych pakietów).
+\begin{figure}[!htb]
+    \centerline{\includegraphics[scale=0.5]{uproszczonySchematHW.pdf}}
+    \caption{Diagram przedstawiający architekturę sprzętową}
+    \label{fig:uproszczony-schemat-hw}
+\end{figure}
 
+\subsection{Interfejsy}
+W systemie wykorzystano dwa interfejsy do transmisji danych: \ac{avmm} oraz \ac{avst}.
 
-%---------------------------------------------------------------------------
+Avalon MM jest interfejsem pamięciowym, który sprawdza się w sytuacjach, gdy zachodzi potrzeba bezpośredniego odczytu lub zapisu danych do pamięci. Umożliwia transfer w postaci tzw. burstów, co oznacza, że pozwala na przesyłanie wielu paczek danych w kolejnych taktach zegara.
 
-\section{Kompilacja}
-\label{sec:kompilacja}
+Avalon Streaming pozwala na przesył danch w sposób ciągły bez konieczności adresacji każdej paczki. Interfejs sprawdza się aplikacjach bazuących na przetwarzaniu w czasie rzeczywistym, wymagających szybkiego transferu dużych ilości danych.
 
+Wybór pomiędzy tymi interfejsami zależy od specyficznych potrzeb aplikacji -- Avalon MM jest odpowiedni do operacji bazujących na transakcjach do pamięci, podczas gdy Avalon Streaming lepiej sprawdza się w przypadku transmisji danych pomiędzy modułami, które mają je przetworzyć.
 
-Załóżmy, że przygotowany przez nas dokument zapisany jest w pliku \texttt{test.tex}. Kolejno wykonane poniższe polecenia (pod warunkiem, że w pierwszym przypadku nie wykryto błędów i kompilacja zakończyła się sukcesem) pozwalają uzyskać nasz dokument w formacie pdf:
-\begin{lstlisting}
-latex test.tex
-dvips test.dvi -o test.ps
-ps2pdf test.ps
-\end{lstlisting}
-%
-lub za pomocą PDF\LaTeX:
-\begin{lstlisting}
-pdflatex test.tex
-\end{lstlisting}
+\subsection{Zaprojektowane moduły \ac{dsp}}
+System został wyposażony w dwa moduły \ac{dsp} -- filtr FIR o zmiennych współczynnikach oraz moduł szyfrowania danych oparty na algorytmie \ac{tea}.
 
-Przy pierwszej kompilacji po zmiane tekstu, dodaniu nowych etykiet itp., \LaTeX~tworzy sobie spis rozdziałów, obrazków, tabel itp., a dopiero przy następnej kompilacji korzysta z tych informacji.
-
-W pierwszym przypadku rysunki powinny być przygotowane w~formacie eps, a~w~drugim w~formacie pdf. Ponadto, jeżeli używamy polecenia \texttt{pdflatex test.tex} można wstawiać grafikę bitową (np. w formacie jpg).
-
-
-
-%---------------------------------------------------------------------------
-
-\section{Narzędzia}
-\label{sec:narzedzia}
-
-
-Do przygotowania pliku źródłowego może zostać wykorzystany dowolny edytor tekstowy. Niektóre edytory, np. GEdit, mają wbudowane moduły ułatwiające składanie tekstów w LaTeXu (kolorowanie składni, skrypty kompilacji, itp.).
-
-Jednym z bardziej znanych środowisk do składania dokumentów  \LaTeX a jest {\em TeXstudio}, oferujące kompletne środowisko pracy. Zobacz: \url{http://www.texstudio.org}
-
-
-Bardzo dobrym środowiskiem jest również edytor gEdit z wtyczką obsługującą \LaTeX a. Jest to standardowy edytor środowiska Gnome. Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-
-\textbf{Dla testu łamania stron powtórzenia powyższego tekstu.}
-
-
-Do przygotowania pliku źródłowego może zostać wykorzystany dowolny edytor tekstowy. Niektóre edytory, np. GEdit, mają wbudowane moduły ułatwiające składanie tekstów w LaTeXu (kolorowanie składni, skrypty kompilacji, itp.).
-Jednym z bardziej znanych środowisk do składania dokumentów  \LaTeX a jest {\em TeXstudio}, oferujące kompletne środowisko pracy. Zobacz: \url{http://www.texstudio.org}
-Bardzo dobrym środowiskiem jest również edytor gEdit z wtyczką obsługującą \LaTeX a. Jest to standardowy edytor środowiska Gnome. Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-
-Do przygotowania pliku źródłowego może zostać wykorzystany dowolny edytor tekstowy. Niektóre edytory, np. GEdit, mają wbudowane moduły ułatwiające składanie tekstów w LaTeXu (kolorowanie składni, skrypty kompilacji, itp. itd. itp.).
-Jednym z bardziej znanych środowisk do składania dokumentów  \LaTeX a jest {\em TeXstudio}, oferujące kompletne środowisko pracy. Zobacz: \url{http://www.texstudio.org}
-Bardzo dobrym środowiskiem jest również edytor gEdit z wtyczką obsługującą \LaTeX a. Jest to standardowy edytor środowiska Gnome. Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-
-Do przygotowania pliku źródłowego może zostać wykorzystany dowolny edytor tekstowy. Niektóre edytory, np. GEdit, mają wbudowane moduły ułatwiające składanie tekstów w LaTeXu (kolorowanie składni, skrypty kompilacji, itp.).
-Jednym z bardziej znanych środowisk do składania dokumentów  \LaTeX a jest {\em TeXstudio}, oferujące kompletne środowisko pracy. Zobacz: \url{http://www.texstudio.org}
-Bardzo dobrym środowiskiem jest również edytor gEdit z wtyczką obsługującą \LaTeX a. Jest to standardowy edytor środowiska Gnome. Po instalacji wtyczki obsługującej \LaTeX~ zamienia się w wygodne i szybkie środowisko pracy.
-
-%---------------------------------------------------------------------------
-
-\section{Przygotowanie dokumentu}
-\label{sec:przygotowanieDokumentu}
-
-Plik źródłowy \LaTeX a jest zwykłym plikiem tekstowym. Przygotowując plik
-źródłowy warto wiedzieć o kilku szczegółach:
+Moduł filtru FIR umożliwia dynamiczną zmianę współczynników z poziomu oprogramowania, co pozwala na realizację różnych typów filtracji sygnałów w czasie rzeczywistym. Dzięki tej funckjonalności, filtr może pełnić różne typy filtracji, takie jak:
 
 \begin{itemize}
-\item
-Poszczególne słowa oddzielamy spacjami, przy czym ilość spacji nie ma znaczenia.
-Po kompilacji wielokrotne spacje i tak będą wyglądały jak pojedyncza spacja.
-Aby uzyskać {\em twardą spację}, zamiast znaku spacji należy użyć znaku {\em
-tyldy}.
+    \item Low Pass (dolnoprzepustowy): Wygładzanie sygnału przez eliminację wysokich częstotliwości.
+    \item Bandpass (pasmowoprzepustowy): Przepuszczanie sygnałów z określonego zakresu częstotliwości.
+    \item Moving Average (średnia krocząca): Wygładzanie danych poprzez uśrednianie kolejnych wartości sygnału.
+\end{itemize}
 
-\item
-Znakiem końca akapitu jest pusta linia (ilość pusty linii nie ma znaczenia), a
-nie znaki przejścia do nowej linii.
+Modularność współczynników filtru umożliwia dostosowanie parametrów filtracji w zależności od aktualnych wymagań aplikacji, co znacząco zwiększa przydatność modułu w różnych zastosowaniach.
 
-\item
-\LaTeX~sam formatuje tekst. \textbf{Nie starajmy się go poprawiać}, chyba, że
-naprawdę wiemy co robimy.
-\end{itemize} 
+Moduł enkrypcji oparty na algorytmie \ac{tea} zapewnia bezpieczne szyfrowanie danych w systemie. \ac{tea} jest lekkim algorytmem szyfrowania blokowego, którego najważniejszymi cechami są prostota implementacji oraz wysoka prędkość przetwarzania. Algoytm operuje na danych wejściowych o szerokości 32 bitów (w zaimplementowanym systemie szerokość wejść została ograniczona do 32 bitów) i 128-bitowym kluczu. Ze względu na swoją prostotę i niskie zapotrzebowanie na zasoby, TEA jest idealnym wyborem do zastosowań, w których wymagana jest efektywność przy zachowaniu podstawowego poziomu bezpieczeństwa.
 
 
+
+
+% Układ \ac{fpga} w Cyclone V SoC zawiera programowalne zasoby, takie jak \ac{lut}, bloki \ac{dsp}
+% oraz wewnętrzne pamięci RAM. Te zasoby pozwalają na realizację szerokiego zakresu funkcji, od prostych operacji po złożone algorytmy przetwarzania sygnałów.
+% \ac{fpga} może być dynamicznie rekonfigurowany, co zapewnia elastyczność w projektowaniu systemów sprzętowych.
+
+% HPS w Cyclone V SoC to zintegrowany system oparty na dwurdzeniowym procesorze ARM Cortex-A9 oferującym zegar 925MHz. Procesor może funkcjonować niezależnie,
+% jednak w praktyce jest on wykorzystywany do zarządzania zadaniami w \ac{fpga}, z którą komunikacja odbywa się pomocą mostków AXI/AXI Lightweight.
+
+
+
+
+
+
+
+\newpage
+\section{Architektura Programowa}
+\label{sec:architektura-sw}
+
+
+
+
+% \begin{figure}[!htb]
+%     \centerline{\includegraphics[scale=0.5]{hardwareSystemDiagram.png}}
+%     \caption{Diagram przedstawiający architekturę sprzętową systemu}
+%     \label{fig:architektura-hw}
+% \end{figure}

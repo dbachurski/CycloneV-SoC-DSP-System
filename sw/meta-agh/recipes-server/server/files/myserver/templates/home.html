@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <link rel="icon" href="{% static 'favicon.ico' %}" type="image/x-icon">
+    <script src="{% static 'manage_actions.js' %}" defer></script>
+    <script src="{% static 'drag_apps.js' %}"></script>
+    <script src="{% static 'switch_leds_color.js' %}"></script>
+    <script src="{% static 'icons_on_click.js' %}"></script>
+    <script src="{% static 'close_apps.js' %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="icons-container">
+        {% include 'icons.html' %}
+    </div>
+    <div class="terminal-container">
+        <div class="terminal">
+            <div class="title-bar terminal-title-bar">
+                <div class="title-buttons-container">
+                    <div class="title-btn btn-red"></div>
+                    <div class="title-btn btn-yellow"></div>
+                    <div class="title-btn btn-green"></div>
+                </div>
+                <div class="title-text terminal-title-text">Terminal</div>
+            </div>
+            <div class="terminal-content-container">
+                <pre id="terminal-content" class="terminal-content-text"></pre>
+            </div>
+        </div>
+    </div>
+    <div class="control-panel-container">
+        <div class="control-panel">
+            <div class="title-bar control-panel-title-bar">
+                <div class="title-buttons-container">
+                    <div class="title-btn btn-red"></div>
+                    <div class="title-btn btn-yellow"></div>
+                    <div class="title-btn btn-green"></div>
+                </div>
+                <div class="title-text control-panel-title-text">Control Panel</div>
+            </div>
+            <div class="control-panel-buttons-container">
+                <div class="control-panel-buttons-group-container">
+                    <button class="control-panel-btn btn-trigger" id="runTesterBtn">Run Tester</button>
+                    <button class="control-panel-btn btn-trigger" id="runDspControllerBtn">Run DSP Controller</button>
+                </div>
+                <div class="led-container">
+                    {% include 'led.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="dsp-controller-container">
+        <div class="dsp-controller">
+            <div class="title-bar dsp-controller-title-bar">
+                <div class="title-buttons-container">
+                    <div class="title-btn btn-red"></div>
+                    <div class="title-btn btn-yellow"></div>
+                    <div class="title-btn btn-green"></div>
+                </div>
+                <div class="title-text dsp-controller-title-text">DSP Controller</div>
+            </div>
+            <div class="dsp-controller-graph-container">
+                <div class="dsp-graph input-signal-graph" id="inputSignalGraph"></div>
+                <button class="dsp-controller-btn btn-output-to-input" id="outputToInputBtn">
+                    {% include 'arrow.html' %}
+                </button>
+                <div class="dsp-graph processed-signal-graph" id="processedSignalGraph"></div>
+            </div>
+            <div class="dsp-controller-buttons-container">
+                <div class="dsp-controller-buttons-group-container buttons-container">
+                    <label class="dsp-controller-btn btn-choose-file">
+                        <input type="file" id="fileInput" class="choose-file" accept=".wav" required>
+                        Upload File
+                    </label>
+                    <button class="dsp-controller-btn btn-select-input-signal" id="selectSignalBtn">Select Input Signal</button>
+                    <button class="dsp-controller-btn btn-reload" id="reload">Reload</button>
+                </div>
+                <div class="dsp-controller-processing-type-buttons-group-container buttons-container">
+                    <button class="dsp-controller-btn btn-start-fir-processing" id="startFirProcessingBtn">Start FIR Processing</button>
+                    <button class="dsp-controller-btn btn-start-encryption" id="startEncryptionBtn">Start Encryption</button>
+                    <button class="dsp-controller-btn btn-start-decryption" id="startDecryptionBtn">Start Decryption</button>
+                </div>
+                <div class="dsp-controller-choose-filter-buttons-container buttons-container">
+                    <div class="buttons-group buttons-group-1">
+                        <button class="dsp-controller-btn btn-low-pass" type="button" onclick="selectFilter('low-pass')">Low Pass</button>
+                        <button class="dsp-controller-btn btn-high-pass" type="button" onclick="selectFilter('high-pass')">High Pass</button>
+                        <button class="dsp-controller-btn btn-band-pass" type="button" onclick="selectFilter('band-pass')">Band Pass</button>
+                    </div>
+                    <div class="buttons-group buttons-group-2">
+                        <button class="dsp-controller-btn btn-moving-average" type="button" onclick="selectFilter('moving_average')">Moving Average</button>
+                        <button class="dsp-controller-btn btn-unit-impulse" type="button" onclick="selectFilter('unit_impulse')">Unit Impulse</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dsp-controller-settings">
+            <div class="low-pass-settings settings">
+                <div class="title-bar low-pass-settings-title-bar">
+                    <div class="title-buttons-container">
+                        <div class="title-btn btn-red"></div>
+                        <div class="title-btn btn-yellow"></div>
+                        <div class="title-btn btn-green"></div>
+                    </div>
+                    <div class="title-text low-pass-settings-title-text">Low-pass Settings</div>
+                </div>
+                <div class="low-pass-settings-content settings-content">
+                    <div class="settings-group">
+                        <div class="cutoff-label">Cutoff Frequency (Hz):</div>
+                        <input type="number" id="cutoffFrequency" class="settings-input">
+                    </div>
+                    <button id="saveLowPassSettingsBtn" class="dsp-controller-btn settings-btn">Save Settings</button>
+                </div>
+            </div>
+            <div class="high-pass-settings settings">
+                <div class="title-bar high-pass-settings-title-bar">
+                    <div class="title-buttons-container">
+                        <div class="title-btn btn-red"></div>
+                        <div class="title-btn btn-yellow"></div>
+                        <div class="title-btn btn-green"></div>
+                    </div>
+                    <div class="title-text high-pass-settings-title-text">High-pass Settings</div>
+                </div>
+                <div class="high-pass-settings-content settings-content">
+                    <div class="settings-group">
+                        <div class="cutoff-label">Cutoff Frequency (Hz):</div>
+                        <input type="number" id="highPassCutoffFrequency" class="settings-input">
+                    </div>
+                    <button id="saveHighPassSettingsBtn" class="dsp-controller-btn settings-btn">Save Settings</button>
+                </div>
+            </div>
+            <div class="band-pass-settings settings">
+                <div class="title-bar band-pass-settings-title-bar">
+                    <div class="title-buttons-container">
+                        <div class="title-btn btn-red"></div>
+                        <div class="title-btn btn-yellow"></div>
+                        <div class="title-btn btn-green"></div>
+                    </div>
+                    <div class="title-text band-pass-settings-title-text">Band-pass Settings</div>
+                </div>
+                <div class="band-pass-settings-content settings-content">
+                    <div class="settings-group">
+                        <div class="cutoff-label">Lower Cutoff Frequency (Hz):</div>
+                        <input type="number" id="bandPassLowerCutoffFrequency" class="settings-input">
+                    </div>
+                    <div class="settings-group">
+                        <div class="cutoff-label">Upper Cutoff Frequency (Hz):</div>
+                        <input type="number" id="bandPassUpperCutoffFrequency" class="settings-input">
+                    </div>
+                    <button id="saveBandPassSettingsBtn" class="dsp-controller-btn settings-btn">Save Settings</button>
+                </div>
+            </div>
+        </div>
+        <div class="dsp-controller-file-selection">
+            <div class="title-bar file-selection-title-bar">
+                <div class="title-buttons-container">
+                    <div class="title-btn btn-red"></div>
+                    <div class="title-btn btn-yellow"></div>
+                    <div class="title-btn btn-green"></div>
+                </div>
+            </div>
+            <div class="file-selection-content">
+                <ul id="fileList" class="file-list"></ul>
+            </div>
+        </div>
+    </div>
+    <div id="overlay" class="overlay"></div>
+</body>
+</html>

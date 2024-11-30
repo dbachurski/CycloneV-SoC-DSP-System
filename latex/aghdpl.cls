@@ -39,8 +39,10 @@
 \definecolor{Green}{rgb}{0.1,0.5,0.1}
 
 \def\shorttitlePL#1   {\gdef\@shorttitlePL{#1}}
+\def\shorttitleEN#1   {\gdef\@shorttitleEN{#1}}
 \def\shortauthor#1    {\gdef\@shortauthor{#1}}
 \def\titlePL#1        {\gdef\@titlePL{#1}}
+\def\titleEN#1        {\gdef\@titleEN{#1}}
 \def\faculty#1      {\gdef\@faculty{#1}}
 \def\thesistype#1   {\gdef\@thesistype{#1}}
 \def\supervisor#1   {\gdef\@supervisor{#1}}
@@ -108,6 +110,8 @@ Supervisor: & {\itshape \@supervisor}\\
 {\sffamily\Large\itshape \@titlePL}
 \vspace*{1mm}
 
+{\sffamily\Large\itshape \@titleEN}
+\vspace{40mm}
 \end{center}
 
 \noindent

@@ -16,11 +16,21 @@ package csr_pkg;
 
     typedef struct {
         logic value;
-    } csr__FIR_CR__enable__out_t;
+    } csr__DSP_CR__fir_enable__out_t;
 
     typedef struct {
-        csr__FIR_CR__enable__out_t enable;
-    } csr__FIR_CR__out_t;
+        logic value;
+    } csr__DSP_CR__tea_enable__out_t;
+
+    typedef struct {
+        logic value;
+    } csr__DSP_CR__tea_mode__out_t;
+
+    typedef struct {
+        csr__DSP_CR__fir_enable__out_t fir_enable;
+        csr__DSP_CR__tea_enable__out_t tea_enable;
+        csr__DSP_CR__tea_mode__out_t tea_mode;
+    } csr__DSP_CR__out_t;
 
     typedef struct {
         logic [31:0] value;
@@ -152,7 +162,7 @@ package csr_pkg;
 
     typedef struct {
         csr__IO_CR__out_t IO_CR;
-        csr__FIR_CR__out_t FIR_CR;
+        csr__DSP_CR__out_t DSP_CR;
         csr__fir_coeff_0__out_t fir_coeff_0;
         csr__fir_coeff_1__out_t fir_coeff_1;
         csr__fir_coeff_2__out_t fir_coeff_2;

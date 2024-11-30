@@ -24,20 +24,20 @@ module agh_socfpga
 
     /* Avalon Streaming Sink interface */
 
-    input logic [15:0]  avalon_streaming_sink_data,
-    input logic         avalon_streaming_sink_endofpacket,
+    output logic        avalon_streaming_sink_ready,
+    input logic [31:0]  avalon_streaming_sink_data,
     input logic         avalon_streaming_sink_valid,
     input logic         avalon_streaming_sink_startofpacket,
-    output logic        avalon_streaming_sink_ready,
+    input logic         avalon_streaming_sink_endofpacket,
 
 
     /* Avalon Streaming Source interface */
 
-    input logic         avalon_streaming_source_ready,
-    output logic [15:0] avalon_streaming_source_data,
-    output logic        avalon_streaming_source_endofpacket,
+    output logic [31:0] avalon_streaming_source_data,
     output logic        avalon_streaming_source_valid,
     output logic        avalon_streaming_source_startofpacket,
+    output logic        avalon_streaming_source_endofpacket,
+    input logic         avalon_streaming_source_ready,
 
     output logic [7:0]  led
 );
@@ -50,9 +50,9 @@ csr__out_t   hwif_out;
 logic [31:0] avalon_mm_slave_readdata_nxt;
 logic        avalon_mm_slave_readdatavalid_nxt, avalon_mm_slave_writeresponsevalid_nxt;
 
-logic [15:0] byte_swapper_output_signal, fir_filter_input_signal, fir_filter_output_signal;
-logic        source_synchronizer_ready, source_synchronizer_endofpacket,
-             source_synchronizer_startofpacket, fir_filter_output_signal_valid;
+logic [31:0] dsp_sink_data, dsp_source_data;
+logic        dsp_sink_ready, dsp_sink_valid, dsp_sink_sop, dsp_sink_eop, dsp_source_valid,
+             dsp_source_sop, dsp_source_eop, dsp_source_ready;
 
 
 /* Signals assignments */
@@ -80,42 +80,23 @@ csr u_csr (
     .avalon_writedata(avalon_mm_slave_writedata)
 );
 
-fir_filter u_fir_filter (
+dsp u_dsp (
     .clk,
     .rst_n,
 
     .hwif_in(hwif_out),
 
-    .filtered_signal_valid(fir_filter_output_signal_valid),
-    .filtered_signal(fir_filter_output_signal),
+    .dsp_sink_ready,
+    .dsp_sink_data(avalon_streaming_sink_data),
+    .dsp_sink_valid(avalon_streaming_sink_valid),
+    .dsp_sink_sop(avalon_streaming_sink_startofpacket),
+    .dsp_sink_eop(avalon_streaming_sink_endofpacket),
 
-    .signal_valid(avalon_streaming_sink_valid),
-    .signal(fir_filter_input_signal)
-);
-
-source_synchronizer u_source_synchronizer (
-    .clk,
-    .rst_n,
-
-    .source_synchronizer_ready,
-    .source_synchronizer_endofpacket,
-    // .source_synchronizer_valid,
-    .source_synchronizer_startofpacket,
-
-    .avalon_streaming_source_ready,
-    .avalon_streaming_sink_endofpacket,
-    // .avalon_streaming_sink_valid,
-    .avalon_streaming_sink_startofpacket
-);
-
-byte_swapper u_byte_swapper_0 (
-    .data_out(fir_filter_input_signal),
-    .data_in(avalon_streaming_sink_data)
-);
-
-byte_swapper u_byte_swapper_1 (
-    .data_out(byte_swapper_output_signal),
-    .data_in(fir_filter_output_signal)
+    .dsp_source_data,
+    .dsp_source_valid,
+    .dsp_source_sop,
+    .dsp_source_eop,
+    .dsp_source_ready(avalon_streaming_source_ready)
 );
 
 
@@ -134,12 +115,12 @@ always_ff @(posedge clk or negedge rst_n) begin
 end
 
 always_comb begin
-    if(hwif_out.FIR_CR.enable.value) begin
-        avalon_streaming_sink_ready = source_synchronizer_ready;
-        avalon_streaming_source_valid = fir_filter_output_signal_valid;
-        avalon_streaming_source_data = byte_swapper_output_signal;
-        avalon_streaming_source_startofpacket = source_synchronizer_startofpacket;
-        avalon_streaming_source_endofpacket = source_synchronizer_endofpacket;
+    if(hwif_out.DSP_CR.fir_enable.value || hwif_out.DSP_CR.tea_enable.value) begin
+        avalon_streaming_sink_ready = dsp_sink_ready;
+        avalon_streaming_source_valid = dsp_source_valid;
+        avalon_streaming_source_data = dsp_source_data;
+        avalon_streaming_source_startofpacket = dsp_source_sop;
+        avalon_streaming_source_endofpacket = dsp_source_eop;
     end else begin
         avalon_streaming_sink_ready = avalon_streaming_source_ready;
         avalon_streaming_source_valid = avalon_streaming_sink_valid;
