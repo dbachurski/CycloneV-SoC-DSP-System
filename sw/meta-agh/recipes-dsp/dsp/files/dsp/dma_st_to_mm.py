@@ -40,4 +40,7 @@ class DMA_ST_TO_MM:
         print(f"time: {end_time - start_time:.10f} s")
         print(f"DMA bandwidth: {bandwidth:.4f} MB/s")
 
+    def clear_control_register(self):
+        self.control_register.go = 0
+
 

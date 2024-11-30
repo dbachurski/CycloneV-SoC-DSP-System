@@ -7,23 +7,6 @@ package csr_pkg;
     localparam CSR_MIN_ADDR_WIDTH = 12;
 
     typedef struct {
-        logic [2:0] next;
-    } csr__DSP_SR__dft_status__in_t;
-
-    typedef struct {
-        logic [1:0] next;
-    } csr__DSP_SR__memory_reader_status__in_t;
-
-    typedef struct {
-        csr__DSP_SR__dft_status__in_t dft_status;
-        csr__DSP_SR__memory_reader_status__in_t memory_reader_status;
-    } csr__DSP_SR__in_t;
-
-    typedef struct {
-        csr__DSP_SR__in_t DSP_SR;
-    } csr__in_t;
-
-    typedef struct {
         logic [7:0] value;
     } csr__IO_CR__val__out_t;
 
@@ -37,10 +20,6 @@ package csr_pkg;
 
     typedef struct {
         logic value;
-    } csr__DSP_CR__dft_enable__out_t;
-
-    typedef struct {
-        logic value;
     } csr__DSP_CR__tea_enable__out_t;
 
     typedef struct {
@@ -48,34 +27,10 @@ package csr_pkg;
     } csr__DSP_CR__tea_mode__out_t;
 
     typedef struct {
-        logic value;
-    } csr__DSP_CR__dft_reset__out_t;
-
-    typedef struct {
-        logic [14:0] value;
-    } csr__DSP_CR__dft_number_of_points__out_t;
-
-    typedef struct {
         csr__DSP_CR__fir_enable__out_t fir_enable;
-        csr__DSP_CR__dft_enable__out_t dft_enable;
         csr__DSP_CR__tea_enable__out_t tea_enable;
         csr__DSP_CR__tea_mode__out_t tea_mode;
-        csr__DSP_CR__dft_reset__out_t dft_reset;
-        csr__DSP_CR__dft_number_of_points__out_t dft_number_of_points;
     } csr__DSP_CR__out_t;
-
-    typedef struct {
-        logic [2:0] value;
-    } csr__DSP_SR__dft_status__out_t;
-
-    typedef struct {
-        logic [1:0] value;
-    } csr__DSP_SR__memory_reader_status__out_t;
-
-    typedef struct {
-        csr__DSP_SR__dft_status__out_t dft_status;
-        csr__DSP_SR__memory_reader_status__out_t memory_reader_status;
-    } csr__DSP_SR__out_t;
 
     typedef struct {
         logic [31:0] value;
@@ -208,7 +163,6 @@ package csr_pkg;
     typedef struct {
         csr__IO_CR__out_t IO_CR;
         csr__DSP_CR__out_t DSP_CR;
-        csr__DSP_SR__out_t DSP_SR;
         csr__fir_coeff_0__out_t fir_coeff_0;
         csr__fir_coeff_1__out_t fir_coeff_1;
         csr__fir_coeff_2__out_t fir_coeff_2;

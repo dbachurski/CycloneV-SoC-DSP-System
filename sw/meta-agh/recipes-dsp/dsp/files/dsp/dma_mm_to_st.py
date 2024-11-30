@@ -27,5 +27,12 @@ class DMA_MM_TO_ST:
         self.control_register_bytes = ctypes.string_at(ctypes.byref(self.control_register), self.dma.register_size)
         self.fpga.write(self.control_register_offset, self.control_register_bytes)
 
+    def clear_control_register(self):
+        self.control_register.generate_sop = 0
+        self.control_register.generate_eop = 0
+        self.control_register.go = 0
+
+
+
 
 

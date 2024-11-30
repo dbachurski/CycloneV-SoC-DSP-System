@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@400&display=swap');
 
 :root {
@@ -90,13 +91,6 @@ figcaption {
     background: rgb(155, 155, 155);
 }
 
-.btn-trigger {
-
-}
-
-.btn-upload {
-}
-
 .choose-file {
     display: none;
 }
@@ -152,7 +146,6 @@ figcaption {
 .title-text {
     color: #4D4C4C;
     font-size: 13px;
-    font-family: 'Rubik';
     user-select: none;
     margin-left: 140px;
 }
@@ -187,7 +180,6 @@ figcaption {
 
 .terminal-content-container {
     padding-left: 10px;
-    overflow-y: auto;
     height: 558px;
     overflow-y: auto;
 }
@@ -288,6 +280,15 @@ figcaption {
     position: absolute;
 }
 
+.dsp-controller-settings {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
 .dsp-controller {
     box-shadow: 0 20px 70px 5px #00000075;
     background-color: #fcfcfc;
@@ -305,7 +306,7 @@ figcaption {
     margin-top: 20px;
     width: auto;
     height: 370px;
-    gap: 12px;
+    gap: 15px;
 }
 
 .dsp-graph {
@@ -318,6 +319,10 @@ figcaption {
     overflow: hidden;
 }
 
+.input-signal-graph {
+    margin-left: 10px;
+}
+
 .dsp-controller-buttons-container {
     display: flex;
     align-items: center;
@@ -326,28 +331,80 @@ figcaption {
     border-radius: 0 0 var(--roundness) var(--roundness);
     width: auto;
     height: auto;
-    gap: 50px;
-    margin-top: 80px;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.buttons-container {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    margin-left: 0px;
+    width: 700px;
+    height: 50px;
+    background: linear-gradient(to top, rgba(217, 230, 233, 0.568), rgba(213, 223, 240, 0.568));
+    border-radius: 6px;
 }
 
 .dsp-controller-choose-filter-buttons-container {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 20px;
-    margin-left: 21px;
-    width: auto;
-    height: auto;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0px;
+    width: 700px;
+    height: 84px;
+    gap: 0px;
+    background: linear-gradient(to top, rgba(217, 230, 233, 0.568), rgba(213, 223, 240, 0.568));
+    border-radius: 6px;
 }
 
-.dsp-controller-buttons-group-container {
+.buttons-group {
     display: flex;
+    position: relative;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
     gap: 20px;
     margin-left: 0px;
-    width: auto;
-    height: auto;
+    width: 350px;
+    height: 40px;
+    border-radius: 6px;
+    padding-left: 210px;
+}
+
+.dsp-controller-buttons-group-container::before {
+    content: "Input signal";
+    font-family: 'Rubik';
+    font-weight: 900;
+    color: #09296448;
+    font-size: 20px;
+    padding-right: 45px;
+}
+
+.dsp-controller-choose-filter-buttons-container::before {
+    content: "Filter type";
+    font-family: 'Rubik';
+    font-weight: 900;
+    color: #09296448;
+    font-size: 20px;
+    position: absolute;
+    z-index: 1;
+    top: 27px;
+    left: 97px;
+}
+
+.dsp-controller-processing-type-buttons-group-container::before {
+    content: "Processing type";
+    font-family: 'Rubik';
+    font-weight: 900;
+    color: #09296448;
+    font-size: 20px;
+    padding-right: 20px;
 }
 
 .btn-start-processing {
@@ -359,17 +416,27 @@ figcaption {
 }
 
 .dsp-controller-btn {
-    padding: 10px 24px;
+    width: 85px;
+    height: 32px;
     font-family: 'Roboto';
     font-weight: 400;
+    font-size: 12px;
     border-radius: 6px;
     border: none;
     color: #fff;
     background: linear-gradient(180deg, #4B91F7 0%, #367AF6 100%);
 }
 
+.dsp-controller-processing-type-buttons-group-container .dsp-controller-btn {
+    background: linear-gradient(180deg, #19c230 0%, #26b339 100%);
+}
+
+.dsp-controller-processing-type-buttons-group-container .dsp-controller-btn:hover {
+    background: #3ac54d;
+}
+
 .dsp-controller-btn:hover {
-    background:  #568ef7;
+    background: #568ef7;
 }
 
 .dsp-controller-btn:focus {
@@ -377,7 +444,27 @@ figcaption {
     outline: 0;
 }
 
-.low-pass-settings {
+.btn-output-to-input {
+    width: 40px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 160px;
+}
+
+.arrow {
+    width: 37px;
+    height: 37px;
+    background-color: transparent;
+}
+
+.btn-output-to-input:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.settings {
     box-shadow: 0 20px 70px 5px #00000075;
     background-color: #fcfcfc;
     border-radius: var(--roundness);
@@ -389,15 +476,28 @@ figcaption {
 }
 
 .low-pass-settings-title-text {
-    margin-left: 150px;
+    margin-left: 125px;
 }
 
-.low-pass-settings-content {
+.high-pass-settings-title-text {
+    margin-left: 125px;
+}
+
+.band-pass-settings-title-text {
+    margin-left: 125px;
+}
+
+.settings-content {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    gap: 70px;
+    gap: 60px;
+    margin-top: 50px;
+}
+
+.band-pass-settings-content {
+    gap: 20px;
     margin-top: 50px;
 }
 
@@ -420,4 +520,54 @@ figcaption {
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     display: none;
+}
+
+.dsp-controller-file-selection {
+    box-shadow: 0 20px 70px 5px #00000075;
+    background-color: #fcfcfc;
+    border-radius: var(--roundness);
+    width: 500px;
+    height: 335px;
+    display: none;
+    position: absolute;
+    z-index: 2;
+}
+
+.file-selection-content {
+    height: 300px;
+    display: flex;
+    justify-content: center;
+}
+
+.file-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    width: 90%;
+    height: 90%;
+    gap: 10px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.file-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 30px;
+    border: 1px solid #1a1a1d;
+    cursor: default;
+    color: white;
+    background: linear-gradient(to bottom, rgb(200, 197, 204), rgb(161, 161, 161));
+    flex-shrink: 0;
+}
+
+.file-item:hover {
+    background: rgb(155, 155, 155);
+    transform: scale(1.05);
+}
+
+.file-item.selected {
+    background: rgb(155, 155, 155);
+    transform: scale(1.01);
 }

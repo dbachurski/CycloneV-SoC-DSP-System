@@ -46,7 +46,6 @@ module agh_socfpga
 /* Local variables and signals */
 
 csr__out_t   hwif_out;
-csr__in_t   hwif_in;
 
 logic [31:0] avalon_mm_slave_readdata_nxt;
 logic        avalon_mm_slave_readdatavalid_nxt, avalon_mm_slave_writeresponsevalid_nxt;
@@ -68,7 +67,6 @@ csr u_csr (
     .arst_n(rst_n),
 
     .hwif_out,
-    .hwif_in,
 
     .avalon_waitrequest(avalon_mm_slave_waitrequest),
     .avalon_response(avalon_mm_slave_response),
@@ -86,7 +84,6 @@ dsp u_dsp (
     .clk,
     .rst_n,
 
-    .hwif_out(hwif_in),
     .hwif_in(hwif_out),
 
     .dsp_sink_ready,
@@ -118,7 +115,7 @@ always_ff @(posedge clk or negedge rst_n) begin
 end
 
 always_comb begin
-    if(hwif_out.DSP_CR.fir_enable.value || hwif_out.DSP_CR.dft_enable.value) begin
+    if(hwif_out.DSP_CR.fir_enable.value || hwif_out.DSP_CR.tea_enable.value) begin
         avalon_streaming_sink_ready = dsp_sink_ready;
         avalon_streaming_source_valid = dsp_source_valid;
         avalon_streaming_source_data = dsp_source_data;

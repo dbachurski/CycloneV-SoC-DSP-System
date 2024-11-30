@@ -44,29 +44,12 @@ add_fileset_file csr_pkg.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/csr_pkg.sv
 add_fileset_file fir_filter.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/fir_filter/fir_filter.sv
 add_fileset_file fir_filter_wrapper.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/fir_filter/fir_filter_wrapper.sv
 add_fileset_file source_synchronizer.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/fir_filter/source_synchronizer.sv
-add_fileset_file dft_wrapper.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/dft_wrapper.sv
-add_fileset_file memory_reader.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/memory_reader.sv
+add_fileset_file tea_wrapper.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/tea/tea_wrapper.sv
+add_fileset_file lsfr_64.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/tea/lsfr_64.sv
+add_fileset_file tea.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/tea/tea.sv
 add_fileset_file dsp.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dsp.sv
 add_fileset_file byte_swapper.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/byte_swapper.sv
 add_fileset_file agh_socfpga.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/agh_socfpga.sv TOP_LEVEL_FILE
-add_fileset_file R2FFT.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/R2FFT.sv
-add_fileset_file bfp_Shifter.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/bfp_Shifter.sv
-add_fileset_file bfp_bitWidthAcc.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/bfp_bitWidthAcc.sv
-add_fileset_file bfp_bitWidthDetector.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/bfp_bitWidthDetector.sv
-add_fileset_file bfp_maxBitWidth.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/bfp_maxBitWidth.sv
-add_fileset_file bitReverseCounter.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/bitReverseCounter.sv
-add_fileset_file butterflyCore.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/butterflyCore.sv
-add_fileset_file butterflyUnit.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/butterflyUnit.sv
-add_fileset_file dpram.v VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/dpram.v
-add_fileset_file fftAddressGenerator.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/fftAddressGenerator.sv
-add_fileset_file r2fft_impl.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/r2fft_impl.sv
-add_fileset_file radix2Butterfly.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/radix2Butterfly.sv
-add_fileset_file ramPipelineBridge.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/ramPipelineBridge.sv
-add_fileset_file readBusMux.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/readBusMux.sv
-add_fileset_file twiddleFactorRomBridge.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/twiddleFactorRomBridge.sv
-add_fileset_file twrom.mif MIF PATH ../rtl/agh_socfpga/dsp/dft/r2fft/twrom.mif
-add_fileset_file twrom.v VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/twrom.v
-add_fileset_file writeBusMux.sv SYSTEM_VERILOG PATH ../rtl/agh_socfpga/dsp/dft/r2fft/writeBusMux.sv
 
 
 #

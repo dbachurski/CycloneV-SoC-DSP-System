@@ -39,7 +39,9 @@ fir_filter u_fir_filter (
     .signal(fir_filter_wrapper_sink_data)
 );
 
-source_synchronizer u_source_synchronizer (
+source_synchronizer #(
+    .N(5)
+) u_source_synchronizer (
     .clk,
     .rst_n,
 

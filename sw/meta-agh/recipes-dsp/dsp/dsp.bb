@@ -21,6 +21,7 @@ do_install:append() {
     install -m 0755 ${S}/dsp/led_control.py ${D}${bindir}/dsp/apps/led-control
     install -m 0755 ${S}/dsp/data/data_to_send_32kB.txt ${D}${bindir}/dsp/data/data_to_send_32kB.txt
     install -m 0755 ${S}/dsp/data/sine_wave_10Hz_100Hz.wav ${D}${bindir}/dsp/data/sine_wave_10Hz_100Hz.wav
+    install -m 0755 ${S}/dsp/data/noisy_signal.wav ${D}${bindir}/dsp/data/noisy_signal.wav
     install -m 0755 ${S}/dsp/data/moving_average.txt ${D}${bindir}/dsp/data/moving_average.txt
     install -m 0755 ${S}/dsp/data/unit_impulse.txt ${D}${bindir}/dsp/data/unit_impulse.txt
 

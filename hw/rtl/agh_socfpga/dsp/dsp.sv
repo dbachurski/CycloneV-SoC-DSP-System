@@ -3,7 +3,6 @@ module dsp
     input  logic               clk,
     input  logic               rst_n,
 
-    output csr_pkg::csr__in_t  hwif_out,
     input csr_pkg::csr__out_t  hwif_in,
 
     output logic               dsp_sink_ready,
@@ -27,9 +26,9 @@ logic [31:0] fir_filter_wrapper_source_data;
 logic        fir_filter_wrapper_source_valid, fir_filter_wrapper_source_sop,
              fir_filter_wrapper_source_eop, fir_filter_wrapper_sink_ready;
 
-logic [31:0] dft_wrapper_source_data;
-logic        dft_wrapper_source_valid, dft_wrapper_source_sop,
-             dft_wrapper_source_eop, dft_wrapper_sink_ready;
+logic [31:0] tea_wrapper_source_data;
+logic        tea_wrapper_source_valid, tea_wrapper_source_sop,
+             tea_wrapper_source_eop, tea_wrapper_sink_ready;
 
 
 /* Submodules placement */
@@ -63,44 +62,24 @@ fir_filter_wrapper u_fir_filter_wrapper (
     .fir_filter_wrapper_sink_eop(dsp_sink_eop)
 );
 
-dft_wrapper u_dft_wrapper (
+tea_wrapper u_tea_wrapper (
     .clk,
     .rst_n,
 
-    .hwif_out,
     .hwif_in,
 
-    .dft_wrapper_source_data,
-    .dft_wrapper_source_valid,
-    .dft_wrapper_source_sop,
-    .dft_wrapper_source_eop,
-    .dft_wrapper_source_ready(dsp_source_ready),
+    .tea_wrapper_source_data,
+    .tea_wrapper_source_valid,
+    .tea_wrapper_source_sop,
+    .tea_wrapper_source_eop,
+    .tea_wrapper_source_ready(dsp_source_ready),
 
-    .dft_wrapper_sink_ready,
-    .dft_wrapper_sink_data(dsp_sink_data_inverted),
-    .dft_wrapper_sink_valid(dsp_sink_valid),
-    .dft_wrapper_sink_sop(dsp_sink_sop),
-    .dft_wrapper_sink_eop(dsp_sink_eop)
+    .tea_wrapper_sink_ready,
+    .tea_wrapper_sink_data(dsp_sink_data_inverted),
+    .tea_wrapper_sink_valid(dsp_sink_valid),
+    .tea_wrapper_sink_sop(dsp_sink_sop),
+    .tea_wrapper_sink_eop(dsp_sink_eop)
 );
-
-// tea_wrapper u_tea_wrapper (
-//     .clk,
-//     .rst_n,
-
-//     .hwif_in,
-
-//     .tea_wrapper_source_data,
-//     .tea_wrapper_source_valid,
-//     .tea_wrapper_source_sop,
-//     .tea_wrapper_source_eop,
-//     .tea_wrapper_source_ready(dsp_source_ready),
-
-//     .tea_wrapper_sink_ready,
-//     .tea_wrapper_sink_data(dsp_sink_data_inverted),
-//     .tea_wrapper_sink_valid(dsp_sink_valid),
-//     .tea_wrapper_sink_sop(dsp_sink_sop),
-//     .tea_wrapper_sink_eop(dsp_sink_eop)
-// );
 
 
 /* Internal logic */
@@ -118,20 +97,13 @@ always_comb begin
         dsp_source_data_inverted = fir_filter_wrapper_source_data;
         dsp_source_sop = fir_filter_wrapper_source_sop;
         dsp_source_eop = fir_filter_wrapper_source_eop;
-    end else if (hwif_in.DSP_CR.dft_enable.value) begin
-        dsp_sink_ready = dft_wrapper_sink_ready;
-        dsp_source_valid = dft_wrapper_source_valid;
-        dsp_source_data_inverted = dft_wrapper_source_data;
-        dsp_source_sop = dft_wrapper_source_sop;
-        dsp_source_eop = dft_wrapper_source_eop;
+    end else if (hwif_in.DSP_CR.tea_enable.value) begin
+        dsp_sink_ready = tea_wrapper_sink_ready;
+        dsp_source_valid = tea_wrapper_source_valid;
+        dsp_source_data_inverted = tea_wrapper_source_data;
+        dsp_source_sop = tea_wrapper_source_sop;
+        dsp_source_eop = tea_wrapper_source_eop;
     end
-    // else if (kwif_in.DSP_CR.tea_enable.value) begin
-    //     dsp_sink_ready = tea_wrapper_sink_ready;
-    //     dsp_source_valid = tea_wrapper_source_valid;
-    //     dsp_source_data_inverted = tea_wrapper_source_data;
-    //     dsp_source_sop = tea_wrapper_source_sop;
-    //     dsp_source_eop = tea_wrapper_source_eop;
-    // end
 end
 
 endmodule
