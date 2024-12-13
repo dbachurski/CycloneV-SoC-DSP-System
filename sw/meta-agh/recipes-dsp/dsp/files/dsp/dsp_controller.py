@@ -8,7 +8,7 @@ import sys
 
 MAX_BYTES = 32 * 1024
 
-class Controller:
+class DSP_CONTROLLER:
     def __init__(self):
         self.fpga = fpga.FPGA()
         self.control_register_offset = 0x4
@@ -134,7 +134,7 @@ class Controller:
         self.fpga.clear_memory()
 
 def main(signal_file_path, coefficients_file_path, mode):
-    controller = Controller()
+    controller = DSP_CONTROLLER()
 
     if mode == 'fir':
         if controller.read_fir_coefficients(coefficients_file_path):
@@ -144,7 +144,7 @@ def main(signal_file_path, coefficients_file_path, mode):
         controller.write_data()
         controller.start_data_processing(mode)
 
-        time.sleep(0.3)
+        controller.fpga.dma_st_to_mm.monitor()
         filtered_data = controller.read_data()
         controller.save_data(filtered_data, mode)
 

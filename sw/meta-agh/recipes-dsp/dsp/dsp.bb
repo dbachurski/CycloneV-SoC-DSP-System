@@ -18,7 +18,7 @@ do_install:append() {
     install -d ${D}${bindir}/dsp/output
     install -m 0755 ${S}/dsp/dsp_tester.py ${D}${bindir}/dsp/apps/dsp-tester
     install -m 0755 ${S}/dsp/dsp_controller.py ${D}${bindir}/dsp/apps/dsp-controller
-    install -m 0755 ${S}/dsp/led_control.py ${D}${bindir}/dsp/apps/led-control
+    install -m 0755 ${S}/dsp/led_controller.py ${D}${bindir}/dsp/apps/led-controller
     install -m 0755 ${S}/dsp/data/data_to_send_32kB.txt ${D}${bindir}/dsp/data/data_to_send_32kB.txt
     install -m 0755 ${S}/dsp/data/sine_wave_10Hz_100Hz.wav ${D}${bindir}/dsp/data/sine_wave_10Hz_100Hz.wav
     install -m 0755 ${S}/dsp/data/noisy_signal.wav ${D}${bindir}/dsp/data/noisy_signal.wav
@@ -28,8 +28,6 @@ do_install:append() {
     install -d ${D}${PYTHON_SITEPACKAGES_DIR}
     install -m 0755 ${S}/dsp/fpga.py ${D}${PYTHON_SITEPACKAGES_DIR}/fpga.py
     install -m 0755 ${S}/dsp/dma.py ${D}${PYTHON_SITEPACKAGES_DIR}/dma.py
-    install -m 0755 ${S}/dsp/dma_mm_to_st.py ${D}${PYTHON_SITEPACKAGES_DIR}/dma_mm_to_st.py
-    install -m 0755 ${S}/dsp/dma_st_to_mm.py ${D}${PYTHON_SITEPACKAGES_DIR}/dma_st_to_mm.py
     install -m 0755 ${S}/dsp/ocm.py ${D}${PYTHON_SITEPACKAGES_DIR}/ocm.py
 }
 

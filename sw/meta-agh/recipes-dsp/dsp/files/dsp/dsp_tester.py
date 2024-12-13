@@ -4,7 +4,7 @@ import wave
 import numpy as np
 import random
 
-class TestStringMethods(unittest.TestCase):
+class DSP_TESTER(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
@@ -24,7 +24,6 @@ class TestStringMethods(unittest.TestCase):
         self.fpga.dma_st_to_mm.configure(transfer_length)
         self.fpga.dma_st_to_mm.trigger()
         self.fpga.dma_mm_to_st.trigger()
-        self.fpga.dma_st_to_mm.measure_bandwidth()
 
     def tea_enable(self):
         tea_enable_offset = 0x1
@@ -57,6 +56,9 @@ class TestStringMethods(unittest.TestCase):
 
         self.fpga.ocm1.write(data)
         self.configure_and_trigger_dma(transfer_length)
+        
+        bandwidth = self.fpga.dma_st_to_mm.monitor()
+        print(f"DMA bandwidth: {bandwidth:.4f} MB/s")
 
         read_buff = self.fpga.ocm2.read(len(data))
 

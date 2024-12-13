@@ -1,4 +1,4 @@
-import dma, dma_mm_to_st, dma_st_to_mm
+import dma
 import ocm
 import mmap
 import os
@@ -12,11 +12,10 @@ class FPGA:
         self.fd = os.open(self.dev, os.O_RDWR | os.O_SYNC)
         self.mem = mmap.mmap(self.fd, self.mem_size, mmap.MAP_SHARED, mmap.PROT_READ | mmap.PROT_WRITE, offset=self.lwfpgaslaves_addr)
 
-        self.ocm1 = ocm.OCM(self, 1)
-        self.ocm2 = ocm.OCM(self, 2)
-        self.dma = dma.DMA()
-        self.dma_mm_to_st = dma_mm_to_st.DMA_MM_TO_ST(self, self.dma)
-        self.dma_st_to_mm = dma_st_to_mm.DMA_ST_TO_MM(self, self.dma)
+        self.ocm1 = ocm.OCM(self.mem, 1)
+        self.ocm2 = ocm.OCM(self.mem, 2)
+        self.dma_mm_to_st = dma.DMA_MM_TO_ST(self.mem)
+        self.dma_st_to_mm = dma.DMA_ST_TO_MM(self.mem)
 
     def read(self, address, size):
         self.mem.seek(address)

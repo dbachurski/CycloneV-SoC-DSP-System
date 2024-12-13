@@ -8,14 +8,14 @@ import json
 
 BASE_PATH = '/usr/bin/dsp'
 DSP_TESTER_LOG = '/tmp/dsp-tester.log'
-LED_CONTROL_LOG = '/tmp/led-control.log'
+LED_CONTROLLER_LOG = '/tmp/led-controller.log'
 DSP_CONTROLLER_LOG = '/tmp/dsp-controller.log'
 INPUT_DATA_FILE_PATH = BASE_PATH + '/data'
 OUTPUT_DATA_FILE_PATH = BASE_PATH + '/output'
 OUTPUT_WAV_FILE_PATH = BASE_PATH + '/output/processed_signal.wav'
 DSP_CONTROLLER_SCRIPT_PATH = BASE_PATH + '/apps/dsp-controller'
 DSP_TESTER_SCRIPT_PATH = BASE_PATH + '/apps/dsp-tester'
-LED_CONTROL_SCRIPT_PATH = BASE_PATH + '/apps/led-control'
+LED_CONTROLLER_SCRIPT_PATH = BASE_PATH + '/apps/led-controller'
 TEMP_PATH = os.path.join(os.getcwd(), 'temp/output')
 
 sampling_rate = None
@@ -68,7 +68,7 @@ def led_toggle(request):
     except json.JSONDecodeError:
         return JsonResponse({'status': 'error', 'message': 'Invalid JSON'}, status=400)
 
-    return_code, log_content = run_subprocess(LED_CONTROL_SCRIPT_PATH, [led_id, led_state], LED_CONTROL_LOG)
+    return_code, log_content = run_subprocess(LED_CONTROLLER_SCRIPT_PATH, [led_id, led_state], LED_CONTROLLER_LOG)
     return JsonResponse({'message': log_content}, status=500 if return_code != 0 else 200)
 
 def get_svg(request, filename):
