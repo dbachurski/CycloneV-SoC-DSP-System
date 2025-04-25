@@ -1,5 +1,11 @@
 # CycloneV-SoC-DSP-System
 
+## About this project
+This repository contains the implementation of example digital signal processing algorithms on the DE0-Nano-SoC heterogeneous platform. The digital logic implemented in the FPGA handles the execution of DSP algorithms, while the ARM microprocessor runs a web server that provides user with a browser-based interface for remote interaction.
+
+### User Interface
+![user_interface](https://github.com/user-attachments/assets/0db483dc-5ab5-47e9-b926-be029f96b9ce)
+
 ## Clone repository
 ```bash
 git clone --recursive git@github.com:dbachurski/CycloneV-SoC-DSP-System.git
@@ -38,15 +44,3 @@ SD card and connect a USB cable to the `J4` connector (it enables serial port da
 ### Linux login prompt
 You can access the Linux prompt via serial connection using username `root`. Password is not
 required.
-
-## Simulations
-
-### Simulation execution (command line mode)
-```bash
-sim_runner.sh -t <test_name>
-```
-
-### Simulation execution (with GUI)
-```bash
-sim_runner.sh -gt <test_name>
-```
